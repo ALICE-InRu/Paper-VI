@@ -3,17 +3,17 @@
 type&name&size ($n\times m$)& $N_{\text{train}}$&$N_{\text{test}}$  & note 
 \\ \midrule
 \multirow{6}{*}{\rot{JSP}}
-&\jrnd[8\times8] &$8\times8$& -- & 500 & random \\
-&\jrnd[10\times10] &$10\times10$& 300 & 200 & random \\
-&\jrnd[12\times12] &$12\times12$& -- & 500 & random \\
-&\jrndn[8\times8] &$8\times8$& -- & 500 & random-narrow \\ 
-&\jrndn[10\times10] &$10\times10$& 300 & 200 & random-narrow \\ 
-&\jrndn[12\times12] &$12\times12$& -- & 500 & random-narrow \\ 
+&\jrnd{8}{8} &$8\times8$& -- & 500 & random \\
+&\jrnd{10}{10} &$10\times10$& 300 & 200 & random \\
+&\jrnd{12}{12} &$12\times12$& -- & 500 & random \\
+&\jrndn{8}{8} &$8\times8$& -- & 500 & random-narrow \\ 
+&\jrndn{10}{10} &$10\times10$& 300 & 200 & random-narrow \\ 
+&\jrndn{12}{12} &$12\times12$& -- & 500 & random-narrow \\ 
 \midrule
 \multirow{3}{*}{\rot{PFSP}}
-&\frnd[8\times8] &$8\times8$& --&500& random \\ 
-&\frnd[10\times10] &$10\times10$& 300&200& random \\ 
-&\frnd[12\times12] &$12\times12$& --&500& random \\ 
+&\frnd{8}{8} &$8\times8$& --&500& random \\ 
+&\frnd{10}{10} &$10\times10$& 300&200& random \\ 
+&\frnd{12}{12} &$12\times12$& --&500& random \\ 
 \bottomrule
 \end{tabular}
 }
