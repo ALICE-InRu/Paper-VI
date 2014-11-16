@@ -211,11 +211,11 @@ box illustrates the processing times for a given job for a particular
 machine $M_a$ (on the vertical axis). The dashed boxes represent the
 resulting partial schedule for when a particular job is scheduled
 next. Moreover, the current $C_{\max}$ is denoted by a dotted vertical
-line. In the figure we observe that job 2, to be scheduled on machine
-3, could be placed immediately in a slot between job 3 and 4, or after
-job 4. If job 6 had been placed earlier a slot would
-have been created between it and job 4 thus creating a third
-alternative (job 2 after job 6). The construction heuristic must
+line. In the figure we observe that $J_2$, to be scheduled on $M_3$,
+could be placed immediately in a slot between $J_3$ and $J_4$, or after
+$J_4$. If $J_6$ had been placed earlier a slot would
+have been created between it and $J_4$ thus creating a third
+alternative ($J_2$ after $J_6$). The construction heuristic must
 therefore decide where to place the job, this may be independent of
 the dispatching rule applied. Different placement strategies could be
 considered, for example placing a job in smallest feasible slot. In
@@ -225,7 +225,7 @@ schedules. This problem, however, did not occur when jobs are simply
 placed as early as possible. For this reason it will be our placement strategy.
 	
 \begin{figure}[t!]\centering
-  \includegraphics[width=0.8\textwidth]{jssp_example_nocolor-eps-converted-to.pdf}
+  \includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor.eps}
   \caption[Gantt chart of a partial JSP schedule]{Gantt chart of a
     partial JSP schedule after 15 dispatches: Solid and dashed boxes
     represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
@@ -293,7 +293,7 @@ All of these attributes vary throughout the scheduling process,
 w.r.t. operation belonging to the same time step $k$, with the exception of
 \phimac, which is reported in order to distinguish which features are
 in conflict with each other;
-({\bf Helga: not sure how this works again... check code, can you recheck if this is all OK here? I mean do we need to talk about things we don't use in our experimental study!}
+\todo[inline,color=blue!40]{Helga: not sure how this works again... check code, can you recheck if this is all OK here? I mean do we need to talk about things we don't use in our experimental study!}
  \phistep\ to keep track of features'
 evolution w.r.t. the scheduling process; and \phitotalProc\ and
 \phiwrmTotal\ which are static for a given problem instance, but used
@@ -336,7 +336,7 @@ where $w_a>0$ and $\sum_{a=0}^C w_a = 1$ and $w_a$ gives the weight of
 the proportional influence of performance measure $a$ (based on some
 SDR or CDR) to the overall priority.
 
-{\bf Helga can you please make it clear what the difference is between a blended and composite rule, for me its seems to be the same thing... are we confusing things here?!}
+\todo[inline,color=blue!40]{Helga: can you please make it clear what the difference is between a blended and composite rule, for me its seems to be the same thing... are we confusing things here?!}
 
 At each time step $k$, an operation is dispatched which has the
 highest priority in the job-list,
@@ -345,7 +345,7 @@ is used. Generally the priority dispatching rules are static during
 the entire scheduling process.
 	
 
-{\bf Helga: reword this paragraph so you don't start the sentence with a citation}
+\todo[inline,color=blue!40]{Helga: reword this paragraph so you don't start the sentence with a citation}
 \citet{Lu13} investigate 11 simple dispatching rules for JSP to create
 a pool of 33 composite dispatching rules that strongly outperformed
 the ones they were based on, which is intuitive since where one SDR
@@ -382,7 +382,7 @@ Several of successful implementations in the field of
 semiconductor wafer fabrication facilities are discussed, however, this sort of
 investigation is still in its infancy.
 
-{\bf Helga: the remainder of this chapter should be about how learning has been used to find compostite dispatching rules, from the literature, here you can cite you own work and the work of Olafson and thos citing him. This section should conclude with a paragraph on instance generation and training data creation to connect to the nect chapter. I leave this here below in case you would like to use something from it ...}
+\todo[inline,color=blue!40]{Helga: the remainder of this chapter should be about how learning has been used to find compostite dispatching rules, from the literature, here you can cite you own work and the work of Olafson and thos citing him. This section should conclude with a paragraph on instance generation and training data creation to connect to the nect chapter. I leave this here below in case you would like to use something from it ...}
 
 With meta heuristics one can use existing DRs and use for example
 portfolio-based algorithm selection \citep{Rice76,Gomes01}, either
@@ -413,12 +413,12 @@ choose from rather than just a single DR at a time.
 
 \section{Learning from Problem Instances}\label{sec:gentrainingdata}
 
-{\bf HELGA: what is this  chapter is about?} This chapter need a rewrite, I will let you take the first iteration.
+\todo[inline,color=blue!40]{Helga: what is this  chapter is about?} This chapter need a rewrite, I will let you take the first iteration.
 
 \subsection{Problem Instances}
 
 
-{\bf Helga: put here all material releated to \cref{tbl:data:sim}. }
+\todo[inline,color=blue!40]{Helga: put here all material releated to \cref{tbl:data:sim}. }
 
 For each problem class described in \cref{tbl:data:sim} there are $N$
 problem instances generated with a random problem generator using $n$
@@ -487,7 +487,7 @@ labelled undesirable.
 	
 	\subsection{Linear Learning}
 	
-	{\bf Helga: this is a condensed version of liblinear for our problem, please do not describe logistic regression just how the data is preprocessed and fed into liblinear.}
+	\todo[inline,color=blue!40]{Helga: this is a condensed version of liblinear for our problem, please do not describe logistic regression just how the data is preprocessed and fed into liblinear.}
 	
 	Learning models considered in this study are based on ordinal regression in which the learning task is formulated as learning preferences. In the case of scheduling, learning which operations are preferred to others. Ordinal regression has been previously presented in \cite{Ru06:PPSN} and in \cite{InRu11a} for JSP, however given here for completeness. 
 	
@@ -519,7 +519,7 @@ labelled undesirable.
 	\begin{equation}\label{eq:linear}
 	\vec{x}_i \succ \vec{x}_j \quad \Leftrightarrow \quad h(\vec{x}_i) > h(\vec{x}_j)
 	\end{equation}
-	where the symbol $\succ$ denotes "is preferred to".  The function used to induce the preference is defined by a linear function in the feature space,
+	where the symbol $\succ$ denotes "is preferred to."  The function used to induce the preference is defined by a linear function in the feature space,
 	\begin{equation}\label{eq:jssp:linweights}
 	h(\vec{x})=\sum_{i=1}^d w_i\phi_i(\vec{x})=\inner{\vec{w}}{\vphi(\vec{x})}.
 	\end{equation}
@@ -531,9 +531,10 @@ labelled undesirable.
 	\begin{equation}\label{eq:prob}
 	\Prob{y=\pm1|\vec{z},\vec{w}}=\frac{1}{1+e^{-y\inner{\vec{w}}{\vec{z}_i}}}.
 	\end{equation}
-	The logistic regression defined in \eqref{eq:margin} is solved iteratively, in particular using Trust Region Newton method \cite{Lin08:newtontrustregion}, which generates a sequence $\{\vec{w}^{(k)}\}_{k=1}^\infty$ converging to the optimal solution $\vec{w}^*$ of \eqref{eq:margin}.
+	The logistic regression defined in \cref{eq:margin} is solved iteratively, in particular using Trust Region Newton method \cite{Lin08:newtontrustregion}, which generates a sequence $\{\vec{w}^{(k)}\}_{k=1}^\infty$ converging to the optimal solution $\vec{w}^*$ of \cref{eq:margin}.
 	
-	The regulation parameter $C$ in \eqref{eq:margin}, controls the balance between model complexity and training errors, and must be chosen appropriately. It is also important to scale the features $\vphi$ first. A standard method of doing so is by scaling the training set such that all points are in some range, typically $[-1,1]$. That is, scaled $\tilde{\vphi}$ is,
+	The regulation parameter $C$ in \cref{eq:margin}, controls the balance between model complexity and training errors, and must be chosen appropriately. 
+	It is also important to scale the features $\vphi$ first. A standard method of doing so is by scaling the preference set such that all points are in some range, typically $[-1,1]$. That is, scaled $\tilde{\vphi}$ is,
 	\begin{equation}\label{eq:scale}
 	\tilde{\phi}_i = 2 (\phi_i - \underline{\phi}_i) / (\overline{\phi}_i - \underline{\phi}_i) - 1 
 	\quad\quad \forall i\in\{1,\ldots,d\}
@@ -542,9 +543,9 @@ labelled undesirable.
 	\begin{equation}
 	\underline{\phi}_i=\min\{\phi_i\;|\;\forall\vphi\in \Phi\} \quad\textrm{and}\quad \overline{\phi}_i=\max\{\phi_i\;|\;\forall\vphi\in \Phi\}.
 	\end{equation}
-	where $i\in\{1\ldots d\}$. Moreover, scaling makes the features less sensitive to processing times.
+	where $i\in\{1\ldots d\}$. Moreover, scaling makes the features less sensitive to processing times. \todo{Scaling is done in Liblinear package, so omit?}
 	
-	Logistic regression makes optimal decisions regarding optimal dispatches and at the same time efficiently estimates a posteriori probabilities. The optimal $\vec{w}^*$ obtained by the training set, can be used on any new data point, $\vphi$, and their inner product is proportional to probability estimate \eqref{eq:prob}. Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let $\vphi_j$ denote its corresponding  post-decision state. Then the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
+	Logistic regression makes optimal decisions regarding optimal dispatches and at the same time efficiently estimates a posteriori probabilities. The optimal $\vec{w}^*$ obtained by the preference set, can be used on any new data point, $\vphi$, and their inner product is proportional to probability estimate \cref{eq:prob}. Hence, for each job on the ready-list, $J_j\in\mathcal{R}$, let $\vphi_j$ denote its corresponding  post-decision state. Then the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
 	\begin{equation}\label{eq:lin}
 	J_{j^*}=\argmax_{J_j\in \mathcal{L}}\; h(\vphi_j)
 	\end{equation}
@@ -565,33 +566,34 @@ labelled undesirable.
 	%----------------------------- Develop idea
 	
 	%\subsubsection{Problem spaces}\label{sec:datadescription}
-	For this study synthetic JSP and PFSP problem instances will be considered with the problem sizes $8\times8$,  $10\times10$ and $12\times12$. Summary of problem classes is given in \cref{tbl:data:sim}.
+	For this study synthetic JSP and FSP problem instances will be considered with the problem size $10\times10$. 
+	For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were generated for training and testing, respectively. 
 	Note, that difficult problem instances are not filtered out beforehand, such as the approach in \citet{Whitley}. 
+	Summary of problem classes is given in \cref{tbl:data:sim}.  
 	
 	%\subsubsection{Job-shop}\label{data:sim:jssp}
 	Problem instances for JSP are generated stochastically by fixing the number of jobs and machines and 
-	discrete processing time are i.i.d. and sampled from a discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e. $\vec{p}\sim \mathcal{U}(u_1,u_2)$. 
+	discrete processing time are i.i.d. and sampled from a discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., $\vec{p}\sim \mathcal{U}(u_1,u_2)$. 
 	Two different processing times distributions were explored, namely 
 	\jrnd{n}{m}  where $I=[1,99]$ and \jrndn{n}{m}  where $I=[45,55]$.
 	The machine order is a random permutation of all of the machines in the job-shop, hence they problem spaces \jrnd{n}{m}   and \jrndn{n}{m}  are referred to as random and random-narrow, respectively. 
 	
-	For each JSP class $N_{\text{train}}$  and $N_{\text{test}}$ instances were generated for training and testing, respectively. Values for $N$ are given in \cref{tbl:data:sim}. 
 	
 	Although in the case of \jrnd{n}{m}  this may be an excessively large range for the uniform distribution, it is however chosen in accordance with the literature \citep{Demirkol98} for creating synthesised $J||C_{\max}$ problem instances. In addition, w.r.t. the machine ordering, one could look into a subset of JSP where the machines are partitioned into two (or more) sets, where all jobs must be processed on the machines from the first set (in some random order) before being processed on any machine in the second set, commonly denoted as $J|2\textrm{sets}|C_{\max}$ problems, but as discussed in \cite{orlib_swv} this family of JSP is considered "hard" (w.r.t. relative error from best known solution) in comparison with the "easy" or "unchallenging" family with the general $J||C_{\max}$ setup. % ath. Holtsclaw96 vitnar í orlib_swv um easy-hard pælinguna
 	This is in stark contrast to \citet{Whitley} whose findings showed that structured $F||C_{\max}$ were quite easier to solve than completely random structures. 
 	Intuitively, an inherent structure in machine ordering should be exploitable for a better performance.  However, for the sake of generality, a random structure is preferred as they correspond to difficult problem instances in the case of JSP. 
-	%Whereas, structured problem subclasses will be explored for PFSP.  
+	%Whereas, structured problem subclasses will be explored for FSP.  
 	
 	%\subsubsection{Flow-shop}\label{data:sim:fsp}
-	Problem instances for PFSP are such that processing times are i.i.d. and uniformly distributed, 
+	Problem instances for FSP are such that processing times are i.i.d. and uniformly distributed, 
 	\frnd{n}{m}  where $\vec{p}\sim\mathcal{U}(1,99)$, referred to as random. In the JSP context \frnd{n}{m}  is analogous to \jrnd{n}{m}.
 	
-	There are $N_{\text{train}}$  and $N_{\text{test}}$ instances were generated for training and testing, respectively. Values for $N$ are given in \cref{tbl:data:sim}. 
 	
 	\begin{table}\centering
-	\caption[Problem space distributions used in experimental studies.]{Problem space distributions used in experimental studies. Note, problem instances are synthetic and each problem space is i.i.d. and `--' denotes not available.}\label{tbl:data:sim}
-	\input{tables/data-sim.}
-	\end{table}
+		\caption[Problem space distributions used in experimental studies.]{Problem space distributions used in experimental studies. Note, problem instances are synthetic and each problem space is i.i.d. %and `--' denotes not available.
+		}\label{tbl:data:sim}
+		\input{tables/data-sim.}
+	\end{table} 
 	
 	
 	
@@ -735,48 +737,52 @@ labelled undesirable.
 	
 	For each feature combination, a linear preference model is created in the manner described in \cref{ch:learningmodels}, where $\Phi$ is limited to the predetermined feature combination. This was done with the software package from \cite{liblinear}\footnote{Software available at \url{http://www.csie.ntu.edu.tw/~cjlin/liblinear}}, by training on the full preference set $S$ obtained from the $N_{\text{train}}=300$ problem instances following the framework set up in \cref{sec:gentrainingdata}. 
 	
-	\subsection{Training accuracy}\label{sec:CDR:acc}
-	As the preference set $S$ has both preference pairs belonging to optimal ranking, and subsequent rankings, it is not of primary importance to classify \emph{all} rankings correctly, just the optimal ones. Therefore, instead of reporting the training accuracy based on the classification problem of the correctly labelling the problem set $S$, it's opted the training accuracy is obtained in the same manner as done in \cref{sec:opt:sdr} for SDRs, i.e., the probability of choosing optimal decision given the resulting linear weights, however in this context, the mean throughout the dispatching process is reported. \Cref{fig:stepwise_vs_classification} shows the difference between the two measures of reporting training accuracy. Training accuracy based on stepwise optimality only takes into consideration the likelihood of choosing the optimal move at each time step. However, the classification accuracy is also trying to correctly distinguish all subsequent rankings in addition of choosing the optimal move, as expected that measure is considerably lower. 
+	\subsection{Validation accuracy}\label{sec:CDR:acc}
+	As the preference set $S$ has both preference pairs belonging to optimal ranking, and subsequent rankings, it is not of primary importance to classify \emph{all} rankings correctly, just the optimal ones. Therefore, instead of reporting the validation accuracy based on the classification problem of the correctly labelling the problem set $S$, it's opted the validation accuracy is obtained in the same manner as done in \cref{sec:opt:sdr} for SDRs, i.e., the probability of choosing optimal decision given the resulting linear weights, however in this context, the mean throughout the dispatching process is reported. \Cref{fig:stepwise_vs_classification} shows the difference between the two measures of reporting validation accuracy. Validation accuracy based on stepwise optimality only takes into consideration the likelihood of choosing the optimal move at each time step. However, the classification accuracy is also trying to correctly distinguish all subsequent rankings in addition of choosing the optimal move, as expected that measure is considerably lower. 
 	
 	\begin{figure}[th!]
 		\centering
 		\includegraphics[width=\linewidth]{figures/exhaust/{training.accuracy.equal}.pdf}
-		\caption{Various methods of reporting training accuracy for preference learning}
+		\caption{Various methods of reporting validation accuracy for preference learning}
 		\label{fig:stepwise_vs_classification}
 	\end{figure}
 	
 	\subsection{Pareto front}\label{sec:CDR:pareto}
-	When training the learning model one wants to keep the training accuracy high, as that would imply a higher likelihood of making optimal decisions, which would in turn translate into a low final makespan. To test the validity of this assumptions, each of the 697 models is run on the preference set, and its mean $\rho$ is reported against its corresponding training accuracy in \cref{fig:CDR:scatter}. The models are colour-coded w.r.t. the number of active features, and a line is drawn through its Pareto front. Moreover, those solutions are labelled with their corresponding model ID. Moreover, the Pareto front over all 697 models, irrespective of active feature count, is denoted with triangles. Moreover, their values are reported in \cref{tbl:CDR:pareto}, where the best objective is given in boldface. 
-	Note for \jrndn{10}{10}  there is no statistical difference between models 3.501, 3.508 and 3.510 w.r.t. training accuracy, however only 3.501 and 3.508 w.r.t. $\rho$. Other models were statistically significant to one another, using a Kolmogorov-Smirnov test with $\alpha=0.05$.\label{sec:expr:ks}
+	When training the learning model one wants to keep the validation accuracy high, as that would imply a higher likelihood of making optimal decisions, which would in turn translate into a low final makespan. To test the validity of this assumptions, each of the 697 models is run on the preference set, and its mean $\rho$ is reported against its corresponding validation accuracy in \cref{fig:CDR:scatter}. The models are colour-coded w.r.t. the number of active features, and a line is drawn through its Pareto front. Moreover, those solutions are labelled with their corresponding model ID. Moreover, the Pareto front over all 697 models, irrespective of active feature count, is denoted with triangles. Moreover, their values are reported in \cref{tbl:CDR:pareto}, where the best objective is given in boldface. 
 	
+	For \jrnd{10}{10}  there is no statistical difference between models 2.115, 3.503, 3.549 and 3.556 w.r.t. $\rho$, however only (2.115, 3.503) and (3.549, 3.556) w.r.t. validation accuracy. Other models were statistically significant to one another, using a Kolmogorov-Smirnov test with $\alpha=0.05$.\label{sec:expr:ks} 
+	However, the solutions on the pareto-front for \jrndn{10}{10} are more or less with no (or minimal) statistical difference w.r.t. validation accuracy, and considerably fewer w.r.t. $\rho$. Most notably are the 
+	2.107, 2.115, 3.486 and 3.549 (latter two have the lowest mean $\rho$) which are all statistically insignificant w.r.t. $\rho$ and the latter three w.r.t. validation accuracy as well. 
+	For \frnd{10}{10} 3.80, 3.120, 3.260 are equivalent to model corresponding to the lowest $\rho$, 3.244. Although, w.r.t. validation accuracy models 3.260 and 2.40 are statistically insignificant, where the latter yields a approx 1.5\% worse mean $\rho$. So even looking at stepwise optimality by itself is very fickle, because slight variations can be quite dramatic to the end result. 
+
 	Note, for both \jrnd{10}{10} and \jrndn{10}{10}, model 1.16 is on the Pareto front. The model corresponds to feature \phiwrmJob, and in both cases has a weight strictly greater than zero (cf. \cref{fig:CDR:weights}). Revisiting \cref{sec:learningmodels:interpret}, we observe that this implies the learning model was able to discover MWR as one of the Pareto solutions. 
 	
-	As one can see from \cref{fig:CDR:scatter}, adding additional features to express the linear model boosts performance in both training accuracy and expected mean for $\rho$, i.e., the Pareto fronts are cascading towards more desirable outcome with higher number  of active features. However, there is a cut-off point for such improvement, as using all features is generally considerably worse off. 
+	As one can see from \cref{fig:CDR:scatter}, adding additional features to express the linear model boosts performance in both validation accuracy and expected mean for $\rho$, i.e., the Pareto fronts are cascading towards more desirable outcome with higher number  of active features. However, there is a cut-off point for such improvement, as using all features is generally considerably worse off due to overfitting of classifying the preference set.
 	
 	\begin{figure}[t]
 		\centering
 		\includegraphics[width=\linewidth]{figures/exhaust/{pareto.equal}.pdf}
-		\caption{Scatter plot for training accuracy  (\%) against its corresponding mean expected $\rho$ (\%) for all 697 linear models, based on either one, two, three or all $d$ combinations of features.
-			Pareto fronts for each active feature count based on maximum training accuracy and minimum mean expected $\rho$ (\%), and labelled with their model ID. Moreover, actual Pareto front over all models is marked with triangles.} \label{fig:CDR:scatter}
+		\caption{Scatter plot for validation accuracy  (\%) against its corresponding mean expected $\rho$ (\%) for all 697 linear models, based on either one, two, three or all $d$ combinations of features.
+			Pareto fronts for each active feature count based on maximum validation accuracy and minimum mean expected $\rho$ (\%), and labelled with their model ID. Moreover, actual Pareto front over all models is marked with triangles.} \label{fig:CDR:scatter}
 	\end{figure}
 	
 	\begin{table}
-		\caption{Mean training accuracy and mean expected deviation from optimality, $\rho$, for all CDR models on the Pareto front from \cref{fig:CDR:scatter}.}\label{tbl:CDR:pareto}
+		\caption{Mean validation accuracy and mean expected deviation from optimality, $\rho$, for all CDR models on the Pareto front from \cref{fig:CDR:scatter}.}\label{tbl:CDR:pareto}
 		\input{tables/PREF-equal}
 	\end{table}
 	
-	Now, let's inspect the models corresponding to the minimum mean $\rho$ and highest training accuracy, highlighted in \cref{tbl:CDR:pareto} and inspect the stepwise optimality for those models in \cref{fig:CDR:opt}, again using probability of randomly guessing an optimal move from \cref{sec:opt:rnd} as a benchmark. Note, only one CDR model is plotted for \frnd{10}{10}  as its Pareto front constitutes of only a single model. As one can see for both \jrnd{10}{10} and \jrndn{10}{10}, despite having a higher mean training accuracy overall, the probabilities vary significantly. A lower mean $\rho$ is obtained when the training accuracy is gradually increasing over time, because revisiting \cref{fig:case}, indicates that it's likelier for the resulting makespan to be considerably worse off if suboptimal moves are made at later stages, than at earlier stages. Therefore, it's imperative to make the `best' decision at the `right' moment, not just look at the overall mean performance. Hence, the measure of training accuracy as discussed in \cref{sec:CDR:acc} should take into consideration the impact a suboptimal move yields on a step-by-step basis, e.g. weighted w.r.t. a curve such as depicted in \cref{fig:case}.
+	Now, let's inspect the models corresponding to the minimum mean $\rho$ and highest mean validation accuracy, highlighted in \cref{tbl:CDR:pareto} and inspect the stepwise optimality for those models in \cref{fig:CDR:opt}, again using probability of randomly guessing an optimal move from \cref{sec:opt:rnd} as a benchmark. 	
+	As one can see for both \jrnd{10}{10} and \jrndn{10}{10}, despite having a higher mean validation accuracy overall, the probabilities vary significantly. A lower mean $\rho$ is obtained when the validation accuracy is gradually increasing over time, and especially during the last phase of the scheduling.\footnote{It's almost to illegible to notice this shift directly from \cref{fig:CDR:opt}, as the difference between the two best models is oscillating up to only 3\% at any given step. In fact \jrndn{10}{10} has the most clear difference w.r.t. classification accuracy of indicating when a minimum $\rho$ model excels at choosing the preferred move.} Revisiting \cref{fig:case}, this trend indicates that it's likelier for the resulting makespan to be considerably worse off if suboptimal moves are made at later stages, than at earlier stages. Therefore, it's imperative to make the `best' decision at the `right' moment, not just look at the overall mean performance. Hence, the measure of validation accuracy as discussed in \cref{sec:CDR:acc} should take into consideration the impact a suboptimal move yields on a step-by-step basis, e.g. weighted w.r.t. a curve such as depicted in \cref{fig:case}.
 	
 	\begin{figure}[p]
 		\centering
 		\includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat.prob.moveIsOptimal.10x10.OPT.equal.best}.pdf}
-		\caption{Probability of choosing optimal move for models corresponding to highest training accuracy (grey) and lowest mean deviation from optimality, $\rho$, (black) compared to the baseline of probability of choosing an optimal move at random (dashed).}
+		\caption{Probability of choosing optimal move for models corresponding to highest mean validation accuracy (grey) and lowest mean deviation from optimality, $\rho$, (black) compared to the baseline of probability of choosing an optimal move at random (dashed).}
 		\label{fig:CDR:opt}
 	\end{figure}
 	
-	Let's revert back to the original SDRs discussed in \cref{sec:opt:sdr} and compare the best CDR models, a box-plot for $\rho$ is depicted in \cref{fig:boxplot:CDR}. Firstly, there is a statistical difference between all models, and  clearly the CDR model corresponding to minimum mean $\rho$ value, is the clear winner, and outperforms the  SDRs substantially. However, for \jrnd{10}{10} and \jrndn{10}{10}, where the best model w.r.t. minimum $\rho$ doesn't coincide with the model corresponding to the maximum training accuracy, such as the case with \frnd{10}{10}, then the CDR model shows a lacklustre performance. In some cases it's better off, e.g. compared to LWR, yet doesn't surpass the performance of MWR. This implies, the learning model is overfitting the training data. Results hold for the test set. 
-	
-	
+	Let's revert back to the original SDRs discussed in \cref{sec:opt:sdr} and compare the best CDR models, a box-plot for $\rho$ is depicted in \cref{fig:boxplot:CDR}. Firstly, there is a statistical difference between all models, and  clearly the CDR model corresponding to minimum mean $\rho$ value, is the clear winner, and outperforms the  SDRs substantially. However, the best model w.r.t. maximum validation accuracy, then the CDR model shows a lacklustre performance. In some cases it's better off, e.g., compared to LWR, yet for job-shop it doesn't surpass the performance of MWR. This implies, the learning model is over-fitting the training data. Results hold for the test set. 
+		
 	\begin{figure}[p]
 		\includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho.CDR.10x10.equal}.pdf}
 		\caption{Box plot for deviation from optimality, $\rho$, (\%) for the best CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from \cref{sec:opt:sdr}, both for training and test sets.}\label{fig:boxplot:CDR}
@@ -784,14 +790,20 @@ labelled undesirable.
 	
 	
 	\subsection{Interpreting CDR}\label{sec:CDR:interpret}
-	\Cref{sec:learningmodels:interpret} showed how to interpret the linear preference  models by their weights. \Cref{fig:CDR:weights}
-	depicts the linear weights, $\vec{w}$, from \cref{eq:linear} for all of the CDR models reported in \cref{tbl:CDR:pareto}. The weights have been normalised for clarity purposes, such that it is scaled to $\norm{\vec{w}}=1$, thereby giving each feature their proportional contribution to the  preference $I_j^{CDR}$ defined by \cref{eq:CDR}.
+	\Cref{sec:learningmodels:interpret} showed how to interpret the linear preference models by their weights. 
+	\Cref{fig:CDR:weights} depicts the linear weights, $\vec{w}$, from \cref{eq:linear} for all of the CDR models reported in \cref{tbl:CDR:pareto}. The weights have been normalised for clarity purposes, such that it is scaled to $\norm{\vec{w}}=1$, thereby giving each feature their proportional contribution to the  preference $I_j^{CDR}$ defined by \cref{eq:CDR}.
 	
-	As discussed in \cref{sec:expr:ks} for \jrndn{10}{10}, there is no statistical difference between models 3.501, 3.508 and 3.510 w.r.t. training accuracy. As \cref{fig:CDR:weights} shows, \phimakespan\ and \phiwrmJob\  are similar in value, however it's the third feature that yields the difference in performance. In fact, the contribution from \phiproc\ in 3.501 is on par with \phimac\ in 3.508, as those models are not statistically different w.r.t. $\rho$ performance. However, the decreased contribution of \phimakespan\  in favour for \phimacFree\ in 3.510 results in approximately 1\% increase in $\rho$. Furthermore, it's sufficient to use only \phimakespan\ and \phiwrmJob\  as active features, as model 2.116 has no statistical difference from either 3.508 or 3.510, for both $\rho$ and training accuracy.
+	%Part of 10x10.joh.Features run, now no longer apart of the Pareto-front so not in the main table
+	%As discussed in \cref{sec:expr:ks} for \jrndn{10}{10}, there is no statistical difference between models 3.501, 3.508 and 3.510 w.r.t. validation accuracy. As \cref{fig:CDR:weights} shows, \phimakespan\ and \phiwrmJob\  are similar in value, however it's the third feature that yields the difference in performance. In fact, the contribution from \phiproc\ in 3.501 is on par with \phimac\ in 3.508, as those models are not statistically different w.r.t. $\rho$ performance. However, the decreased contribution of \phimakespan\  in favour for \phimacFree\ in 3.510 results in approximately 1\% increase in $\rho$. Furthermore, it's sufficient to use only \phimakespan\ and \phiwrmJob\  as active features, as model 2.116 has no statistical difference from either 3.508 or 3.510, for both $\rho$ and validation accuracy.
 	
-	Similarly for \jrnd{10}{10}, \phiwrmJob\ and \phiendTime\ are similar for models 3.473 and 3.549, yet statistically significant from one another. There the third feature is the key to the success of the CDR, as opting for \phiwrmMac\ instead of \phiwait\ for 3.549 boosts the $\rho$ performance by about 10\%. 
-	
-	It's also interesting to inspect the full model for \frnd{10}{10}, 1.16. Despite having similar contributions as all the active features of its best model, 3.80, then the substantial interference from \phijobOps\ along with other features present, hinders the full model from both objectives, i.e., high training accuracy and low $\rho$, thereby stressing the importance of feature selection. 
+	For \jrndn{10}{10}, there is no statistical difference between models 2.116 and 3.521 w.r.t. either $\rho$ or validation accuracy. As \cref{fig:CDR:weights} shows, \phimakespan\ and \phiwrmJob\  are similar in value. However, looking at model 3.502 which has a slight statistical difference w.r.t. accuracy, the third feature yields the staggering difference in performance, about 20\% increase in $\rho$. 		
+	It's also interesting to inspect the full model for \frnd{10}{10}, 16.1. Despite having similar contributions as all the active features of one of the its best model, 3.80, then the substantial interference from \phijobOps\ along with other features present, hinders the full model from achieving a low $\rho$, thereby stressing the importance of feature selection, to steer clear of over-fitting. 
+
+	Furthermore, in the case of  models 3.80 and 3.120 for \frnd{10}{10} (equivalent both w.r.t. $\rho$ and accuracy) the only difference is features \phiendTime\ and \phimacFree. 
+	In addition, models 3.549 and 3.556 for \jrnd{10}{10} show the same behaviour. 
+	As these features often coincide in job-shop, it is justifiable to use only either one, as the it contains the same information as its counterpart. 
+	Assuming this holds, then for models 3.498 and 3.503 where there is similar contributions between \phimacFree\ and \phiendTime, respectively, and \phiwrmJob\ for both, the weights are similar, yet statistically significant from one another. There the third feature is the key to the success of the CDR, as opting for \phimakespan\ instead of \phiwait\ for 3.503 boosts the $\rho$ performance by 8.6\%. 		
+	In addition, models 2.115 and 3.498, have similar contributions for \phimacFree\ and \phiwrmJob, however the additional \phiwait, which causes the performance of $\rho$ to diminish by 8.5\%.
 	
 	\begin{figure}
 		\centering
@@ -811,7 +823,7 @@ labelled undesirable.
 	\end{itemize}}
 	
 	\begin{table}
-		\caption{Mean training accuracy and mean expected deviation from optimality, $\rho$, for all CDR models on the Pareto front using various re-sampling probabilities.}\label{tbl:CDR:pareto:all}
+		\caption{Mean validation accuracy and mean expected deviation from optimality, $\rho$, for all CDR models on the Pareto front using various re-sampling probabilities.}\label{tbl:CDR:pareto:all}
 		\input{tables/PREF-all}
 	\end{table}
 	
@@ -833,8 +845,8 @@ labelled undesirable.
 	By using features based on the SDRs, along with some additional local features describing the current schedule, it was possible to `discover' the SDRs when given only one active feature. %Although there is not much to be gained by these models, they at least are a sanity check the learning models are on the right track. 
 	Furthermore, by adding on additional features, a boost in performance was gained, resulting in a composite dispatching rule that outperformed all of the SDR baseline. 
 	
-	When training the learning model, it's not sufficient to only optimize w.r.t. highest mean training accuracy. As \cref{sec:CDR:pareto} showed, there is a trade-off between making the over-all best decisions versus making the right decision on crucial time points in the scheduling process, as \cref{fig:case} clearly illustrated. It is for this reason, traditional feature selection such as add1 and drop1 were unsuccessful in preliminary experiments, and thus resorting to having to exhaustively search all feature combinations.
-	This also opens of the question of how should training accuracy be measured? Since the model is based on learning preferences, both based on optimal versus suboptimal, and then varying degrees of sub-optimality. As we are only looking at the ranks in a black and white fashion, such that the makespans need to be strictly greater to belong to a higher rank, then it can be argued that some ranks should be grouped together if their makespans are sufficiently close. This would simplify the training set, making it (presumably) less of contradictions and more appropriate for linear learning. Or simply the training accuracy could be weighted w.r.t. the  difference in makespan.\todo{Future work topic \#1}
+	When training the learning model, it's not sufficient to only optimize w.r.t. highest mean validation accuracy. As \cref{sec:CDR:pareto} showed, there is a trade-off between making the over-all best decisions versus making the right decision on crucial time points in the scheduling process, as \cref{fig:case} clearly illustrated. It is for this reason, traditional feature selection such as add1 and drop1 were unsuccessful in preliminary experiments, and thus resorting to having to exhaustively search all feature combinations.
+	This also opens of the question of how should validation accuracy be measured? Since the model is based on learning preferences, both based on optimal versus suboptimal, and then varying degrees of sub-optimality. As we are only looking at the ranks in a black and white fashion, such that the makespans need to be strictly greater to belong to a higher rank, then it can be argued that some ranks should be grouped together if their makespans are sufficiently close. This would simplify the training set, making it (presumably) less of contradictions and more appropriate for linear learning. Or simply the validation accuracy could be weighted w.r.t. the  difference in makespan.\todo{Future work topic \#1}
 	
 	During the dispatching process, there are some pivotal times which need to be especially taken care off. \Cref{fig:case} showed how making suboptimal decisions were more of a factor during the later stages, whereas for flow-shop the case was exact opposite. \todo{Going to wait with this section until \cref{sec:sampling} has been completed}
 	
