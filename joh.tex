@@ -245,7 +245,7 @@ was,
 \end{eqnarray}
 and the available jobs to be scheduled
 $\mathcal{L}^{(k)}=\{J_1,J_2,J_4,J_5,J_6\}$ describes the five potential jobs to be dispatched
-at step $k=16$ (note that job 3 is completed). An overview on dispatching rules, used to create such sequences, is given below.
+at step $k=16$ (note that $J_3$ is completed). An overview on dispatching rules, used to create such sequences, is given below.
 	
 \subsection{Priority Dispatching Rules}
 	
@@ -545,7 +545,7 @@ labelled undesirable.
 	\end{equation}
 	where $i\in\{1\ldots d\}$. Moreover, scaling makes the features less sensitive to processing times. \todo{Scaling is done in Liblinear package, so omit?}
 	
-	Logistic regression makes optimal decisions regarding optimal dispatches and at the same time efficiently estimates a posteriori probabilities. The optimal $\vec{w}^*$ obtained by the preference set, can be used on any new data point, $\vphi$, and their inner product is proportional to probability estimate \cref{eq:prob}. Hence, for each job on the ready-list, $J_j\in\mathcal{R}$, let $\vphi_j$ denote its corresponding  post-decision state. Then the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
+	Logistic regression makes optimal decisions regarding optimal dispatches and at the same time efficiently estimates a posteriori probabilities. The optimal $\vec{w}^*$ obtained by the preference set, can be used on any new data point, $\vphi$, and their inner product is proportional to probability estimate \cref{eq:prob}. Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let $\vphi_j$ denote its corresponding  post-decision state. Then the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
 	\begin{equation}\label{eq:lin}
 	J_{j^*}=\argmax_{J_j\in \mathcal{L}}\; h(\vphi_j)
 	\end{equation}
@@ -594,10 +594,7 @@ labelled undesirable.
 		}\label{tbl:data:sim}
 		\input{tables/data-sim.}
 	\end{table} 
-	
-	
-	
-	
+		
 	\section{Performance of SDR and BDR}\label{sec:opt}
 	In order to create successful dispatching rules, a good starting point is to investigate the properties of optimal solutions and hopefully be able to learn how to mimic such "good" behaviour. For this, we follow an optimal solution, obtained by using a commercial software package \cite{gurobi}, and inspect the evolution of its features, defined in \cref{tbl:jssp:feat}. Moreover, it is noted, that there are several optimal solutions available for each problem instance. However, it is deemed sufficient to inspect only one optimal trajectory per problem instance as there are $N_{\text{train}}=300$ independent instances which gives the training data variety. 
 	
