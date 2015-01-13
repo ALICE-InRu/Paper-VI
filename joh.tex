@@ -289,7 +289,7 @@ can you recheck if this is all OK here? I mean do we need to talk about things
 we don't use in our experimental study!\\$@$TPR: Features are fine in C\# code. 
 Only discrepancy is with flow-related variable w.r.t. MATLAB code. We use all 
 features from \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., 
-$d=16$}
+total number of features are $d=16$}
 \phistep\ to keep track of features' evolution w.r.t. the scheduling process; 
 and \phitotalProc\ and \phiwrmTotal\ which are static for a given problem 
 instance, but used for normalising other features, e.g., \phiwrmTotal\ for 
@@ -314,49 +314,52 @@ where $w_i>0$ and $\sum_{i=0}^d w_i = 1$ and $w_i$ gives the weight of the
 influence of $\text{DR}_i$ (which could be SDR or another CDR) to CDR. Note, 
 each $\text{DR}_i$ is function of the job $J_j$'s attributes $\vphi_j$.  
 \nomenclature[zdr2]{CDR}{composite priority dispatching rule}
-\nomenclature[zdr3]{BDR}{blended dispatching rule}
+%\nomenclature[zdr3]{BDR}{blended dispatching rule}
 
-Since each DR yield a priority index $I^{DR}$ then it is easy to translate its 
-index as a performance measure $a$. Then it is possible to combine several 
-performance measures into a single DR, these are referred to as blended 
-dispatching rules (BDR), where an overall blended priority index $P$ is defined 
-as 
-\begin{equation}
-    P_j = \sum_{a=l} w_a \cdot a 
-\end{equation}
-where $w_a>0$ and $\sum_{a=0}^C w_a = 1$ and $w_a$ gives the weight of the 
-proportional influence of performance measure $a$ (based on some SDR or CDR) to 
-the overall priority.
+%Since each DR yield a priority index $I^{DR}$ then it is easy to translate its 
+%index as a performance measure $a$. Then it is possible to combine several  
+%performance measures into a single DR, these are referred to as blended  
+%dispatching rules (BDR), where an overall blended priority index $P$ is 
+%defined as 
+%\begin{equation}
+%    P_j = \sum_{a=l} w_a \cdot a 
+%\end{equation}
+%where $w_a>0$ and $\sum_{a=0}^C w_a = 1$ and $w_a$ gives the weight of the  
+%proportional influence of performance measure $a$ (based on some SDR or CDR) 
+%to the overall priority.
 
-\todo[inline,color=blue!40]{$@$Helga: can you please make it clear what the 
+\todo[inline,color=orange!40]{$@$Helga: can you please make it clear what the 
 difference is between a blended and composite rule, for me its seems to be the 
-same thing... are we confusing things here?!}
+same thing... are we confusing things here?!
+\\$@$TPR: You're right, I've commented out the blended dispatching rules. It's 
+hardly ever used in the literature, CDR are much more prevalent name.}
 
 At each time step $k$, an operation is dispatched which has the highest 
 priority in the job-list, $\mathcal{L}^{(k)}\subset\mathcal{J}$.  If there is a 
 tie, some other priority measure is used. Generally the priority dispatching 
 rules are static during the entire scheduling process.
 
-\todo[inline,color=blue!40]{$@$Helga: reword this paragraph so you don't start 
-the 
-sentence with a citation}
-\citet{Lu13} investigate 11 simple dispatching rules for JSP to create a pool 
-of 33 composite dispatching rules that strongly outperformed the ones they were 
-based on, which is intuitive since where one SDR might be failing, another 
-could be excelling so combining them together should yield a better CDR. 
-\citet{Lu13} create their composite dispatching rules with multi-contextual 
-functions (MCFs) based on either on machine idle time or job waiting time, so 
-one can say that the composite dispatching rules are a combination of those
-two key features of the schedule and then the basic dispatching rules. However, 
-there are no combinations of the basic DR explored, only machine idle time and 
-job waiting time.  \citet{Yu13} used priority rules to combine 12 existing 
-dispatching rules from the literature, in their approach they had 48 priority 
-rules combinations, yielding 48 different models to implement and test. This is 
-a fairly ad hoc solution and there is no guarantee the optimal combination of
-dispatching rules is found.
-
-Generally the weights $\vec{w}$ are chosen by the designer or the rule 
-apriori.  A more attractive approach would be to learn these weights from 
+\todo[inline,color=orange!40]{$@$Helga: reword this paragraph so you don't 
+start the sentence with a citation
+\\$@$TPR: I copy/pasted from a document with the NATBIB package, where the 
+\texttt{citet} prints out the author's name.}
+Investigating 11 SDRs for JSP, \citet{Lu13} created a pool of 33 composite 
+dispatching rules that strongly outperformed the ones they were based on. 
+The CDRs were created with multi-contextual functions (MCFs) 
+based on either on machine idle time or job waiting time, so one can say that 
+the CDRs are a combination of those two key features of the schedule and then 
+the SDRs. However, there are no combinations of the basic SDRs explored, only 
+machine idle time and job waiting time.  
+Similarly, using priority rules to combine 12 existing DRs from the literature, 
+\citet{Yu13} had 48 priority rules combinations, yielding 48 different models 
+to implement and test. 
+It is intuitive to get a boost in performance by introducing new CDRs, since 
+where one DR might be failing, another could be excelling so combining them 
+together should yield a better CDR. However, these approaches introduce fairly 
+ad hoc solutions and there is no guarantee the optimal combination of 
+dispatching rules are found.
+Moreover, generally the weights $\vec{w}$ are chosen by the designer or the 
+rule apriori.  A more attractive approach would be to learn these weights from 
 problem examples directly. We will now investigate how this may be accomplished.
 
 \section{Learning Dispatching Rules}\label{ch:learningmodels}
