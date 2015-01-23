@@ -60,35 +60,35 @@
 \selectlanguage{english}
 
 \begin{abstract}
-% \todo{Try for one sentence or so on}
-% \todo[inline]{Motivation}
-Instead of creating new dispatching rules in an ad hoc manner,
-% \todo[inline]{Method}
-this study gives a framework on how to study simple heuristics for scheduling 
-problems.  Before starting to create new composite dispatching rules, 
-meticulous research on optimal schedules can give an abundance of valuable 
-information that can be utilised for learning new models.  For instance, it's 
-possible to seek out when the scheduling process is most susceptible to 
-failure.  Furthermore, the stepwise optimality of individual features imply 
-their explanatory predictability. From which, a preference set is collected and 
-a preference based learning model is created based on what feature states are 
-preferable to others w.r.t. the end result, here minimising the final makespan.
-% \todo[inline]{Key result} 
-By doing so it's possible to learn new composite dispatching rules that 
-outperform the models they are based on. 
-% \todo[inline]{Conclusion}
-Even though this study is based around the job-shop scheduling problem, it can 
-be generalised to any kind of combinatorial problem.
-
-\keywords{Scheduling \and Composite dispatching rules \and Machine Learning 
-\and Feature Selection}
+	% \todo{Try for one sentence or so on}
+	% \todo[inline]{Motivation}
+	Instead of creating new dispatching rules in an ad hoc manner,
+	% \todo[inline]{Method}
+	this study gives a framework on how to study simple heuristics for scheduling 
+	problems.  Before starting to create new composite dispatching rules, 
+	meticulous research on optimal schedules can give an abundance of valuable 
+	information that can be utilised for learning new models.  For instance, it's 
+	possible to seek out when the scheduling process is most susceptible to 
+	failure.  Furthermore, the stepwise optimality of individual features imply 
+	their explanatory predictability. From which, a preference set is collected and 
+	a preference based learning model is created based on what feature states are 
+	preferable to others w.r.t. the end result, here minimising the final makespan.
+	% \todo[inline]{Key result} 
+	By doing so it's possible to learn new composite dispatching rules that 
+	outperform the models they are based on. 
+	% \todo[inline]{Conclusion}
+	Even though this study is based around the job-shop scheduling problem, it can 
+	be generalised to any kind of combinatorial problem.
+	
+	\keywords{Scheduling \and Composite dispatching rules \and Machine Learning 
+		\and Feature Selection}
 \end{abstract}
 
 
 % ----------------------------- Introduce idea
 \section{Introduction}\label{sec:introduction}
 \todo[inline]{Lure the reader in a with a good first sentence (which
-  this is not!)}
+this is not!)}
 
 \todo{What is the problem?} 
 A subclass of scheduling problems is the job-shop scheduling problem (JSP), 
@@ -213,12 +213,12 @@ This problem, however, did not occur when jobs are simply placed as early as
 possible. For this reason it will be our placement strategy.
 
 \begin{figure}[t!]\centering
-  \includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor.eps}
-  \caption[Gantt chart of a partial JSP schedule]{Gantt chart of a
-    partial JSP schedule after 15 dispatches: Solid and dashed boxes
-    represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
-    $C_{\max}$ denoted as dotted line.}
-  \label{fig:jssp:example}
+	\includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor.eps}
+	\caption[Gantt chart of a partial JSP schedule]{Gantt chart of a
+		partial JSP schedule after 15 dispatches: Solid and dashed boxes
+		represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
+		$C_{\max}$ denoted as dotted line.}
+	\label{fig:jssp:example}
 \end{figure}
 
 A \emph{sequence} will refer to the sequential ordering of dispatches of tasks 
@@ -230,7 +230,7 @@ the sequence is determined.  As shown in our example given in
 \Cref{fig:jssp:example}, there are $15$ operations already scheduled. The 
 sequence used to create the schedule was,
 \begin{eqnarray}
-  \vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
+	\vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
 \end{eqnarray}
 and the available jobs to be scheduled
 $\mathcal{L}^{(k)}=\{J_1,J_2,J_4,J_5,J_6\}$ describes the five potential jobs 
@@ -259,12 +259,12 @@ to an in-depth survey for single-priority or \emph{simple dispatching rules}
 is generally only based on few attributes and simple mathematical operations.
 
 \begin{table}[t!] \centering
-  \caption[Attribute space $\mathcal{A}$ for JPS]{Attribute space $\mathcal{A}$ 
-  for JSP where job $J_j$ on machine $M_a$ given the resulting temporal 
-  schedule after dispatching $(j,a)$.
-  }
-  \label{tbl:jssp:feat}
-  \input{tables/features-description}
+	\caption[Attribute space $\mathcal{A}$ for JPS]{Attribute space $\mathcal{A}$ 
+		for JSP where job $J_j$ on machine $M_a$ given the resulting temporal 
+		schedule after dispatching $(j,a)$.
+	}
+	\label{tbl:jssp:feat}
+	\input{tables/features-description}
 \end{table}
 
 Designing priority dispatching rules requires recognizing the important 
@@ -284,12 +284,12 @@ operation belonging to the same time step $k$, with the exception of \phimac,
 which is reported in order to distinguish which features are in conflict with 
 each other;
 \todo[inline,color=orange!40]{$@$Helga: not sure how this works again... check 
-code, 
-can you recheck if this is all OK here? I mean do we need to talk about things 
-we don't use in our experimental study!\\$@$TPR: Features are fine in C\# code. 
-Only discrepancy is with flow-related variable w.r.t. MATLAB code. We use all 
-features from \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., 
-total number of features are $d=16$}
+	code, 
+	can you recheck if this is all OK here? I mean do we need to talk about things 
+	we don't use in our experimental study!\\$@$TPR: Features are fine in C\# code. 
+	Only discrepancy is with flow-related variable w.r.t. MATLAB code. We use all 
+	features from \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., 
+	total number of features are $d=16$}
 \phistep\ to keep track of features' evolution w.r.t. the scheduling process; 
 and \phitotalProc\ and \phiwrmTotal\ which are static for a given problem 
 instance, but used for normalising other features, e.g., \phiwrmTotal\ for 
@@ -308,7 +308,7 @@ more complicated form, in short, CDR are a combination of several SDRs. For
 instance let CDR be comprised of $d$ dispatching rules (DR), then the index $I$ 
 for job $J_j$ using CDR is, 
 \begin{equation}
-    I_j^{CDR} = \sum_{i=1}^d w_i \cdot \text{DR}_i(\vphi_j) \label{eq:CDR}
+	I_j^{CDR} = \sum_{i=1}^d w_i \cdot \text{DR}_i(\vphi_j) \label{eq:CDR}
 \end{equation}
 where $w_i>0$ and $\sum_{i=0}^d w_i = 1$ and $w_i$ gives the weight of the 
 influence of $\text{DR}_i$ (which could be SDR or another CDR) to CDR. Note, 
@@ -329,9 +329,9 @@ each $\text{DR}_i$ is function of the job $J_j$'s attributes $\vphi_j$.
 %to the overall priority.
 
 \todo[inline,color=orange!40]{$@$Helga: can you please make it clear what the 
-difference is between a blended and composite rule, for me its seems to be the 
-same thing... are we confusing things here?!
-\\$@$TPR: You're right, I've commented out the blended dispatching rules. It's 
+	difference is between a blended and composite rule, for me its seems to be the 
+	same thing... are we confusing things here?!
+	\\$@$TPR: You're right, I've commented out the blended dispatching rules. It's 
 hardly ever used in the literature, CDR are much more prevalent name.}
 
 At each time step $k$, an operation is dispatched which has the highest 
@@ -340,9 +340,9 @@ tie, some other priority measure is used. Generally the priority dispatching
 rules are static during the entire scheduling process.
 
 \todo[inline,color=orange!40]{$@$Helga: reword this paragraph so you don't 
-start the sentence with a citation
-\\$@$TPR: I copy/pasted from a document with the NATBIB package, where the 
-\texttt{citet} prints out the author's name, making the sentence human 
+	start the sentence with a citation
+	\\$@$TPR: I copy/pasted from a document with the NATBIB package, where the 
+	\texttt{citet} prints out the author's name, making the sentence human 
 readable.}
 Investigating 11 SDRs for JSP, \citet{Lu13} created a pool of 33 composite 
 dispatching rules that strongly outperformed the ones they were based on. 
@@ -375,10 +375,10 @@ fabrication facilities are discussed, however, this sort of investigation is
 still in its infancy.
 
 \todo[inline,color=blue!40]{$@$Helga: the remainder of this chapter should be 
-about how learning has been used to find composite dispatching rules, from the 
-literature, here you can cite you own work and the work of Olafson and those 
-citing him. This section should conclude with a paragraph on instance 
-generation and training data creation to connect to the next chapter. I leave 
+	about how learning has been used to find composite dispatching rules, from the 
+	literature, here you can cite you own work and the work of Olafson and those 
+	citing him. This section should conclude with a paragraph on instance 
+	generation and training data creation to connect to the next chapter. I leave 
 this here below in case you would like to use something from it ...}
 
 With meta heuristics one can use existing DRs and use for example 
@@ -412,7 +412,7 @@ chapter need a rewrite, I will let you take the first iteration.
 
 \subsection{Problem Instances}
 \todo[inline,color=blue!40]{$@$Helga: put here all material releated to 
-\cref{tbl:data:sim}. }
+	\cref{tbl:data:sim}. }
 
 For each problem class described in \cref{tbl:data:sim} there are $N$ problem 
 instances generated with a random problem generator using $n$ jobs and $m$ 
@@ -422,8 +422,8 @@ scheduling policy $A$ under inspection by $C_{\max}^{A}$. Since the optimal
 makespan varies between problem instances the performance measure is the 
 following,
 \begin{equation}\label{eq:ratio}
-    \rho=\frac{C_{\max}^{A}-C_{\max}^{\text{opt}}}{C_{\max}^{\text{opt}}}\cdot
-  100\%
+	\rho=\frac{C_{\max}^{A}-C_{\max}^{\text{opt}}}{C_{\max}^{\text{opt}}}\cdot
+	100\%
 \end{equation}
 which indicates the percentage relative deviation from optimality. %Note, for 
 %the OR-Library benchmark suite the optimum is not known, in those instances 
@@ -442,7 +442,7 @@ machine, whilst still fulfilling that each machine can handle at most one job
 at each time, and jobs need to have finished their previous machines according 
 to its machine order. Unfinished jobs are dispatched one at a time according to 
 some heuristic. After each dispatch\footnote{Dispatch and time step are used 
-interchangeably.} the schedule's current features (cf. \cref{tbl:jssp:feat}) 
+	interchangeably.} the schedule's current features (cf. \cref{tbl:jssp:feat}) 
 are updated based on the half-finished schedule.
 
 It is easy to see that the sequence of task assignments is by no means unique. 
@@ -490,7 +490,7 @@ That is to say the data generation takes into consideration when there are
 multiple optimal solutions to the same problem instance. 
 
 \subsection{Creating time-independent dispatching 
-rules}\label{sec:ord:timeindependent}
+	rules}\label{sec:ord:timeindependent}
 
 Preliminary experiments for creating step-by-step model was done in 
 \cite{InRu11a} where an optimal trajectory was explored, i.e., at each dispatch 
@@ -520,9 +520,9 @@ $\abs{S}\leq200,000$ by random sampling.
 
 \subsection{Linear Learning}
 \todo[inline,color=blue!40]{$@$Helga: this is a condensed version of liblinear 
-for our problem, please do not describe logistic regression just how the data 
-is preprocessed and fed into liblinear.\\$@$TPR: Duly noted, I've edited that 
-out and simply cited the liblinear package. I also took out the scaling 
+	for our problem, please do not describe logistic regression just how the data 
+	is preprocessed and fed into liblinear.\\$@$TPR: Duly noted, I've edited that 
+	out and simply cited the liblinear package. I also took out the scaling 
 paragraph, as liblinear does that automatically.}
 
 Learning models considered in this study are based on ordinal regression in 
@@ -543,10 +543,10 @@ exist situations in which more than one operation can be considered optimal.
 
 The preference learning problem is specified by a set of preference pairs,
 \begin{equation}
-    S = 
-    \left\{\left\{\vec{z}_o,+1\right\}_{k=1}^{\ell},\left\{\vec{z}_s,-1\right\}_{k=1}^{\ell}
-    \;|\;\forall o\in \mathcal{O}^{(k)},s\in \mathcal{S}^{(k)}
-    \right\}\subset \Phi\times Y \label{eq:Sjssp}
+	S = 
+	\left\{\left\{\vec{z}_o,+1\right\}_{k=1}^{\ell},\left\{\vec{z}_s,-1\right\}_{k=1}^{\ell}
+	\;|\;\forall o\in \mathcal{O}^{(k)},s\in \mathcal{S}^{(k)}
+	\right\}\subset \Phi\times Y \label{eq:Sjssp}
 \end{equation}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d$ features,  
 $Y=\{-1,+1\}$ is the outcome space, $\ell=n\times m$ is the total number 
@@ -559,7 +559,7 @@ For JSP there are $d=\NrFeatLocal$ features (cf. \cref{tbl:jssp:feat} and
 explained in more detail in \cref{sec:CDR}), and the training set is created in 
 the manner described in \cref{sec:gentrainingdata}.
 \nomenclature[oe]{$\ell$}{number of dispatches needed for a complete schedule, 
-$\ell=n\cdot m$}
+	$\ell=n\cdot m$}
 \nomenclature[sk]{$k$}{refers to dispatch/time step $k$ for a schedule}
 \nomenclature[ophi]{$\vphi_k$}{feature set, i.e., post-decision state, of a 
 (partial) schedule at time $k$}
@@ -575,13 +575,13 @@ Now consider the model space $\mathcal{H} = \{h(\cdot) : X \mapsto Y\}$ of
 mappings from solutions to ranks. Each such function $h$ induces an ordering 
 $\succ$ on the solutions  by the following rule,
 \begin{equation}\label{eq:linear}
-    \vec{x}_i \succ \vec{x}_j \quad \Leftrightarrow \quad h(\vec{x}_i) > 
-    h(\vec{x}_j)
+	\vec{x}_i \succ \vec{x}_j \quad \Leftrightarrow \quad h(\vec{x}_i) > 
+	h(\vec{x}_j)
 \end{equation}
 where the symbol $\succ$ denotes "is preferred to."  The function used to 
 induce the preference is defined by a linear function in the feature space,
 \begin{equation}\label{eq:jssp:linweights}
-    h(\vec{x})=\sum_{i=1}^d w_i\phi_i(\vec{x})=\inner{\vec{w}}{\vphi(\vec{x})}.
+	h(\vec{x})=\sum_{i=1}^d w_i\phi_i(\vec{x})=\inner{\vec{w}}{\vphi(\vec{x})}.
 \end{equation}
 
 Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$. 
@@ -592,25 +592,25 @@ Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let $\vphi_j$ denote
 its corresponding  post-decision state. Then the job chosen to be dispatched, 
 $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
 \begin{equation}\label{eq:lin}
-    J_{j^*}=\argmax_{J_j\in \mathcal{L}}\; h(\vphi_j)
+	J_{j^*}=\argmax_{J_j\in \mathcal{L}}\; h(\vphi_j)
 \end{equation}
 where $h(\cdot)$ is the classification model obtained by the preference set.
 
 \subsection{Interpreting linear classification 
-models}\label{sec:learningmodels:interpret}
+	models}\label{sec:learningmodels:interpret}
 Looking at the features description in \cref{tbl:jssp:feat} it is possible for 
 the ordinal regression to `discover' the weights $\vec{w}$ in order for 
 \eqref{eq:jssp:linweights} corresponds to applying a single priority 
 dispatching rules from \cref{ch:dispatchrules}. For instance, 
 \begin{eqnarray*} %{s'rCl}
-    SPT:~~w_i&=&\bigg\{ \begin{array}{rl}-1&\text{if 
-    }i=1\\0&\text{otherwise}\end{array} \\
-    LPT:~~w_i&=&\bigg\{ \begin{array}{rl}+1&\text{if 
-    }i=1\\0&\text{otherwise}\end{array} \\
-    MWR:~~w_i&=&\bigg\{ \begin{array}{rl}+1&\text{if 
-    }i=7\\0&\text{otherwise}\end{array} \\
-    LWR:~~w_i&=&\bigg\{ \begin{array}{rl}-1&\text{if 
-    }i=7\\0&\text{otherwise}\end{array}
+	SPT:~~w_i&=&\bigg\{ \begin{array}{rl}-1&\text{if 
+		}i=1\\0&\text{otherwise}\end{array} \\
+	LPT:~~w_i&=&\bigg\{ \begin{array}{rl}+1&\text{if 
+		}i=1\\0&\text{otherwise}\end{array} \\
+	MWR:~~w_i&=&\bigg\{ \begin{array}{rl}+1&\text{if 
+		}i=7\\0&\text{otherwise}\end{array} \\
+	LWR:~~w_i&=&\bigg\{ \begin{array}{rl}-1&\text{if 
+		}i=7\\0&\text{otherwise}\end{array}
 \end{eqnarray*}
 where $i\in\{1,\ldots,d\}$. % Note, that at each time step $k$ a task 
 %corresponding to the \emph{highest} priority is chosen, i.e., 
@@ -618,7 +618,7 @@ where $i\in\{1,\ldots,d\}$. % Note, that at each time step $k$ a task
 When using a feature space based on SDRs, the linear classification models can 
 very easily be interpreted as CDRs with predetermined weights.
 
-	%----------------------------- Develop idea
+%----------------------------- Develop idea
 %\subsubsection{Problem spaces}\label{sec:datadescription}
 For this study synthetic JSP and FSP problem instances will be considered with 
 the problem size $10\times10$. 
@@ -669,12 +669,12 @@ referred to as random. In the JSP context \frnd{n}{m}  is analogous to
 \jrnd{n}{m}. 
 
 \begin{table}\centering
-    \caption[Problem space distributions used in experimental studies.]{Problem 
-    space distributions used in experimental studies. Note, problem instances 
-    are synthetic and each problem space is i.i.d. %and `--' denotes not 
-    %available.    
-    }\label{tbl:data:sim}
-	\input{tables/data-sim.}
+	\caption[Problem space distributions used in experimental studies.]{Problem 
+		space distributions used in experimental studies. Note, problem instances 
+		are synthetic and each problem space is i.i.d. %and `--' denotes not 
+		%available.    
+		}\label{tbl:data:sim}
+	\input{tables/data-sim}
 \end{table} 
 
 \section{Performance of SDR and BDR}\label{sec:opt}
@@ -708,17 +708,17 @@ As the number of possible dispatches decrease over time, \cref{fig:opt} depicts
 the probability of choosing an optimal dispatch. 
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{trdat.prob.optUniqueness.10x10.OPT}.pdf}
-    \caption{Number of unique optimal dispatches (lower bound)}
-    \label{fig:opt:unique}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{trdat.prob.optUniqueness.10x10.OPT}.pdf}
+	\caption{Number of unique optimal dispatches (lower bound)}
+	\label{fig:opt:unique}
 \end{figure}
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{trdat.prob.moveIsOptimal.10x10.OPT.matlab}.pdf}
-    \caption{Probability of choosing optimal move}
-    \label{fig:opt}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{trdat.prob.moveIsOptimal.10x10.OPT.matlab}.pdf}
+	\caption{Probability of choosing optimal move}
+	\label{fig:opt}
 \end{figure}
 
 \subsection{Making suboptimal decisions}\label{sec:opt:sub}
@@ -745,12 +745,12 @@ suboptimal decisions later in the decision process.
 
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{stepwise.10x10.OPT.casescenario}.pdf}
-    \caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
-    bound) and worst (upper bound) case scenario of choosing suboptimal 
-    dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
-    \label{fig:case}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{stepwise.10x10.OPT.casescenario}.pdf}
+	\caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
+		bound) and worst (upper bound) case scenario of choosing suboptimal 
+		dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
+	\label{fig:case}
 \end{figure}
 
 \subsection{Optimality of simple priority dispatching rules}\label{sec:opt:sdr}
@@ -771,17 +771,17 @@ Hence, it's not enough to just learn optimal behaviour, one needs to
 investigate what happens once we encounter suboptimal state spaces.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{trdat.prob.moveIsOptimal.10x10.SDR.matlab}.pdf}
-    \caption{Probability of SDR being optimal}
-    \label{fig:opt:SDR}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{trdat.prob.moveIsOptimal.10x10.SDR.matlab}.pdf}
+	\caption{Probability of SDR being optimal}
+	\label{fig:opt:SDR}
 \end{figure}
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{boxplotRho.SDR.10x10}.pdf}
-    \caption{Box plot for deviation from optimality, $\rho$, (\%) for SDRs}
-    \label{fig:boxplot:SDR}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{boxplotRho.SDR.10x10}.pdf}
+	\caption{Box plot for deviation from optimality, $\rho$, (\%) for SDRs}
+	\label{fig:boxplot:SDR}
 \end{figure}
 
 \subsection{Simple blended dispatching rule}\label{sec:opt:bdr}
@@ -815,11 +815,11 @@ saying one would simply still use the original DR that achieved the best
 results.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{boxplotRho.BDR.10x10}.pdf}
-    \caption{Box plot for deviation from optimality, $\rho$, (\%) for BDR where 
-    SPT is applied for the first 40\% of the dispatches, followed by MWR}
-    \label{fig:boxplot:BDR}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{boxplotRho.BDR.10x10}.pdf}
+	\caption{Box plot for deviation from optimality, $\rho$, (\%) for BDR where 
+		SPT is applied for the first 40\% of the dispatches, followed by MWR}
+	\label{fig:boxplot:BDR}
 \end{figure}
 
 \begin{comment}
@@ -827,14 +827,14 @@ results.
 The SDRs we've inspected so-far are based on two features from
 \cref{tbl:jssp:feat}, namely
 \begin{itemize}
-    \item \phiproc\ for SPT and LPT 
-    \item \phiwrmJob\ for LWR and MWR 
+	\item \phiproc\ for SPT and LPT 
+	\item \phiwrmJob\ for LWR and MWR 
 \end{itemize}
 by choosing the lowest value for the first SDR, and highest value for the
 latter SDR, i.e., the extremal values for those given features. Let's apply the
 same methodology from \cref{sec:opt:sdr} to all varying features\footnote{Note,
-\phistep, \phimac\ and \phiwrmTotal\ describe the features, not the schedule.
-For instance, \phistep\, gives us no new information, as that feature is
+	\phistep, \phimac\ and \phiwrmTotal\ describe the features, not the schedule.
+	For instance, \phistep\, gives us no new information, as that feature is
 homogeneous for each time step, making it equivalent to random guessing.} 
 described in \cref{tbl:jssp:feat}. 
 \Cref{fig:j.rnd:opt:minmax,fig:j.rndn:opt:minmax,fig:f.rnd:opt:minmax} depict
@@ -846,41 +846,41 @@ them with how the evolution of the features are over time, depicted in
 \cref{fig:j.rnd:opt:evol,fig:j.rndn:opt:evol,fig:f.rnd:opt:evol}. 
 
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{j.rnd}/{trdat.feat.stepwise.10x10.OPT}.pdf}
-    \caption{Feature evolution of optimal trajectory for \jrnd{10}{10}}
-    \label{fig:j.rnd:opt:evol}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{j.rnd}/{trdat.feat.stepwise.10x10.OPT}.pdf}
+	\caption{Feature evolution of optimal trajectory for \jrnd{10}{10}}
+	\label{fig:j.rnd:opt:evol}
 \end{figure}
 \begin{figure}
-    \centering
-    \missingfigure{j.rndn}
-    %\includegraphics[width=1\linewidth]{figures/{j.rndn}/{trdat.feat.stepwise.10x10.OPT}.pdf}
-    \caption{Feature evolution of optimal trajectory for \jrndn{10}{10}}
-    \label{fig:j.rndn:opt:evol}
+	\centering
+	\missingfigure{j.rndn}
+	%\includegraphics[width=1\linewidth]{figures/{j.rndn}/{trdat.feat.stepwise.10x10.OPT}.pdf}
+	\caption{Feature evolution of optimal trajectory for \jrndn{10}{10}}
+	\label{fig:j.rndn:opt:evol}
 \end{figure}
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{f.rnd}/{trdat.feat.stepwise.10x10.OPT}.pdf}
-    \caption{Feature evolution of optimal trajectory for \frnd{10}{10}}
-    \label{fig:f.rnd:opt:evol}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{f.rnd}/{trdat.feat.stepwise.10x10.OPT}.pdf}
+	\caption{Feature evolution of optimal trajectory for \frnd{10}{10}}
+	\label{fig:f.rnd:opt:evol}
 \end{figure}
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{j.rnd}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
-    \caption{Probability of extremal feature being optimal for \jrnd{10}{10}}
-    \label{fig:j.rnd:opt:minmax}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{j.rnd}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
+	\caption{Probability of extremal feature being optimal for \jrnd{10}{10}}
+	\label{fig:j.rnd:opt:minmax}
 \end{figure}
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{j.rndn}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
-    \caption{Probability of extremal feature being optimal for \jrndn{10}{10}}
-    \label{fig:j.rndn:opt:minmax}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{j.rndn}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
+	\caption{Probability of extremal feature being optimal for \jrndn{10}{10}}
+	\label{fig:j.rndn:opt:minmax}
 \end{figure}
 \begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{figures/{f.rnd}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
-    \caption{Probability of extremal feature being optimal for \frnd{10}{10}}
-    \label{fig:f.rnd:opt:minmax}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{f.rnd}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
+	\caption{Probability of extremal feature being optimal for \frnd{10}{10}}
+	\label{fig:f.rnd:opt:minmax}
 \end{figure}
 \end{comment}
 
@@ -894,8 +894,8 @@ be addressed in this \lcnamecref{ch:expr:CDR}.
 The SDRs we've inspected so-far are based on two features from
 \cref{tbl:jssp:feat}, namely
 \begin{itemize}
-    \item \phiproc\ for SPT and LPT 
-    \item \phiwrmJob\ for LWR and MWR 
+	\item \phiproc\ for SPT and LPT 
+	\item \phiwrmJob\ for LWR and MWR 
 \end{itemize}
 by choosing the lowest value for the first SDR, and highest value for the 
 latter SDR, i.e., the extremal values for those given features. 
@@ -915,7 +915,7 @@ For each feature combination, a linear preference model is created in the
 manner described in \cref{ch:learningmodels}, where $\Phi$ is limited to the
 predetermined feature combination. This was done with the software package from
 \cite{liblinear}\footnote{Software available at 
-    \url{http://www.csie.ntu.edu.tw/~cjlin/liblinear}},
+	\url{http://www.csie.ntu.edu.tw/~cjlin/liblinear}},
 by training on the full preference set $S$ obtained from the
 $N_{\text{train}}=300$ problem instances following the framework set up in
 \cref{sec:gentrainingdata}. 
@@ -939,11 +939,11 @@ also trying to correctly distinguish all subsequent rankings in addition of
 choosing the optimal move, as expected that measure is considerably lower. 
 
 \begin{figure}[th!]
-    \centering
-    \includegraphics[width=\linewidth]{figures/exhaust/{training.accuracy.equal}.pdf}
-    \caption{Various methods of reporting validation accuracy for preference 
-    learning}
-\label{fig:stepwise_vs_classification}
+	\centering
+	\includegraphics[width=\linewidth]{figures/exhaust/{training.accuracy.equal}.pdf}
+	\caption{Various methods of reporting validation accuracy for preference 
+	learning}
+	\label{fig:stepwise_vs_classification}
 \end{figure}
 
 \subsection{Pareto front}\label{sec:CDR:pareto}
@@ -990,22 +990,22 @@ cut-off point for such improvement, as using all features is generally
 considerably worse off due to overfitting of classifying the preference set.
 
 \begin{figure}[t]
-    \centering
-    \includegraphics[width=\linewidth]{figures/exhaust/{pareto.equal}.pdf}
-    \caption{Scatter plot for validation accuracy  (\%) against its 
-    corresponding mean expected $\rho$ (\%) for all 697 linear models, based on 
-    either one, two, three or all $d$ combinations of features.
-    Pareto fronts for each active feature count based on maximum validation 
-    accuracy and minimum mean expected $\rho$ (\%), and labelled with their 
-    model ID. Moreover, actual Pareto front over all models is marked with 
-    triangles.} \label{fig:CDR:scatter}
+	\centering
+	\includegraphics[width=\linewidth]{figures/exhaust/{pareto.equal}.pdf}
+	\caption{Scatter plot for validation accuracy  (\%) against its 
+		corresponding mean expected $\rho$ (\%) for all 697 linear models, based on 
+		either one, two, three or all $d$ combinations of features.
+		Pareto fronts for each active feature count based on maximum validation 
+		accuracy and minimum mean expected $\rho$ (\%), and labelled with their 
+		model ID. Moreover, actual Pareto front over all models is marked with 
+		triangles.} \label{fig:CDR:scatter}
 \end{figure}
 
 \begin{table}
-    \caption{Mean validation accuracy and mean expected deviation from 
-    optimality, $\rho$, for all CDR models on the Pareto front from 
-    \cref{fig:CDR:scatter}.}\label{tbl:CDR:pareto}
-    \input{tables/PREF-equal}
+	\caption{Mean validation accuracy and mean expected deviation from 
+		optimality, $\rho$, for all CDR models on the Pareto front from 
+		\cref{fig:CDR:scatter}.}\label{tbl:CDR:pareto}
+	\input{tables/PREF-equal}
 \end{table}
 
 Now, let's inspect the models corresponding to the minimum mean $\rho$ and 
@@ -1018,10 +1018,10 @@ higher mean validation accuracy overall, the probabilities vary significantly.
 A lower mean $\rho$ is obtained when the validation accuracy is gradually 
 increasing over time, and especially during the last phase of the 
 scheduling.\footnote{It's almost too illegible to notice this shift directly 
-from \cref{fig:CDR:opt}, as the difference between the two best models is 
-oscillating up to only 3\% at any given step. In fact \jrndn{10}{10} has the 
-most clear difference w.r.t. classification accuracy of indicating when a 
-minimum $\rho$ model excels at choosing the preferred move.} Revisiting 
+	from \cref{fig:CDR:opt}, as the difference between the two best models is 
+	oscillating up to only 3\% at any given step. In fact \jrndn{10}{10} has the 
+	most clear difference w.r.t. classification accuracy of indicating when a 
+	minimum $\rho$ model excels at choosing the preferred move.} Revisiting 
 \cref{fig:case}, this trend indicates that it's likelier for the resulting 
 makespan to be considerably worse off if suboptimal moves are made at later 
 stages, than at earlier stages. Therefore, it's imperative to make the `best' 
@@ -1032,13 +1032,13 @@ step-by-step basis, e.g., weighted w.r.t. a curve such as depicted in
 \cref{fig:case}.
 
 \begin{figure}[p]
-    \centering
-    \includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat.prob.moveIsOptimal.10x10.OPT.equal.best}.pdf}
-    \caption{Probability of choosing optimal move for models corresponding to 
-    highest mean validation accuracy (grey) and lowest mean deviation from 
-    optimality, $\rho$, (black) compared to the baseline of probability of 
-    choosing an optimal move at random (dashed).}
-    \label{fig:CDR:opt}
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat.prob.moveIsOptimal.10x10.OPT.equal.best}.pdf}
+	\caption{Probability of choosing optimal move for models corresponding to 
+		highest mean validation accuracy (grey) and lowest mean deviation from 
+		optimality, $\rho$, (black) compared to the baseline of probability of 
+	choosing an optimal move at random (dashed).}
+	\label{fig:CDR:opt}
 \end{figure}
 
 Let's revert back to the original SDRs discussed in \cref{sec:opt:sdr} and 
@@ -1052,10 +1052,10 @@ job-shop it doesn't surpass the performance of MWR. This implies, the learning
 model is over-fitting the training data. Results hold for the test set. 
 
 \begin{figure}[p]
-    \includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho.CDR.10x10.equal}.pdf}
-    \caption{Box plot for deviation from optimality, $\rho$, (\%) for the best 
-    CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from 
-    \cref{sec:opt:sdr}, both for training and test sets.}\label{fig:boxplot:CDR}
+	\includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho.CDR.10x10.equal}.pdf}
+	\caption{Box plot for deviation from optimality, $\rho$, (\%) for the best 
+		CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from 
+		\cref{sec:opt:sdr}, both for training and test sets.}\label{fig:boxplot:CDR}
 \end{figure}
 
 \subsection{Interpreting CDR}\label{sec:CDR:interpret}
@@ -1113,31 +1113,31 @@ In addition, models 2.115 and 3.498, have similar contributions for
 performance of $\rho$ to diminish by 8.5\%.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.j.rnd}.pdf}\\
-    \includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.j.rndn}.pdf}\\
-    \includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.f.rnd}.pdf}
-    \caption{Normalised weights for CDR models from \cref{tbl:CDR:pareto}, 
-    models are grouped w.r.t. its dimensionality, $d$. Note, a triangle 
-    indicates a solution on the Pareto front.}\label{fig:CDR:weights}
+	\centering
+	\includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.j.rnd}.pdf}\\
+	\includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.j.rndn}.pdf}\\
+	\includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.f.rnd}.pdf}
+	\caption{Normalised weights for CDR models from \cref{tbl:CDR:pareto}, 
+		models are grouped w.r.t. its dimensionality, $d$. Note, a triangle 
+		indicates a solution on the Pareto front.}\label{fig:CDR:weights}
 \end{figure}
 
 \subsection{Resampling} \label{sec:sampling} 
 \todo[inline,caption={}]{This is still missing. Sampling strategies that have 
-been applied (but not fully summarised)
-\begin{itemize}
-    \item equal probability (current setting)
-    \item w.r.t. best and worst case scenario
-    \item inverted stepwise optimality
-    \item or simply double emphasis on first half vs. second half (and vice 
-    versa)
-\end{itemize}}
+	been applied (but not fully summarised)
+	\begin{itemize}
+		\item equal probability (current setting)
+		\item w.r.t. best and worst case scenario
+		\item inverted stepwise optimality
+		\item or simply double emphasis on first half vs. second half (and vice 
+		      versa)
+	\end{itemize}}
 
 \begin{table}
-    \caption{Mean validation accuracy and mean expected deviation from 
-    optimality, $\rho$, for all CDR models on the Pareto front using various 
-    re-sampling probabilities.}\label{tbl:CDR:pareto:all}
-    \input{tables/PREF-all}
+	\caption{Mean validation accuracy and mean expected deviation from 
+		optimality, $\rho$, for all CDR models on the Pareto front using various 
+		re-sampling probabilities.}\label{tbl:CDR:pareto:all}
+	\input{tables/PREF-all}
 \end{table}
 
 %----------------------------- Summarize result
@@ -1200,7 +1200,7 @@ During the dispatching process, there are some pivotal times which need to be
 especially taken care off. \Cref{fig:case} showed how making suboptimal 
 decisions were more of a factor during the later stages, whereas for flow-shop 
 the case was exact opposite. \todo{Going to wait with this section until 
-\cref{sec:sampling} has been completed}
+	\cref{sec:sampling} has been completed}
 
 Despite the abundance of information gathered by following an optimal 
 trajectory, the knowledge obtained is not enough by itself. Since the learning 
@@ -1274,12 +1274,12 @@ possibility of constructing solutions with an optimal makespan. This problem
 did not occur when jobs were simply placed as early as feasibly possible.
 
 \begin{figure}[t!]\centering
-  \includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor-eps-converted-to.pdf}
-  \caption[Gantt chart of a partial JSP schedule]{Gantt chart of a
-    partial JSP schedule after 15 dispatches: Solid and dashed boxes
-    represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
-    $C_{\max}$ denoted as dotted line.}
-  \label{fig:jssp:example}
+	\includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor-eps-converted-to.pdf}
+	\caption[Gantt chart of a partial JSP schedule]{Gantt chart of a
+		partial JSP schedule after 15 dispatches: Solid and dashed boxes
+		represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
+		$C_{\max}$ denoted as dotted line.}
+	\label{fig:jssp:example}
 \end{figure}
 
 A \emph{sequence} will refer to the sequential ordering of the dispatches of 
@@ -1290,7 +1290,7 @@ the sequence is determined.  As shown in our example given in
 \Cref{fig:jssp:example}, there are 15 operations already scheduled. The 
 sequence used to create the schedule was,
 \begin{eqnarray}
-  \vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
+	\vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
 \end{eqnarray}
 hence the current available jobs to be scheduled 
 $\mathcal{L}=\{J_1,J_2,J_4,J_5,J_6\}$, and will be referred to as our job-list, 
