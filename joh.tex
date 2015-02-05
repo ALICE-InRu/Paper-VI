@@ -284,12 +284,12 @@ operation belonging to the same time step $k$, with the exception of \phimac,
 which is reported in order to distinguish which features are in conflict with 
 each other;
 \todo[inline,color=orange!40]{$@$Helga: not sure how this works again... check 
-	code, 
-	can you recheck if this is all OK here? I mean do we need to talk about things 
-	we don't use in our experimental study!\\$@$TPR: Features are fine in C\# code. 
-	Only discrepancy is with flow-related variable w.r.t. MATLAB code. We use all 
-	features from \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., 
-	total number of features are $d=16$}
+	code, can you recheck if this is all OK here? I mean do we need to talk 
+	about things we don't use in our experimental study!
+    \\$@$TPR: Features are fine in C\# code. Only discrepancy is with 
+    flow-related variable w.r.t. MATLAB code. We use all features from 
+    \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., total 
+    number of features are $d=16$}
 \phistep\ to keep track of features' evolution w.r.t. the scheduling process; 
 and \phitotalProc\ and \phiwrmTotal\ which are static for a given problem 
 instance, but used for normalising other features, e.g., \phiwrmTotal\ for 
@@ -329,10 +329,10 @@ each $\text{DR}_i$ is function of the job $J_j$'s attributes $\vphi_j$.
 %to the overall priority.
 
 \todo[inline,color=orange!40]{$@$Helga: can you please make it clear what the 
-	difference is between a blended and composite rule, for me its seems to be the 
-	same thing... are we confusing things here?!
-	\\$@$TPR: You're right, I've commented out the blended dispatching rules. It's 
-hardly ever used in the literature, CDR are much more prevalent name.}
+	difference is between a blended and composite rule, for me its seems to be 
+	the same thing... are we confusing things here?!
+	\\$@$TPR: You're right, I've commented out the blended dispatching rules. 
+	It's hardly ever used in the literature, CDR are much more prevalent name.}
 
 At each time step $k$, an operation is dispatched which has the highest 
 priority in the job-list, $\mathcal{L}^{(k)}\subset\mathcal{J}$.  If there is a 
@@ -343,7 +343,7 @@ rules are static during the entire scheduling process.
 	start the sentence with a citation
 	\\$@$TPR: I copy/pasted from a document with the NATBIB package, where the 
 	\texttt{citet} prints out the author's name, making the sentence human 
-readable.}
+	readable.}
 Investigating 11 SDRs for JSP, \citet{Lu13} created a pool of 33 composite 
 dispatching rules that strongly outperformed the ones they were based on. 
 The CDRs were created with multi-contextual functions (MCFs) 
@@ -375,11 +375,11 @@ fabrication facilities are discussed, however, this sort of investigation is
 still in its infancy.
 
 \todo[inline,color=blue!40]{$@$Helga: the remainder of this chapter should be 
-	about how learning has been used to find composite dispatching rules, from the 
-	literature, here you can cite you own work and the work of Olafson and those 
-	citing him. This section should conclude with a paragraph on instance 
-	generation and training data creation to connect to the next chapter. I leave 
-this here below in case you would like to use something from it ...}
+	about how learning has been used to find composite dispatching rules, from 
+	the literature, here you can cite you own work and the work of Olafson and 
+	those citing him. This section should conclude with a paragraph on instance 
+	generation and training data creation to connect to the next chapter. I 
+	leave this here below in case you would like to use something from it ...}
 
 With meta heuristics one can use existing DRs and use for example 
 portfolio-based algorithm selection \citep{Rice76,Gomes01}, either based on a 
@@ -407,12 +407,12 @@ considered it was better to have a all the DRs to choose from rather than just
 a single DR at a time. 	
 
 \section{Learning from Problem Instances}\label{sec:gentrainingdata}
-\todo[inline,color=blue!40]{$@$Helga: what is this  chapter is about?} This 
-chapter need a rewrite, I will let you take the first iteration.
+\todo[inline,color=blue!40]{$@$Helga: what is this  chapter is about? This 
+chapter need a rewrite, I will let you take the first iteration.}
 
 \subsection{Problem Instances}
 \todo[inline,color=blue!40]{$@$Helga: put here all material releated to 
-	\cref{tbl:data:sim}. }
+\cref{tbl:data:sim}. }
 
 For each problem class described in \cref{tbl:data:sim} there are $N$ problem 
 instances generated with a random problem generator using $n$ jobs and $m$ 
@@ -519,11 +519,12 @@ For the following experimental set up, the preference set was limited to
 $\abs{S}\leq200,000$ by random sampling.
 
 \subsection{Linear Learning}
-\todo[inline,color=blue!40]{$@$Helga: this is a condensed version of liblinear 
-	for our problem, please do not describe logistic regression just how the data 
-	is preprocessed and fed into liblinear.\\$@$TPR: Duly noted, I've edited that 
-	out and simply cited the liblinear package. I also took out the scaling 
-paragraph, as liblinear does that automatically.}
+\todo[inline,color=orange!40]{$@$Helga: this is a condensed version of 
+    liblinear for our problem, please do not describe logistic regression just 
+    how the data is preprocessed and fed into liblinear.
+    \\$@$TPR: Duly noted, I've edited that out and simply cited the liblinear 
+    package. I also took out the scaling paragraph, as liblinear does that 
+    automatically.}
 
 Learning models considered in this study are based on ordinal regression in 
 which the learning task is formulated as learning preferences. In the case of 
