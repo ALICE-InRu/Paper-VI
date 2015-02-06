@@ -411,12 +411,68 @@ a single DR at a time.
 chapter need a rewrite, I will let you take the first iteration.}
 
 \subsection{Problem Instances}
-\todo[inline,color=blue!40]{$@$Helga: put here all material releated to 
-\cref{tbl:data:sim}. }
+\todo[inline,color=orange!40]{$@$Helga: put here all material releated to 
+\cref{tbl:data:sim}.\\ 
+  $@$TPR: done, was in another section (with subsection field commented)}
 
-For each problem class described in \cref{tbl:data:sim} there are $N$ problem 
-instances generated with a random problem generator using $n$ jobs and $m$ 
-machines.  The goal is to minimize the makespan, $C_{\max}$. The optimum 
+For this study synthetic JSP and FSP problem instances will be considered with 
+the problem size $10\times10$. 
+For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
+generated for training and testing, respectively. Moreover, of the training 
+data 20\% is reserved for validation.
+Summary of problem classes is given in \cref{tbl:data:sim}.  
+Note, that difficult problem instances are not filtered out beforehand, such as 
+the approach in \citet{Whitley}. 
+
+
+%\subsubsection{Job-shop}\label{data:sim:jssp}
+Problem instances for JSP are generated stochastically by fixing the number of 
+jobs and machines and discrete processing time are i.i.d. and sampled from a 
+discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., 
+$\vec{p}\sim \mathcal{U}(u_1,u_2)$. 
+Two different processing times distributions were explored, namely \jrnd{n}{m}  
+where $I=[1,99]$ and \jrndn{n}{m}  where $I=[45,55]$.
+The machine order is a random permutation of all of the machines in the 
+job-shop, hence they problem spaces \jrnd{n}{m}   and \jrndn{n}{m}  are 
+referred to as random and random-narrow, respectively. 
+
+Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
+the uniform distribution, it is however chosen in accordance with the 
+literature \citep{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
+instances. In addition, w.r.t. the machine ordering, one could look into a 
+subset of JSP where the machines are partitioned into two (or more) sets, where 
+all jobs must be processed on the machines from the first set (in some random 
+order) before being processed on any machine in the second set, commonly 
+denoted as $J|2\textrm{sets}|C_{\max}$ problems, but as discussed in 
+\cite{orlib_swv} this family of JSP is considered "hard" (w.r.t. relative error 
+from best known solution) in comparison with the "easy" or "unchallenging" 
+family with the general $J||C_{\max}$ set-up. % ath. Holtsclaw96 vitnar í 
+%orlib_swv um easy-hard pælinguna
+This is in stark contrast to \citet{Whitley} whose findings showed that 
+structured $F||C_{\max}$ were quite easier to solve than completely random 
+structures. 
+Intuitively, an inherent structure in machine ordering should be exploitable 
+for a better performance.  However, for the sake of generality, a random 
+structure is preferred as they correspond to difficult problem instances in the 
+case of JSP. 
+%Whereas, structured problem subclasses will be explored for FSP.  
+
+%\subsubsection{Flow-shop}\label{data:sim:fsp}
+Problem instances for FSP are such that processing times are i.i.d. and 
+uniformly distributed, \frnd{n}{m}  where $\vec{p}\sim\mathcal{U}(1,99)$, 
+referred to as random. In the JSP context \frnd{n}{m}  is analogous to 
+\jrnd{n}{m}. 
+
+\begin{table}\centering
+  \caption[Problem space distributions used in experimental studies.]{Problem 
+    space distributions used in experimental studies. Note, problem instances 
+    are synthetic and each problem space is i.i.d. %and `--' denotes not 
+    %available.    
+  }\label{tbl:data:sim}
+  \input{tables/data-sim}
+\end{table} 
+
+The goal is to minimize the makespan, $C_{\max}$. The optimum 
 makespan is denoted $C_{\max}^{\text{opt}}$, and the makespan obtained from the 
 scheduling policy $A$ under inspection by $C_{\max}^{A}$. Since the optimal 
 makespan varies between problem instances the performance measure is the 
@@ -619,64 +675,7 @@ where $i\in\{1,\ldots,d\}$. % Note, that at each time step $k$ a task
 When using a feature space based on SDRs, the linear classification models can 
 very easily be interpreted as CDRs with predetermined weights.
 
-%----------------------------- Develop idea
-%\subsubsection{Problem spaces}\label{sec:datadescription}
-For this study synthetic JSP and FSP problem instances will be considered with 
-the problem size $10\times10$. 
-For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
-generated for training and testing, respectively. Moreover, of the training 
-data 20\% is reserved for validation.
-Summary of problem classes is given in \cref{tbl:data:sim}.  
-Note, that difficult problem instances are not filtered out beforehand, such as 
-the approach in \citet{Whitley}. 
 
-
-%\subsubsection{Job-shop}\label{data:sim:jssp}
-Problem instances for JSP are generated stochastically by fixing the number of 
-jobs and machines and discrete processing time are i.i.d. and sampled from a 
-discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., 
-$\vec{p}\sim \mathcal{U}(u_1,u_2)$. 
-Two different processing times distributions were explored, namely \jrnd{n}{m}  
-where $I=[1,99]$ and \jrndn{n}{m}  where $I=[45,55]$.
-The machine order is a random permutation of all of the machines in the 
-job-shop, hence they problem spaces \jrnd{n}{m}   and \jrndn{n}{m}  are 
-referred to as random and random-narrow, respectively. 
-
-Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
-the uniform distribution, it is however chosen in accordance with the 
-literature \citep{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
-instances. In addition, w.r.t. the machine ordering, one could look into a 
-subset of JSP where the machines are partitioned into two (or more) sets, where 
-all jobs must be processed on the machines from the first set (in some random 
-order) before being processed on any machine in the second set, commonly 
-denoted as $J|2\textrm{sets}|C_{\max}$ problems, but as discussed in 
-\cite{orlib_swv} this family of JSP is considered "hard" (w.r.t. relative error 
-from best known solution) in comparison with the "easy" or "unchallenging" 
-family with the general $J||C_{\max}$ set-up. % ath. Holtsclaw96 vitnar í 
-%orlib_swv um easy-hard pælinguna
-This is in stark contrast to \citet{Whitley} whose findings showed that 
-structured $F||C_{\max}$ were quite easier to solve than completely random 
-structures. 
-Intuitively, an inherent structure in machine ordering should be exploitable 
-for a better performance.  However, for the sake of generality, a random 
-structure is preferred as they correspond to difficult problem instances in the 
-case of JSP. 
-%Whereas, structured problem subclasses will be explored for FSP.  
-
-%\subsubsection{Flow-shop}\label{data:sim:fsp}
-Problem instances for FSP are such that processing times are i.i.d. and 
-uniformly distributed, \frnd{n}{m}  where $\vec{p}\sim\mathcal{U}(1,99)$, 
-referred to as random. In the JSP context \frnd{n}{m}  is analogous to 
-\jrnd{n}{m}. 
-
-\begin{table}\centering
-	\caption[Problem space distributions used in experimental studies.]{Problem 
-		space distributions used in experimental studies. Note, problem instances 
-		are synthetic and each problem space is i.i.d. %and `--' denotes not 
-		%available.    
-		}\label{tbl:data:sim}
-	\input{tables/data-sim}
-\end{table} 
 
 \section{Performance of SDR and BDR}\label{sec:opt}
 In order to create successful dispatching rules, a good starting point is to 
@@ -1032,7 +1031,7 @@ should take into consideration the impact a suboptimal move yields on a
 step-by-step basis, e.g., weighted w.r.t. a curve such as depicted in 
 \cref{fig:case}.
 
-\begin{figure}[p]
+\begin{figure}
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat.prob.moveIsOptimal.10x10.OPT.equal.best}.pdf}
 	\caption{Probability of choosing optimal move for models corresponding to 
@@ -1052,7 +1051,7 @@ performance. In some cases it's better off, e.g., compared to LWR, yet for
 job-shop it doesn't surpass the performance of MWR. This implies, the learning 
 model is over-fitting the training data. Results hold for the test set. 
 
-\begin{figure}[p]
+\begin{figure}
 	\includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho.CDR.10x10.equal}.pdf}
 	\caption{Box plot for deviation from optimality, $\rho$, (\%) for the best 
 		CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from 
@@ -1123,25 +1122,6 @@ performance of $\rho$ to diminish by 8.5\%.
 		indicates a solution on the Pareto front.}\label{fig:CDR:weights}
 \end{figure}
 
-\subsection{Resampling} \label{sec:sampling} 
-\todo[inline,caption={}]{This is still missing. Sampling strategies that have 
-	been applied (but not fully summarised)
-	\begin{itemize}
-		\item equal probability (current setting)
-		\item w.r.t. best and worst case scenario
-		\item inverted stepwise optimality
-		\item or simply double emphasis on first half vs. second half (and vice 
-		      versa)
-	\end{itemize}}
-
-\begin{table}
-	\caption{Mean validation accuracy and mean expected deviation from 
-		optimality, $\rho$, for all CDR models on the Pareto front using various 
-		re-sampling probabilities.}\label{tbl:CDR:pareto:all}
-	\input{tables/PREF-all}
-\end{table}
-
-%----------------------------- Summarize result
 \section{Conclusions}\label{sec:con}
 Current literature still hold single priority dispatching rules in high regard, 
 as they are simple to implement and quite efficient. 
