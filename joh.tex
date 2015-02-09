@@ -104,18 +104,19 @@ problem-solving capabilities has a high impact on many manufacturing
 organisations.
 
 JSP is NP-hard \cite{Garey76:NPhard}, hence finding optimal solutions of high 
-dimensionality is exceedingly difficult in a reasonable amount of time. As a 
-result heuristics methods are adopted. Generally, this is done by applying a 
-hand-crafted dispatching rule (DR) for a given problem space. Due to the 
-exorbitant amounts of DRs to choose from, and any kind of alteration to the 
-problem space, this can be come quite a time-consuming selection process for 
-the heuristic designer, which any kind of automation would alleviate immensely. 
+dimensionality is exceedingly difficult in a reasonable amount of time. 
+As a result, heuristics methods are adopted. Generally, this is done by 
+applying a hand-crafted dispatching rule (DR) for a given problem space. 
+Due to the exorbitant amounts of DRs to choose from, and any kind of alteration 
+to the problem space, this can become quite a time-consuming selection process 
+for the heuristic designer, which any kind of automation would alleviate 
+immensely. 
 \todo{What are   your contributions?}  
 For this reason, we propose a framework for learning the indicators of optimal 
 solutions, such as done by \cite{Siggi10}.  The study shows that during the 
-scheduling process it varies \emph{when} it's most fruitful to make the `right' 
-decision, and depending on the problem space those pivotal moments can vary 
-greatly. 
+scheduling process, it varies \emph{when} it's most fruitful to make the 
+`right' decision, and depending on the problem space those pivotal moments can 
+vary greatly. 
 \todo{What is the outline of what you will show?}  
 Although, using optimal trajectory for creating training data gives vital 
 information on how to learn good scheduling rules, it is a good starting point, 
@@ -185,30 +186,34 @@ schedule and then tries to find similar, but better schedules.  A construction
 heuristic starts with an empty schedule and adds one job at a time until the 
 schedule is complete. The work presented here will focus on construction 
 heuristics, although the techniques developed could be adapted to improvement
-heuristics also. In scheduling a construction heuristic is typically 
-implemented as a priority dispatching rule. These are simple rules that 
-basically determine which incomplete job should be dispatched next. However, 
-knowing which job to dispatch is not sufficient, one must also know where to 
-place it. In order to build tight schedules it is sensible to place a job, once 
-it becomes available, such that the machine idle time is minimal. There may 
-also be a number of different options for such a placement. 
+heuristics also. 
+
 \Cref{fig:jssp:example} illustrates the dispatching process with an example of 
 a temporal partial schedule of six-jobs scheduled on five-machines. The numbers 
 in the boxes represent the job identification $j$. The width of the box 
 illustrates the processing times for a given job for a particular machine $M_a$ 
 (on the vertical axis). The dashed boxes represent the resulting partial 
 schedule for when a particular job is scheduled next. Moreover, the current 
-$C_{\max}$ is denoted by a dotted vertical line. In the figure we observe that 
-$J_2$, to be scheduled on $M_3$, could be placed immediately in a slot between 
-$J_3$ and $J_4$, or after $J_4$ on this machine. If $J_6$ had been placed 
-earlier, a slot would have been created between it and $J_4$ thus creating a 
-third alternative, namely scheduling $J_2$ after $J_6$. 
-The construction heuristic must therefore decide where to place 
-the job, and this may be independent of the dispatching rule applied. Different 
-placement strategies could be considered, for example placing a job in smallest 
-feasible slot. In our preliminary experiments we have discovered that such a 
-placement can potentially rule out the possibility of constructing solutions 
-with an optimal makespan.
+$C_{\max}$ is denoted by a dotted vertical line. 
+
+In scheduling, a construction heuristic is typically implemented as a priority 
+dispatching rule. These are simple rules that basically determine which 
+incomplete job should be dispatched next. 
+However, knowing which job to dispatch is not sufficient, one must also know 
+where to place it. In order to build tight schedules it is sensible to place a 
+job once it becomes available, such that the machine idle time is minimal. 
+There may also be a number of different options for such a placement. 
+In \cref{fig:jssp:example} we observe that $J_2$, to be scheduled on $M_3$, 
+could be placed immediately in a slot between $J_3$ and $J_4$, or after $J_4$ 
+on this machine. 
+If $J_6$ had been placed earlier, a slot would have been created between it and 
+$J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$. 
+The construction heuristic must therefore decide where to place the job, and 
+this may be independent of the dispatching rule applied. 
+Different placement strategies could be considered, for example placing a job 
+in smallest feasible slot. In our preliminary experiments we have discovered 
+that such a placement can potentially rule out the possibility of constructing 
+solutions with an optimal makespan.
 This problem, however, did not occur when jobs are simply placed as early as 
 possible. For this reason it will be our placement strategy.
 
@@ -248,15 +253,17 @@ dispatches the job with the highest priority.
 These rules typically use attributes for the corresponding operation, for 
 example the processing time for the job. 
 Consider again \Cref{fig:jssp:example}, if the job with the shortest processing 
-time (SPT) were to be scheduled next then $J_2$ would be dispatched. Similarly, 
-for the longest processing time (LPT) heuristic $J_5$ would be dispatched. 
+time (SPT) were to be scheduled next, then $J_2$ would be dispatched. 
+Similarly, for the longest processing time (LPT) heuristic, $J_5$ would be 
+dispatched. 
 Dispatching can also be based on attributes related to the partial schedule. 
 Examples of these are dispatching the job with the most work remaining (MWR) or 
 alternatively the least work remaining (LWR). A survey of more than $100$ of 
-such rules are presented in \citet{Panwalkar77}, however the reader is referred 
-to an in-depth survey for single-priority or \emph{simple dispatching rules} 
-(SDR) by \citet{Haupt89}.  SDRs assign an index to each job in the job-list and 
-is generally only based on few attributes and simple mathematical operations.
+such rules are presented in \citet{Panwalkar77}. 
+However, the reader is referred to an in-depth survey for single-priority or 
+\emph{simple dispatching rules} (SDR) by \citet{Haupt89}.  
+SDRs assign an index to each job in the job-list and is generally only based on 
+few attributes and simple mathematical operations.
 
 \begin{table}[t!] \centering
 	\caption[Attribute space $\mathcal{A}$ for JPS]{Attribute space $\mathcal{A}$ 
@@ -276,13 +283,18 @@ a job $J_j$ to be dispatched on machine $M_a$ are given in \cref{tbl:jssp:feat}.
 The attributes of particular interest were obtained by inspecting the 
 aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are 
 job-related and machine-related, respectively. 
-Then there are flow-related attributes, \phiFlowRelated\, which measure the 
+Then there are flow-related attributes, \phiFlowRelated, which measure the 
 influence of idle time on the schedule, and current makespan related, 
 \phiScheduleRelated.
 All of these attributes vary throughout the scheduling process, w.r.t. 
 operation belonging to the same time step $k$, with the exception of \phimac, 
 which is reported in order to distinguish which features are in conflict with 
 each other;
+\phistep\ to keep track of features' evolution w.r.t. the scheduling process; 
+and \phitotalProc\ and \phiwrmTotal\ which are static for a given problem 
+instance, but used for normalising other features, e.g., \phiwrmTotal\ for 
+work-remaining based ones (\phiwrmJob\ and \phiwrmMac).
+
 \todo[inline,color=orange!40]{$@$Helga: not sure how this works again... check 
 	code, can you recheck if this is all OK here? I mean do we need to talk 
 	about things we don't use in our experimental study!
@@ -290,13 +302,11 @@ each other;
     flow-related variable w.r.t. MATLAB code. We use all features from 
     \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., total 
     number of features are $d=16$}
-\phistep\ to keep track of features' evolution w.r.t. the scheduling process; 
-and \phitotalProc\ and \phiwrmTotal\ which are static for a given problem 
-instance, but used for normalising other features, e.g., \phiwrmTotal\ for 
-work-remaining based ones (\phiwrmJob\ and \phiwrmMac).
 
 Dispatching rules are attractive since they are relatively easy to implement, 
-fast and find good schedules. However, they can also fail unpredictably. 
+fast and find good schedules. In addition, they are relatively easy to 
+interpret, which makes them desirable for the end-user.
+However, they can also fail unpredictably. 
 Combining different SDRs can potentially enhance the scheduling performance. 
 
 \subsection{Composite Priority Dispatching Rules}\label{sec:CDR}
@@ -304,7 +314,7 @@ A careful combination of dispatching rules can perform significantly better
 \cite{Jayamohan04}. These are referred to as \emph{composite dispatching rules} 
 (CDR), where the priority ranking is an expression of several single-based 
 priority dispatching rules. CDRs can deal with greater number of features and 
-more complicated form, in short, CDR are a combination of several SDRs. For 
+more complicated form, in short, CDR is a combination of several SDRs. For 
 instance let CDR be comprised of $d$ dispatching rules (DR), then the index $I$ 
 for job $J_j$ using CDR is, 
 \begin{equation}
@@ -344,13 +354,13 @@ rules are static during the entire scheduling process.
 	\\$@$TPR: I copy/pasted from a document with the NATBIB package, where the 
 	\texttt{citet} prints out the author's name, making the sentence human 
 	readable.}
-Investigating 11 SDRs for JSP, \citet{Lu13} created a pool of 33 composite 
+Investigating 11 SDRs for JSP, \cite{Lu13} created a pool of 33 composite 
 dispatching rules that strongly outperformed the ones they were based on. 
 The CDRs were created with multi-contextual functions (MCFs) 
 based on either on machine idle time or job waiting time, so one can say that 
 the CDRs are a combination of those two key features of the schedule and then 
 the SDRs. However, there are no combinations of the basic SDRs explored, only 
-machine idle time and job waiting time.  
+said two features.  
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
 \citet{Yu13} had 48 priority rules combinations, yielding 48 different models 
 to implement and test. 
@@ -368,8 +378,9 @@ A recent editorial of the state-of-the-art approaches in advanced dispatching
 rules for large-scale manufacturing systems by \citet{Chen13} points out that:
 \lq\lq ... most traditional dispatching rules are based on historical data. 
 With the emergence of data mining and on-line analytic processing, dispatching 
-rules can now take predictive information into account\rq\rq. The importance 
-automated discovery of DR was also emphasised by \cite{Monch13}. 
+rules can now take predictive information into account.\rq\rq 
+The importance of automated discovery of DR was also emphasised by 
+\cite{Monch13}. 
 Several of successful implementations in the field of semiconductor wafer 
 fabrication facilities are discussed, however, this sort of investigation is 
 still in its infancy.
@@ -410,7 +421,22 @@ a single DR at a time.
 \todo[inline,color=blue!40]{$@$Helga: what is this  chapter is about? This 
 chapter need a rewrite, I will let you take the first iteration.}
 
-\subsection{Problem Instances}
+The experimental set-up is given in the following 
+\lcnamecref{sec:data:sim}s, starting with description of problem spaces in 
+\cref{sec:data:sim} and how to compare operations on the current job-list in 
+\cref{sec:compare}, namely by labelling the resulting schedules w.r.t. its 
+optimal makespan. 
+\Cref{sec:gentrdata} goes into how to generate training data, in particular how 
+to collect minimal preference pairs without loss of performance 
+and discusses the need to create one model irrespective of time step, for the 
+sake of simplicity \todo[inline]{ 
+and potential of testing robustness later on.}
+
+%sec:gentrdata,sec:liblinear,sec:learningmodels:interpret}.
+% 
+
+
+\subsection{Problem Instances}\label{sec:data:sim}
 \todo[inline,color=orange!40]{$@$Helga: put here all material releated to 
 \cref{tbl:data:sim}.\\ 
   $@$TPR: done, was in another section (with subsection field commented)}
@@ -419,7 +445,7 @@ For this study synthetic JSP and FSP problem instances will be considered with
 the problem size $10\times10$. 
 For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
 generated for training and testing, respectively. Moreover, of the training 
-data 20\% is reserved for validation.
+data, 20\% is reserved for validation.
 Summary of problem classes is given in \cref{tbl:data:sim}.  
 Note, that difficult problem instances are not filtered out beforehand, such as 
 the approach in \citet{Whitley}. 
@@ -430,11 +456,12 @@ Problem instances for JSP are generated stochastically by fixing the number of
 jobs and machines and discrete processing time are i.i.d. and sampled from a 
 discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., 
 $\vec{p}\sim \mathcal{U}(u_1,u_2)$. 
-Two different processing times distributions were explored, namely \jrnd{n}{m}  
-where $I=[1,99]$ and \jrndn{n}{m}  where $I=[45,55]$.
 The machine order is a random permutation of all of the machines in the 
-job-shop, hence they problem spaces \jrnd{n}{m}   and \jrndn{n}{m}  are 
-referred to as random and random-narrow, respectively. 
+job-shop.
+Two different processing times distributions were explored, namely \jrnd{n}{m}  
+where $I=[1,99]$ and \jrndn{n}{m} where $I=[45,55]$. Note, the problem spaces 
+%\jrnd{n}{m} and \jrndn{n}{m} 
+are referred to as random and random-narrow, respectively. 
 
 Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
 the uniform distribution, it is however chosen in accordance with the 
@@ -466,8 +493,8 @@ referred to as random. In the JSP context \frnd{n}{m}  is analogous to
 \begin{table}\centering
   \caption[Problem space distributions used in experimental studies.]{Problem 
     space distributions used in experimental studies. Note, problem instances 
-    are synthetic and each problem space is i.i.d. %and `--' denotes not 
-    %available.    
+    are synthetic and each problem space is i.i.d. 
+    %and `--' denotes not %available.
   }\label{tbl:data:sim}
   \input{tables/data-sim}
 \end{table} 
@@ -491,7 +518,8 @@ which indicates the percentage relative deviation from optimality. %Note, for
 \nomenclature[zdr0]{DR}{dispatching rule}
 \nomenclature[osizepruned]{$N$}{number of problem instances}
 
-\subsection{Schedule building}\label{sec:gen:gametree}
+\subsection{Comparing Operations}\label{sec:compare}
+%\subsection{Labelling schedules w.r.t. optimal decisions}
 When building a complete schedule $\ell=n\cdot m$ dispatches must be made 
 sequentially.  A job is placed at the earliest available time slot for its next 
 machine, whilst still fulfilling that each machine can handle at most one job 
@@ -506,7 +534,7 @@ Inspecting a partial schedule further along in the dispatching process such as
 in \cref{fig:jssp:example}, then let's say $J_1$ would be dispatched next, and 
 in the next iteration $J_2$. Now this sequence would yield the same schedule as 
 if $J_2$ would have been dispatched first and then $J_1$ in the next iteration, 
-i.e., these are non-conflicting jobs.  In this particular instance one can not 
+i.e., these are non-conflicting jobs.  In this particular instance, one cannot 
 infer that choosing $J_1$ is better and $J_2$ is worse (or vice versa) since
 they can both yield the same solution. 
 
@@ -522,17 +550,16 @@ resulting features are labelled as undesirable. Only the resulting features
 from a dispatch resulting in a suboptimal solution should be labelled 
 undesirable.
 
-\subsection{Labelling schedules w.r.t. optimal decisions}
 The optimum makespan is known for each problem instance. At each time step a 
 number of feature pair are created, they consist of the features $\vphi_o$ 
 resulting from optimal dispatches $o\in\mathcal{O}^{(k)}$, versus features 
 $\vphi_s$ resulting from suboptimal dispatches $s\in\mathcal{S}^{(k)}$ at time 
-$k$. Note, $\mathcal{O}^{(k)}\cup\mathcal{S}^{(k)}=\mathcal{L}^{(k)}$ and 
-$\mathcal{O}^{(k)}\cap\mathcal{S}^{(k)}=\emptyset$.
+$k$. %Note, $\mathcal{O}^{(k)}\cup\mathcal{S}^{(k)}=\mathcal{L}^{(k)}$ and 
+%$\mathcal{O}^{(k)}\cap\mathcal{S}^{(k)}=\emptyset$.
 In particular, each job is compared against another job of the job-list, 
 $\mathcal{L}^{(k)}$, and if the makespan differs, i.e., $C_{\max}^{(s)}\gneq 
-C_{\max}^{(o)}$, an optimal/suboptimal pair is created, however if the makespan 
-would be unaltered the pair is omitted since they give the same optimal 
+C_{\max}^{(o)}$, an optimal/suboptimal pair is created, however if the 
+makespans are identical the pair is omitted since they give the same optimal 
 makespan. This way, only features from a dispatch resulting in a suboptimal 
 solution is labelled undesirable.
 
@@ -545,8 +572,7 @@ final makespan if another optimal dispatching sequence would have been chosen.
 That is to say the data generation takes into consideration when there are 
 multiple optimal solutions to the same problem instance. 
 
-\subsection{Creating time-independent dispatching 
-	rules}\label{sec:ord:timeindependent}
+\subsection{Generating Training Data}\label{sec:gentrdata}
 
 Preliminary experiments for creating step-by-step model was done in 
 \cite{InRu11a} where an optimal trajectory was explored, i.e., at each dispatch 
@@ -556,25 +582,24 @@ However, the experiments there showed that by fixing the weights to its mean
 value throughout the dispatching sequence, results remained satisfactory.
 A more sophisticated way, would be to create a \emph{new} linear model, where 
 the preference set, $S$, is the union of the preference pairs across the $\ell$ 
-dispatches. This would amount to a substantial preference set, and for $S$ to 
-be 
+dispatches. 
+This would amount to a substantial preference set, and for $S$ to be 
 computationally feasible to learn, $S$ has to be reduced. For this several 
 ranking strategies were explored in \cite{InRu15a}, the results there showed 
 that it's sufficient to use partial subsequent rankings, namely, combinations 
 of $r_i$ and $r_{i+1}$ for $i\in\{1,\ldots,n'\}$, are added to the preference 
 set, where $r_1>r_2>\ldots>r_{n'}$ ($n'\leq n$) are the rankings of the 
 job-list, $\mathcal{L}^{(k)}$, at time step $k$, in such a manner that in the 
-cases that there are more finruthan one operation with the same ranking, only 
-one of 
-that rank is needed to be compared to the subsequent rank. Moreover, in the 
-case of this study, which deals with $10\times 10$ problem instances, the 
-partial subsequent ranking becomes necessary, as full ranking is 
-computationally infeasible. This is due to the since the size of the preference 
+cases that there are more than one operation with the same ranking, only one of 
+that rank is needed to be compared to the subsequent rank. 
+Moreover, in the case of this study, which deals with $10\times 10$ problem 
+instances, the partial subsequent ranking becomes necessary, as full ranking is 
+computationally infeasible. This is due to the fact the size of the preference 
 set, $\abs{S}$, becomes too large with full ranking, and would need sampling.
 For the following experimental set up, the preference set was limited to 
 $\abs{S}\leq200,000$ by random sampling.
 
-\subsection{Linear Learning}
+\subsection{Linear Learning}\label{sec:liblinear}
 \todo[inline,color=orange!40]{$@$Helga: this is a condensed version of 
     liblinear for our problem, please do not describe logistic regression just 
     how the data is preprocessed and fed into liblinear.
@@ -601,9 +626,9 @@ exist situations in which more than one operation can be considered optimal.
 The preference learning problem is specified by a set of preference pairs,
 \begin{equation}
 	S = 
-	\left\{\left\{\vec{z}_o,+1\right\}_{k=1}^{\ell},\left\{\vec{z}_s,-1\right\}_{k=1}^{\ell}
-	\;|\;\forall o\in \mathcal{O}^{(k)},s\in \mathcal{S}^{(k)}
-	\right\}\subset \Phi\times Y \label{eq:Sjssp}
+	\left\{\left(\vec{z}_o,+1\right),\left(\vec{z}_s,-1\right)
+	\;|\;\forall (o,s) \in \mathcal{O}^{(k)} \times \mathcal{S}^{(k)}
+	\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:Sjssp}
 \end{equation}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d$ features,  
 $Y=\{-1,+1\}$ is the outcome space, $\ell=n\times m$ is the total number 

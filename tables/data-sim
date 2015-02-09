@@ -11,7 +11,7 @@
 		  & \jrndn{10}{10} & $10\times10$ & 300 & 200 & random-narrow \\ 
 		%&\jrndn{12}{12} &$12\times12$& -- & 500 & random-narrow \\ 
 		\midrule
-		\multirow{1}{*}{{PFSP}}
+		\multirow{1}{*}{{FSP}}
 		%&\frnd{8}{8} &$8\times8$& --&500& random \\ 
 		  & \frnd{10}{10}  & $10\times10$ & 300 & 200 & random        \\ 
 		%&\frnd{12}{12} &$12\times12$& --&500& random \\ 
