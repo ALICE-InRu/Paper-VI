@@ -1,3 +1,4 @@
+
 % TEXINPUTS=.:/home/hei2/Documents/LaTeX/myTexStyles:
 % created for Journal of Heuristics 
 % Time-stamp: "2011-07-18 14:17 hei2"
@@ -418,23 +419,25 @@ considered it was better to have a all the DRs to choose from rather than just
 a single DR at a time. 	
 
 \section{Learning from Problem Instances}\label{sec:gentrainingdata}
-\todo[inline,color=blue!40]{$@$Helga: what is this  chapter is about? This 
-chapter need a rewrite, I will let you take the first iteration.}
+\todo[inline,color=orange!40]{$@$Helga: what is this  chapter is about? This 
+chapter need a rewrite, I will let you take the first iteration.
+    \\$@$TPR: Better?}
 
 The experimental set-up is given in the following 
 \lcnamecref{sec:data:sim}s, starting with description of problem spaces in 
 \cref{sec:data:sim} and how to compare operations on the current job-list in 
 \cref{sec:compare}, namely by labelling the resulting schedules w.r.t. its 
 optimal makespan. 
-\Cref{sec:gentrdata} goes into how to generate training data, in particular how 
-to collect minimal preference pairs without loss of performance 
+Generation of training data is described in \Cref{sec:gentrdata}, in particular 
+how to collect minimal preference pairs without loss of performance 
 and discusses the need to create one model irrespective of time step, for the 
-sake of simplicity \todo[inline]{ 
-and potential of testing robustness later on.}
-
-%sec:gentrdata,sec:liblinear,sec:learningmodels:interpret}.
-% 
-
+sake of simplicity 
+and its potential of testing robustness later on.
+\todo{Not done, but could be. More valid for $6\times5$ data, which we're 
+currently not using.}
+\Cref{sec:liblinear} illustrates how the linear learning is set up, and 
+finally \cref{sec:learningmodels:interpret} gives examples how to interpret 
+linear classification models as dispatching rules.
 
 \subsection{Problem Instances}\label{sec:data:sim}
 \todo[inline,color=orange!40]{$@$Helga: put here all material releated to 
