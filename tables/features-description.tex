@@ -8,16 +8,26 @@
 	\multicolumn{4}{c}{\textbf{job related}}\\
 	\phiproc         & job processing time                       & $p_{ja}$                                                                           & proc         \\
 	\phistartTime    & job start-time                            & $x_s(j,a)$                                                                         & startTime    \\
-	\phiendTime      & job end-time                              & $x_f(j,a)$                                                                         & endTime      \\
-	\phiarrivalTime  & job arrival time                          & $x_f(j,a-1)$                                                                       & arrival      \\ 
+	\phiendTime      & job end-time                              & 
+	$x_e(j,a)$                                                                    
+	     &
+	 endTime      \\
+	\phiarrivalTime  & job arrival time                          & 
+	$x_e(j,a-1)$                                                                  
+	     &
+	 arrival      \\ 
 	\phitotalProc    & total processing time                     & $\sum_{a\in \mathcal{M}}p_{ja}$                                                    & totalProc    \\
-	\phiwait         & time job had to wait                      & $x_s(j,a)-x_f(j,a-1) $                                                             & wait         \\   
+	\phiwait         & time job had to wait                      & 
+	$x_s(j,a)-x_e(j,a-1) 
+	$                                                             & wait         
+	\\   
 	\phiwrmJob       & total work remaining for job              & $\sum_{a'\in\mathcal{M}\setminus \mathcal{M}_{j}}p_{ja'}$                          & wrmJob       \\
 	\phijobOps       & number of assigned operations for job     & $|\mathcal{M}_j|$                                                                  & jobOps       \\ 
 	\midrule
 	\multicolumn{4}{c}{\textbf{machine related}}\\
-	\phimac          & machine ID                                & $ a$                                                                               & mac          \\ 
-	\phimacFree      & when machine is next free                 & $\max_{j'\in \mathcal{J}_a} \{x_f(j',a)\}$                                         & macFree      \\
+	\phimacFree      & when machine is next free                 & $\max_{j'\in 
+	\mathcal{J}_a} \{x_e(j',a)\}$                                         & 
+	macFree      \\
 	\phiwrmMac       & total work remaining for machine          & $\sum_{j'\in\mathcal{J}\setminus \mathcal{J}_{a}}p_{j'a} $                         & wrmMac       \\
 	\phimacOps       & number of assigned operations for machine & $|\mathcal{J}_a|$                                                                  & macOps       \\
 	\midrule
@@ -27,9 +37,9 @@
 	\phislotsTotal   & total idle time for all machines          & $\sum_{a'\in \mathcal{M}}\sum_{j'\in \mathcal{J}_{a'}}s(a',j')$                    & slotsTotal   \\
 	\midrule
 	\multicolumn{4}{c}{\textbf{current makespan related}}\\
-	\phimakespan     & current makespan                          & $\max_{(j',a')\in \mathcal{J} \times \mathcal{M}_{j'}}\{x_f(j',a')\}$              & makespan     \\
-	\phiwrmTotal     & total work remaining for all jobs/mac     & $\sum_{j'\in\mathcal{J}}\sum_{a'\in\mathcal{M}\setminus \mathcal{M}_{j'}}p_{j'a'}$ & wrmTotal     \\
-	\phistep         & current step in the dispatching process   & $|\vchi|$                                                                          & step         \\
+	\phimakespan     & current makespan                          & 
+	$\max_{(j',a')\in \mathcal{J} \times 
+	\mathcal{M}_{j'}}\{x_f(j',a')\}$              & makespan     \\
 	\bottomrule
 \end{tabular}
 

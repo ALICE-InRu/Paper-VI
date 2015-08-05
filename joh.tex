@@ -232,14 +232,14 @@ machine $M_a$.
 Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
 $p_{ja}$, which is assumed to be integral and finite. 
 Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
-completion time is denoted $x_f(j,a)$ where, 
-\begin{equation}  x_f(j,a):=x_s(j,a)+p_{ja} \end{equation} 
+end time is denoted $x_e(j,a)$ where, 
+\begin{equation}  x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
 Each job $J_j$ has a specified processing order through the machines, it is a 
 permutation vector, $\vsigma_j$, of $\{1,..,m\}$, representing a job $J_j$ can 
 be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
 on $M_{\vsigma_j(a-1)}$, i.e.,
 \begin{equation}\label{eq:permutation}
-x_s(j,\vsigma_j(a)) \geq x_f(j,\vsigma_j(a-1)) 
+x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1)) 
 \end{equation}
 for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
 Note, that each job can have its own distinctive flow pattern through the 
@@ -250,7 +250,7 @@ jobs share the same \emph{fixed} permutation route, it will be referred to as
 The disjunctive condition that each machine can handle at most one job at a 
 time is the following,
 \begin{equation}\label{eq:oneJobPerMac}
-x_s(j,a) \geq x_f(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_f(j,a)  
+x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
 \end{equation}
 for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
 
@@ -259,7 +259,7 @@ tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as
 follows,
 \begin{equation}
 C_{\max} := 
-\max\{x_f(j,\vsigma_j(m))\;|\;J_j\in\mathcal{J}\}.\label{eq:makespan}
+\max\{x_e(j,\vsigma_j(m))\;|\;J_j\in\mathcal{J}\}.\label{eq:makespan}
 \end{equation} 
 Additional constraints commonly considered are job release-dates and due-dates 
 or sequence dependent set-up times, however, these will not be considered here. 
@@ -313,7 +313,7 @@ $J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$.
 
 The time in which machine $M_a$ is idle between consecutive jobs $J_j$ and 
 $J_{j'}$ is called idle time, or flow, \begin{equation} 
-s(a,j):=x_s(j,a)-x_f(j',a) \label{eq:slack}\end{equation}
+s(a,j):=x_s(j,a)-x_e(j',a) \label{eq:slack}\end{equation}
 where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. 
 
 Construction heuristics are designed in such a way that it limits the search 
@@ -322,16 +322,16 @@ construction heuristic is to schedule the dispatches as closely together as
 possible, i.e., minimise the schedule's flow. 
 More specifically, once an operation $(j,a)$ has been chosen from the job-list, 
 $\mathcal{L}$, by some dispatching rule, it can placed immediately after (but 
-not prior) $x_f(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
+not prior) $x_e(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
 \cref{eq:permutation}. 
 However to guarantee that constraint \cref{eq:oneJobPerMac} is not violated, 
 idle times $M_a$ are inspected, as they create flow time  which $J_j$ can 
-occupy. Bearing in mind that $J_j$ release time is $x_f(j,\vsigma_j(a-1))$ one 
+occupy. Bearing in mind that $J_j$ release time is $x_e(j,\vsigma_j(a-1))$ one 
 cannot implement \cref{eq:slack} directly, instead it has to be updated as 
 follows,
 \begin{equation}
-\tilde{s}(a,j'):= x_s(j'',a)-\max\{x_f(j',a),x_f(j,\vsigma_j(a-1))\} % 
-%\textrm{ if } x_f(j,\vsigma_j(a-1)\geq x_f(j',a) 
+\tilde{s}(a,j'):= x_s(j'',a)-\max\{x_e(j',a),x_e(j,\vsigma_j(a-1))\} % 
+%\textrm{ if } x_e(j,\vsigma_j(a-1)\geq x_e(j',a) 
 \end{equation}
 for all already dispatched jobs $J_{j'},J_{j''}\in \mathcal{J}_a$ where 
 $J_{j''}$ is $J_{j'}$ successor on $M_a$. Since pre-emption is not allowed, the 
@@ -342,8 +342,8 @@ i.e.,
 }\label{eq:slots}.
 \end{equation} 
 The placement rule applied will decide where to place the job and 
-is independent of the priority dispatching rule applied. \todo{But clearly they 
-are not...}
+is an intrinsic heuristic of the construction heuristic, chosen independently 
+of the priority dispatching rule applied. 
 Different placement rules could be considered for selecting a slot from 
 \cref{eq:slots}, e.g., if the main concern were to utilise the slot space, then 
 choosing the slot with the smallest idle time would yield a closer-fitted 
@@ -407,23 +407,12 @@ Then there are flow-related attributes, \phiFlowRelated, which measure the
 influence of idle time on the schedule, and current makespan related, 
 \phiScheduleRelated.
 All of these attributes vary throughout the scheduling process, w.r.t. 
-operation belonging to the same time step $k$, with the exception of \phimac, 
-which is reported in order to distinguish which features may be use to determine whether any two jobs are competing for a place on the same machine;\todo{How is this features used in your code?}
-\phistep\ to keep track of features' evolution w.r.t. the scheduling process; 
-and \phitotalProc\ and \phiwrmTotal\ which are static for a given problem 
-instance, but used for normalising other features, e.g., \phiwrmTotal\ for 
-work-remaining based ones (\phiwrmJob\ and \phiwrmMac).
+operation belonging to the same time step $k$, with the exception of 
+and \phitotalProc\ which is static for a given problem instance but varying for 
+each $J_j\in\mathcal{J}$. 
 
-\todo[inline,color=orange!40]{$@$Helga: not sure how this works again... check 
-	code, can you recheck if this is all OK here? I mean do we need to talk 
-	about things we don't use in our experimental study!
-    \\$@$TPR: Features are fine in C\# code. Only discrepancy is with 
-    flow-related variable w.r.t. MATLAB code. We use all features from 
-    \cref{tbl:jssp:feat} except for \phistep\ and \phiwrmTotal, i.e., total 
-    number of features are $d=16$
-    \\$@$Helga: lets delete the last two features from the table, they are anyway not makespan related and not used. The mathematical symbols in the table have not been described? Are they then needed?}
-
-Priority dispatching rules are attractive since they are relatively easy to implement, 
+Priority dispatching rules are attractive since they are relatively easy to 
+implement, 
 fast and find good schedules. In addition, they are relatively easy to 
 interpret, which makes them desirable for the end-user.
 However, they can also fail unpredictably. 
@@ -955,14 +944,11 @@ The SDRs we've inspected so-far are based on two features from
 by choosing the lowest value for the first SDR, and highest value for the 
 latter SDR, i.e., the extremal values for those given features. 
 There is nothing that limits us to using just those two features. 
-From \cref{tbl:jssp:feat} we will limit our experiments to the first $d=16$ 
-features, as they are varying for each operation, save for \phitotalProc\ which 
-is varying for each $J_j\in\mathcal{J}$. 
 
 For this study we will consider all combinations of features using either one,
 two, three or all of the features, for a total of
 $\nchoosek{d}{1}+\nchoosek{d}{2}+\nchoosek{d}{3}+\nchoosek{d}{d}$, i.e., total
-of 697 combinations. The reason for such a limiting number of active features,
+of 576 combinations. The reason for such a limiting number of active features,
 are due to the fact we want to keep the models simple enough for improved model
 interpretability
 
@@ -1005,12 +991,12 @@ choosing the optimal move, as expected that measure is considerably lower.
 When training the learning model one wants to keep the validation accuracy 
 high, as that would imply a higher likelihood of making optimal decisions, 
 which would in turn translate into a low final makespan. To test the validity 
-of this assumptions, each of the 697 models is run on the preference set, and 
+of this assumptions, each of the 576 models is run on the preference set, and 
 its mean $\rho$ is reported against its corresponding validation accuracy in 
 \cref{fig:CDR:scatter}. The models are colour-coded w.r.t. the number of active 
 features, and a line is drawn through its Pareto front. Moreover, those 
 solutions are labelled with their corresponding model ID. Moreover, the Pareto 
-front over all 697 models, irrespective of active feature count, is denoted 
+front over all 576 models, irrespective of active feature count, is denoted 
 with triangles. Moreover, their values are reported in \cref{tbl:CDR:pareto}, 
 where the best objective is given in boldface. 
 
@@ -1048,7 +1034,7 @@ considerably worse off due to overfitting of classifying the preference set.
 	\centering
 	\includegraphics[width=\linewidth]{figures/exhaust/{pareto.equal}.pdf}
 	\caption{Scatter plot for validation accuracy  (\%) against its 
-		corresponding mean expected $\rho$ (\%) for all 697 linear models, based on 
+		corresponding mean expected $\rho$ (\%) for all 576 linear models, based on 
 		either one, two, three or all $d$ combinations of features.
 		Pareto fronts for each active feature count based on maximum validation 
 		accuracy and minimum mean expected $\rho$ (\%), and labelled with their 
