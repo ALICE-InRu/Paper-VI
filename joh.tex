@@ -140,7 +140,7 @@ discriminants between competing algorithms for their particular problem
 instances, which provided them with a hybrid algorithm which combines the 
 strengths of the algorithms.
 
-\citet{Nguyen13} proposed a novel iterative dispatching rules (IDRs) for JSP 
+\citet{Nguyen13} proposed a novel iterative dispatching rules (IDRs) for \JSP~
 which learns from completed schedules in order to iteratively improve new ones. 
 At each dispatching step, the method can utilise the current feature space to 
 \emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
@@ -149,22 +149,20 @@ implement and more importantly computationally inexpensive, although the
 authors do stress that there is still remains room for improvement.
 
 \citet{Korytkowski13} implement ant colony optimisation to select the best DR 
-from a selection of nine DRs for JSP and their experiments showed that the 
+from a selection of nine DRs for \JSP~and their experiments showed that the 
 choice of DR do affect the results and that for all performance measures 
 considered it was better to have a all the DRs to choose from rather than just 
 a single DR at a time. 	
-
-
 
 Furthermore, its formulation can be applied on a wide variety of practical 
 problems in real-life applications which involve decision making, therefore its
 problem-solving capabilities has a high impact on many manufacturing 
 organisations.
 
-JSP is NP-hard \cite{Garey76:NPhard}, hence finding optimal solutions of high 
+\JSP~is NP-hard \cite{Garey76:NPhard}, hence finding optimal solutions of high 
 dimensionality is exceedingly difficult in a reasonable amount of time. 
 As a result, heuristics methods are adopted. Generally, this is done by 
-applying a hand-crafted dispatching rule (DR) for a given problem space. 
+applying a hand-crafted dispatching rule for a given problem space. 
 Due to the exorbitant amounts of DRs to choose from, and any kind of alteration 
 to the problem space, this can become quite a time-consuming selection process 
 for the heuristic designer, which any kind of automation would alleviate 
@@ -178,19 +176,16 @@ schedule is complete. The work presented here will focus on construction
 heuristics, dispatching rules, although the techniques developed could be adapted to improvement
 heuristics also. 
 
-
-\todo{What are   your contributions?}  
-Better understanding of how and when dispatching rules work. How to setup the learning problem.
-
-
-
+The focus on this study is better understanding of \emph{how} and \emph{when} 
+dispatching rules work in general, in order to mediate the set-up for the 
+learning problem.
 For this reason, we propose a framework for learning the indicators of optimal 
-solutions, such as done by \cite{Siggi10}.  The study shows that during the 
-scheduling process, it varies \emph{when} it's most fruitful to make the 
-`right' decision, and depending on the problem space those pivotal moments can 
-vary greatly. 
-\todo{What is the outline of what you will show?}  
+solutions, such as done by \cite{Siggi10}, as an in-depth analysis of a expert 
+policy gives a benchmark of what is theoretically possible to learn. 
 
+The study shows that during the scheduling process, it varies \emph{when} it's 
+most fruitful to make the `right' decision, and depending on the problem space 
+those pivotal moments can vary greatly. 
 
 Although, using optimal trajectory for creating training data gives vital 
 information on how to learn good scheduling rules, it is a good starting point, 
@@ -203,52 +198,119 @@ different measures on how to report training accuracy is discussed.
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and  
-\cref{sec:constructionjssp} goes into how their schedules are constructed, 
-followed by \cref{ch:learningmodels} giving a background on what has been done 
-previously in learning new dispatching rules in similar fields. \Cref{sec:opt} 
-sets up the framework for learning from optimal schedules. In particular, the 
-probability of choosing optimal decisions and the effects of making a 
-suboptimal decision. Furthermore, the optimality of common dispatching rules is 
-investigated, from which a blended dispatching rule is created. With those 
-guidelines, \cref{ch:expr:CDR} goes into detail how to create meaningful 
-composite dispatching rules, with the importance of good feature selection and 
-the polysemy of how to report accuracy. The paper finally concludes in 
-\cref{sec:con} with discussion and conclusions.
+\cref{sec:constructionjssp} goes into how their schedules are constructed along 
+with a background on what has been done previously in learning new dispatching 
+rules in similar fields. 
+\Cref{sec:opt} sets up the framework for learning from optimal schedules. In 
+particular, the probability of choosing optimal decisions and the effects of 
+making a suboptimal decision. 
+Furthermore, the optimality of common dispatching rules is investigated, from 
+which a blended dispatching rule is created. 
+With those guidelines, \cref{ch:expr:CDR} goes into detail how to create 
+meaningful composite dispatching rules, with the importance of good feature 
+selection and the polysemy of how to report accuracy. 
+The paper finally concludes in \cref{sec:con} with discussion and conclusions.
 
-% \section{Background}
-% \todo[inline]{Often need to set scene} \todo[inline]{Define
-% formalism} \todo[inline]{Get reader up to speed}
-% \todo[inline]{Identify research problem}
-		
-\section{Job Shop Scheduling}\label{sec:problemdef}
-% JSSP-samantekt:
-The job-shop problem (JSP) involves the scheduling of jobs on a set of 
+
+\section{\Jsp~Scheduling}\label{sec:problemdef}
+The \jsp~problem (\JSP) involves the scheduling of jobs on a set of 
 machines. Each job consists of a number of operations which are then processed 
 on the machines in a predetermined order. An optimal solution to the problem 
 will depend on the specific objective. 
 % For example, the optimal schedule may be the time needed to complete
 % all jobs, i.e., the minimum makespan.
 
-In this study we will consider the $n\times m$ JSP, where $n$ jobs, 
+In this study we will consider the $n\times m$ \JSP, where $n$ jobs, 
 $\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set, 
-$\mathcal{M}=\{M_a\}_{a=1}^m$, of $m$ machines. The index $j$ refers to a job $J_j\in\mathcal{J}$ while the index  $a$ refers to a machine $M_a\in\mathcal{M}$. If a job requires a number of 
-processing steps or operations, then the pair $(j,a)$ refers to the operation, 
-i.e., processing the task of job $J_j$ on machine $M_a$. 
-The jobs are subject to the  constraint that each job $J_j$ must follow a predefined machine order, a chain or sequence of $m$ operations 
-$\vsigma_j=\{\sigma_{j1},\sigma_{j2},\dotsc,\sigma_{jm}\}$. 
-Furthermore, a machine can handle at most one job at a time. Additional 
-constraints commonly considered are job release-dates and due-dates, however, 
-these will not be considered here. Once an operation is started, it must be completed uninterrupted, i.e., pre-emption is not allowed. Moreover, there are no sequence dependent 
-set-up times. The objective will be to schedule the jobs 
-so as to minimize the maximum completion times for all tasks, also known as the 
-makespan, $C_{\max}$.  This family of scheduling problems is denoted by
-$J||C_{\max}$ \citep{Pinedo08}.  
+$\mathcal{M}=\{M_a\}_{a=1}^m$, of $m$ machines. The index $j$ refers to a job 
+$J_j\in\mathcal{J}$ while the index  $a$ refers to a machine 
+$M_a\in\mathcal{M}$. 
+If a job requires a number of processing steps or operations, then the pair 
+$(j,a)$ refers to the operation, i.e., processing the task of job $J_j$ on 
+machine $M_a$. 
 
-%In the case when all jobs share the same 
-%permutation route $\vsigma_j$, the JSP is reduced to a permutation flow-shop 
-%scheduling problem (FSP) \citep{Guinet1998,Tay08}, denoted $F||C_{\max}$. 
-%Therefore, without the loss of generality, this study will be structured around 
-%the JSP.
+Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
+$p_{ja}$, which is assumed to be integral and finite. 
+Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
+completion time is denoted $x_f(j,a)$ where, 
+\begin{equation}  x_f(j,a):=x_s(j,a)+p_{ja} \end{equation} 
+Each job $J_j$ has a specified processing order through the machines, it is a 
+permutation vector, $\vsigma_j$, of $\{1,..,m\}$, representing a job $J_j$ can 
+be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
+on $M_{\vsigma_j(a-1)}$, i.e.,
+\begin{equation}\label{eq:permutation}
+x_s(j,\vsigma_j(a)) \geq x_f(j,\vsigma_j(a-1)) 
+\end{equation}
+for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
+Note, that each job can have its own distinctive flow pattern through the 
+machines, which is independent of the other jobs. However, in the case that all 
+jobs share the same \emph{fixed} permutation route, it will be referred to as 
+\FSP.
+
+The disjunctive condition that each machine can handle at most one job at a 
+time is the following,
+\begin{equation}\label{eq:oneJobPerMac}
+x_s(j,a) \geq x_f(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_f(j,a)  
+\end{equation}
+for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
+
+The objective function is to minimise its maximum completion times for all 
+tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
+follows,
+\begin{equation}
+C_{\max} := 
+\max\{x_f(j,\vsigma_j(m))\;|\;J_j\in\mathcal{J}\}.\label{eq:makespan}
+\end{equation} 
+Additional constraints commonly considered are job release-dates and due-dates 
+or sequence dependent set-up times, however, these will not be considered here. 
+This family of scheduling problems is denoted by $J||C_{\max}$ 
+\citep{Pinedo08}.  
+
+Clearly, w.r.t. minimum makespan, it is preferred that schedules are non-delay, 
+i.e., the machines are not kept idle. The time in which machine $M_a$ is idle 
+between consecutive jobs $J_j$ and $J_{j'}$ is called idle time, or flow, 
+\begin{equation} s(a,j):=x_s(j,a)-x_f(j',a) \label{eq:slack}\end{equation}
+where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. Although this is 
+not a variable directly needed to construct a schedule for \JSP, it is a key 
+feature in order to measure the quality of the schedule. 
+
+Construction heuristics are designed in such a way that it limits the search 
+space in a logical manner, respecting not to exclude the optimum. Here, the 
+construction heuristic is to schedule the dispatches as closely together as 
+possible, i.e., minimise the schedule's flow. 
+More specifically, once an operation $(j,a)$ has been chosen from the job-list, 
+$\mathcal{L}$, by some dispatching rule, it can placed immediately after (but 
+not prior) $x_f(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
+\cref{eq:permutation}. 
+However to guarantee that constraint \cref{eq:oneJobPerMac} is not violated, 
+idle times $M_a$ are inspected, as they create flow time  which $J_j$ can 
+occupy. Bearing in mind that $J_j$ release time is $x_f(j,\vsigma_j(a-1))$ one 
+cannot implement \cref{eq:slack} directly, instead it has to be updated as 
+follows,
+\begin{eqnarray}
+\tilde{s}(a,j')&:=& x_s(j'',a)-\max\{x_f(j',a),x_f(j,\vsigma_j(a-1))\} % 
+%\textrm{ if } x_f(j,\vsigma_j(a-1)\geq x_f(j',a) 
+\end{eqnarray}
+for all already dispatched jobs $J_{j'},J_{j''}\in \mathcal{J}_a$ where 
+$J_{j''}$ is $J_{j'}$ successor on $M_a$. Since pre-emption is not allowed, the 
+only applicable slots are whose idle time can process the entire operation, 
+i.e.,
+\begin{eqnarray}
+\tilde{S}_{ja}&:=&\{J_{j'}\in \mathcal{J}_a\;|\;\tilde{s}(a,j')\geq p_{ja} 
+\}\label{eq:slots}.
+\end{eqnarray} 
+Now, there are several heuristic methods for selecting a slot from 
+\cref{eq:slots}, e.g., if the main concern were to utilise the slot space, then 
+choosing the slot with the smallest idle time would yield a closer-fitted 
+schedule and leaving greater idle times undiminished for subsequent dispatches 
+on $M_a$. However dispatching $J_j$ in the first slot would result in its 
+earliest possible release time, which would be beneficial for subsequent 
+dispatches for $J_j$. Preliminary experiments favoured dispatching in the first 
+(earliest) slot,\footnote{Preliminary experiments of 500 \JSP\ instances where 
+inspected: First slot chosen could always achieve its known optimum, however 
+only $97\%$ of the instances when choosing the smallest slot.} and henceforth 
+will be used throughout.
+
 
 \todo[inline]{Here we must say something about the computational complexity of the $J||C_{\max}$ compared to other scheduling problems, and why we consider only this one in our study. It may be useful to look at Pinedo also on this subject ... perhaps also mention that many of the dispatching rules in the literature have been designed around this problem... use this to tie to he next section}
 
@@ -257,12 +319,16 @@ $J||C_{\max}$ \citep{Pinedo08}.
 
 
 Priority dispatching rules determine, from a list of incomplete jobs, which job should be dispatched next. This process is illustrated in \Cref{fig:jssp:example}, where an example of 
-a temporal partial schedule of six-jobs scheduled on five-machines is given. The numbers 
-in the boxes represent the job identification $j$. The width of the box 
-illustrates the processing times for a given job for a particular machine $M_a$ 
-(on the vertical axis). The dashed boxes represent the resulting partial 
-schedule for when a particular job is scheduled next. Moreover, the current 
-$C_{\max}$ is denoted by a dotted vertical line. The object is to keep this value as small as possible once all operations are complete. As shown in the example there are $15$ operations already scheduled. The \textit{sequence} of dispatches used to create this partial schedule is,
+a temporal partial schedule of six-jobs scheduled on five-machines is given. 
+The numbers in the boxes represent the job identification $j$. 
+The width of the box illustrates the processing times for a given job for a 
+particular machine $M_a$ (on the vertical axis). 
+The dashed boxes represent the resulting partial schedule for when a particular 
+job is scheduled next. 
+Moreover, the current $C_{\max}$ is denoted by a dotted vertical line. 
+The object is to keep this value as small as possible once all operations are 
+complete. As shown in the example there are $15$ operations already scheduled. 
+The \textit{sequence} of dispatches used to create this partial schedule is,
 \begin{eqnarray}
 	\vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
 \end{eqnarray}
@@ -270,8 +336,8 @@ and refers to the sequential ordering of job dispatches to machines, i.e., $(j,a
 the collective set of allocated jobs to machines is interpreted by its 
 sequence, is referred to as a \emph{schedule}.
 A \emph{scheduling policy} will pertain to the manner in which 
-the sequence is determined from the available jobs to be scheduled. In our example
-the available jobs is given by the job-list
+the sequence is determined from the available jobs to be scheduled. 
+In our example the available jobs is given by the job-list
 $\mathcal{L}^{(k)}=\{J_1,J_2,J_4,J_5,J_6\}$ with the five potential jobs 
 to be dispatched at step $k=16$ (note that $J_3$ is completed).
 
@@ -294,9 +360,9 @@ This problem, however, did not occur when jobs are simply placed as early as
 possible. For this reason it will be the placement rule applied here.
 
 \begin{figure}[t!]\centering
-	\includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor.pdf}
-	\caption[Gantt chart of a partial JSP schedule]{Gantt chart of a
-		partial JSP schedule after 15 dispatches: Solid and dashed boxes
+	\includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor}
+	\caption[Gantt chart of a partial \JSP~schedule]{Gantt chart of a
+		partial \JSP~schedule after 15 dispatches: Solid and dashed boxes
 		represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
 		$C_{\max}$ denoted as dotted line.}
 	\label{fig:jssp:example}
@@ -324,9 +390,9 @@ The SDRs assign an index to each job in the job-list and is generally only based
 few attributes and simple mathematical operations.
 
 \begin{table}[t!] \centering
-	\caption[Attribute space $\mathcal{A}$ for JSP]{Attribute space $\mathcal{A}$ 
-		for JSP where job $J_j$ on machine $M_a$ given the resulting temporal 
-		schedule after operation $(j,a)$.
+	\caption[Attribute space $\mathcal{A}$ for \JSP]{Attribute space 
+	$\mathcal{A}$ for \JSP~where job $J_j$ on machine $M_a$ given the resulting 
+	temporal schedule after operation $(j,a)$.
 	}
 	\label{tbl:jssp:feat}
 	\input{tables/features-description}
@@ -488,7 +554,7 @@ referred to as random. In the JSP context \frnd{n}{m}  is analogous to
     are synthetic and each problem space is i.i.d. 
     %and `--' denotes not %available.
   }\label{tbl:data:sim}
-  \input{tables/data-sim.}
+  \input{tables/data-sim}
 \end{table} 
 
 
