@@ -266,53 +266,12 @@ or sequence dependent set-up times, however, these will not be considered here.
 This family of scheduling problems is denoted by $J||C_{\max}$ 
 \citep{Pinedo08}.  
 
-Clearly, w.r.t. minimum makespan, it is preferred that schedules are non-delay, 
-i.e., the machines are not kept idle. The time in which machine $M_a$ is idle 
-between consecutive jobs $J_j$ and $J_{j'}$ is called idle time, or flow, 
-\begin{equation} s(a,j):=x_s(j,a)-x_f(j',a) \label{eq:slack}\end{equation}
-where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. Although this is 
-not a variable directly needed to construct a schedule for \JSP, it is a key 
-feature in order to measure the quality of the schedule. 
-
-Construction heuristics are designed in such a way that it limits the search 
-space in a logical manner, respecting not to exclude the optimum. Here, the 
-construction heuristic is to schedule the dispatches as closely together as 
-possible, i.e., minimise the schedule's flow. 
-More specifically, once an operation $(j,a)$ has been chosen from the job-list, 
-$\mathcal{L}$, by some dispatching rule, it can placed immediately after (but 
-not prior) $x_f(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
-\cref{eq:permutation}. 
-However to guarantee that constraint \cref{eq:oneJobPerMac} is not violated, 
-idle times $M_a$ are inspected, as they create flow time  which $J_j$ can 
-occupy. Bearing in mind that $J_j$ release time is $x_f(j,\vsigma_j(a-1))$ one 
-cannot implement \cref{eq:slack} directly, instead it has to be updated as 
-follows,
-\begin{eqnarray}
-\tilde{s}(a,j')&:=& x_s(j'',a)-\max\{x_f(j',a),x_f(j,\vsigma_j(a-1))\} % 
-%\textrm{ if } x_f(j,\vsigma_j(a-1)\geq x_f(j',a) 
-\end{eqnarray}
-for all already dispatched jobs $J_{j'},J_{j''}\in \mathcal{J}_a$ where 
-$J_{j''}$ is $J_{j'}$ successor on $M_a$. Since pre-emption is not allowed, the 
-only applicable slots are whose idle time can process the entire operation, 
-i.e.,
-\begin{eqnarray}
-\tilde{S}_{ja}&:=&\{J_{j'}\in \mathcal{J}_a\;|\;\tilde{s}(a,j')\geq p_{ja} 
-\}\label{eq:slots}.
-\end{eqnarray} 
-Now, there are several heuristic methods for selecting a slot from 
-\cref{eq:slots}, e.g., if the main concern were to utilise the slot space, then 
-choosing the slot with the smallest idle time would yield a closer-fitted 
-schedule and leaving greater idle times undiminished for subsequent dispatches 
-on $M_a$. However dispatching $J_j$ in the first slot would result in its 
-earliest possible release time, which would be beneficial for subsequent 
-dispatches for $J_j$. Preliminary experiments favoured dispatching in the first 
-(earliest) slot,\footnote{Preliminary experiments of 500 \JSP\ instances where 
-inspected: First slot chosen could always achieve its known optimum, however 
-only $97\%$ of the instances when choosing the smallest slot.} and henceforth 
-will be used throughout.
-
-
-\todo[inline]{Here we must say something about the computational complexity of the $J||C_{\max}$ compared to other scheduling problems, and why we consider only this one in our study. It may be useful to look at Pinedo also on this subject ... perhaps also mention that many of the dispatching rules in the literature have been designed around this problem... use this to tie to he next section}
+\todo[inline]{Here we must say something about the computational complexity of 
+the $J||C_{\max}$ compared to other scheduling problems, and why we consider 
+only this one in our study. It may be useful to look at Pinedo also on this 
+subject ... perhaps also mention that many of the dispatching rules in the 
+literature have been designed around this problem... use this to tie to he next 
+section}
 
 
 \section{Priority Dispatching Rules} \label{sec:constructionjssp}
@@ -329,9 +288,9 @@ Moreover, the current $C_{\max}$ is denoted by a dotted vertical line.
 The object is to keep this value as small as possible once all operations are 
 complete. As shown in the example there are $15$ operations already scheduled. 
 The \textit{sequence} of dispatches used to create this partial schedule is,
-\begin{eqnarray}
+\begin{equation}
 	\vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
-\end{eqnarray}
+\end{equation}
 and refers to the sequential ordering of job dispatches to machines, i.e., $(j,a)$; 
 the collective set of allocated jobs to machines is interpreted by its 
 sequence, is referred to as a \emph{schedule}.
@@ -343,21 +302,58 @@ to be dispatched at step $k=16$ (note that $J_3$ is completed).
 
 Deciding which job to dispatch is, however, not sufficient, one must also know 
 where to place it. In order to build tight schedules it is sensible to place a 
-job as soon as it becomes available and such that the machine idle time is minimal. 
+job as soon as it becomes available and such that the machine idle time is 
+minimal, i.e., schedules are non-delay. 
 There may also be a number of different options for such a placement. 
 In \cref{fig:jssp:example} one observes that $J_2$, to be scheduled on $M_3$, 
 could be placed immediately in a slot between $J_3$ and $J_4$, or after $J_4$ 
 on this machine. 
 If $J_6$ had been placed earlier, a slot would have been created between it and 
 $J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$. 
+
+The time in which machine $M_a$ is idle between consecutive jobs $J_j$ and 
+$J_{j'}$ is called idle time, or flow, \begin{equation} 
+s(a,j):=x_s(j,a)-x_f(j',a) \label{eq:slack}\end{equation}
+where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. 
+
+Construction heuristics are designed in such a way that it limits the search 
+space in a logical manner, respecting not to exclude the optimum. Here, the 
+construction heuristic is to schedule the dispatches as closely together as 
+possible, i.e., minimise the schedule's flow. 
+More specifically, once an operation $(j,a)$ has been chosen from the job-list, 
+$\mathcal{L}$, by some dispatching rule, it can placed immediately after (but 
+not prior) $x_f(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
+\cref{eq:permutation}. 
+However to guarantee that constraint \cref{eq:oneJobPerMac} is not violated, 
+idle times $M_a$ are inspected, as they create flow time  which $J_j$ can 
+occupy. Bearing in mind that $J_j$ release time is $x_f(j,\vsigma_j(a-1))$ one 
+cannot implement \cref{eq:slack} directly, instead it has to be updated as 
+follows,
+\begin{equation}
+\tilde{s}(a,j'):= x_s(j'',a)-\max\{x_f(j',a),x_f(j,\vsigma_j(a-1))\} % 
+%\textrm{ if } x_f(j,\vsigma_j(a-1)\geq x_f(j',a) 
+\end{equation}
+for all already dispatched jobs $J_{j'},J_{j''}\in \mathcal{J}_a$ where 
+$J_{j''}$ is $J_{j'}$ successor on $M_a$. Since pre-emption is not allowed, the 
+only applicable slots are whose idle time can process the entire operation, 
+i.e.,
+\begin{equation}
+\tilde{S}_{ja} := \condset{J_{j'}\in \mathcal{J}_a}{\tilde{s}(a,j')\geq p_{ja} 
+}\label{eq:slots}.
+\end{equation} 
 The placement rule applied will decide where to place the job and 
-is independent of the priority dispatching rule applied.\todo{But clearly they are not...}
-Different placement rules could be considered, for example placing a job 
-in the smallest feasible slot. In our experiments cases were discovered where
- such a placement can rule out the possibility of constructing optimal
-solutions.
+is independent of the priority dispatching rule applied. \todo{But clearly they 
+are not...}
+Different placement rules could be considered for selecting a slot from 
+\cref{eq:slots}, e.g., if the main concern were to utilise the slot space, then 
+choosing the slot with the smallest idle time would yield a closer-fitted 
+schedule and leaving greater idle times undiminished for subsequent dispatches 
+on $M_a$.
+In our experiments cases were discovered where such a placement can rule out 
+the possibility of constructing optimal solutions.
 This problem, however, did not occur when jobs are simply placed as early as 
-possible. For this reason it will be the placement rule applied here.
+possible, which is beneficial for subsequent dispatches for $J_j$. 
+For this reason it will be the placement rule applied here.
 
 \begin{figure}[t!]\centering
 	\includegraphics[width=0.8\textwidth]{figures/jssp_example_nocolor}
@@ -1329,9 +1325,9 @@ machines, which is interpreted by its sequence, is referred to as a
 the sequence is determined.  As shown in our example given in 
 \Cref{fig:jssp:example}, there are 15 operations already scheduled. The 
 sequence used to create the schedule was,
-\begin{eqnarray}
+\begin{equation}
 	\vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
-\end{eqnarray}
+\end{equation}
 hence the current available jobs to be scheduled 
 $\mathcal{L}=\{J_1,J_2,J_4,J_5,J_6\}$, and will be referred to as our job-list, 
 describes the 5 potential jobs to be dispatched at step $k=16$ (note that $J_3$ 
