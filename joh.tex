@@ -1,4 +1,3 @@
-
 % TEXINPUTS=.:/home/hei2/Documents/LaTeX/myTexStyles:
 % created for Journal of Heuristics 
 % Time-stamp: "2011-07-18 14:17 hei2"
@@ -746,14 +745,14 @@ the probability of choosing an optimal dispatch.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat.prob.optUniqueness.10x10.OPT}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{trdat_prob_optUniqueness_10x10_OPT}.pdf}
 	\caption{Number of unique optimal dispatches (lower bound)}
 	\label{fig:opt:unique}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat.prob.moveIsOptimal.10x10.OPT.matlab}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_OPT_matlab}.pdf}
 	\caption{Probability of choosing optimal move}
 	\label{fig:opt}
 \end{figure}
@@ -783,7 +782,7 @@ suboptimal decisions later in the decision process.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{stepwise.10x10.OPT.casescenario}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
 	\caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
 		bound) and worst (upper bound) case scenario of choosing suboptimal 
 		dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
@@ -809,14 +808,14 @@ investigate what happens once we encounter suboptimal state spaces.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat.prob.moveIsOptimal.10x10.SDR.matlab}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_matlab}.pdf}
 	\caption{Probability of SDR being optimal}
 	\label{fig:opt:SDR}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{boxplotRho.SDR.10x10}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{boxplotRho_SDR_10x10}.pdf}
 	\caption{Box plot for deviation from optimality, $\rho$, (\%) for SDRs}
 	\label{fig:boxplot:SDR}
 \end{figure}
@@ -853,73 +852,11 @@ results.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{boxplotRho.BDR.10x10}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{boxplotRho_BDR_10x10}.pdf}
 	\caption{Box plot for deviation from optimality, $\rho$, (\%) for BDR where 
 		SPT is applied for the first 40\% of the dispatches, followed by MWR}
 	\label{fig:boxplot:BDR}
 \end{figure}
-
-\begin{comment}
-\subsection{Extremal feature}\label{sec:opt:ext}
-The SDRs we've inspected so-far are based on two features from
-\cref{tbl:jssp:feat}, namely
-\begin{itemize}
-	\item \phiproc\ for SPT and LPT 
-	\item \phiwrmJob\ for LWR and MWR 
-\end{itemize}
-by choosing the lowest value for the first SDR, and highest value for the
-latter SDR, i.e., the extremal values for those given features. Let's apply the
-same methodology from \cref{sec:opt:sdr} to all varying features\footnote{Note,
-	\phistep, \phimac\ and \phiwrmTotal\ describe the features, not the schedule.
-	For instance, \phistep\, gives us no new information, as that feature is
-homogeneous for each time step, making it equivalent to random guessing.} 
-described in \cref{tbl:jssp:feat}. 
-\Cref{fig:j.rnd:opt:minmax,fig:j.rndn:opt:minmax,fig:f.rnd:opt:minmax} depict
-the probability of all extremal features being an optimal dispatch, with random
-guessing from \cref{fig:opt} as a dashed line. 
-
-In order to put the extremal features into perspective, it's worth comparing 
-them with how the evolution of the features are over time, depicted in 
-\cref{fig:j.rnd:opt:evol,fig:j.rndn:opt:evol,fig:f.rnd:opt:evol}. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{j.rnd}/{trdat.feat.stepwise.10x10.OPT}.pdf}
-	\caption{Feature evolution of optimal trajectory for \jrnd{10}{10}}
-	\label{fig:j.rnd:opt:evol}
-\end{figure}
-\begin{figure}
-	\centering
-	\missingfigure{j.rndn}
-	%\includegraphics[width=1\linewidth]{figures/{j.rndn}/{trdat.feat.stepwise.10x10.OPT}.pdf}
-	\caption{Feature evolution of optimal trajectory for \jrndn{10}{10}}
-	\label{fig:j.rndn:opt:evol}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{f.rnd}/{trdat.feat.stepwise.10x10.OPT}.pdf}
-	\caption{Feature evolution of optimal trajectory for \frnd{10}{10}}
-	\label{fig:f.rnd:opt:evol}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{j.rnd}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
-	\caption{Probability of extremal feature being optimal for \jrnd{10}{10}}
-	\label{fig:j.rnd:opt:minmax}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{j.rndn}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
-	\caption{Probability of extremal feature being optimal for \jrndn{10}{10}}
-	\label{fig:j.rndn:opt:minmax}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{f.rnd}/{trdat.prob.moveIsOptimal.10x10.feat.minmax}.pdf}
-	\caption{Probability of extremal feature being optimal for \frnd{10}{10}}
-	\label{fig:f.rnd:opt:minmax}
-\end{figure}
-\end{comment}
 
 \section{Learning CDR}\label{ch:expr:CDR}
 \Cref{sec:opt:bdr} demonstrates there is definitely something to be gained by
@@ -974,7 +911,7 @@ choosing the optimal move, as expected that measure is considerably lower.
 
 \begin{figure}[th!]
 	\centering
-	\includegraphics[width=\linewidth]{figures/exhaust/{training.accuracy.equal}.pdf}
+	\includegraphics[width=\linewidth]{figures/exhaust/{training_accuracy_equal}.pdf}
 	\caption{Various methods of reporting validation accuracy for preference 
 	learning}
 	\label{fig:stepwise_vs_classification}
@@ -1025,7 +962,7 @@ considerably worse off due to overfitting of classifying the preference set.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=\linewidth]{figures/exhaust/{pareto.equal}.pdf}
+	\includegraphics[width=\linewidth]{figures/exhaust/{pareto_equal}.pdf}
 	\caption{Scatter plot for validation accuracy  (\%) against its 
 		corresponding mean expected $\rho$ (\%) for all 576 linear models, based on 
 		either one, two, three or all $d$ combinations of features.
@@ -1067,7 +1004,7 @@ step-by-step basis, e.g., weighted w.r.t. a curve such as depicted in
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat.prob.moveIsOptimal.10x10.OPT.equal.best}.pdf}
+	\includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat_prob_moveIsOptimal_10x10_OPT_equal_best}.pdf}
 	\caption{Probability of choosing optimal move for models corresponding to 
 		highest mean validation accuracy (grey) and lowest mean deviation from 
 		optimality, $\rho$, (black) compared to the baseline of probability of 
@@ -1086,7 +1023,7 @@ job-shop it doesn't surpass the performance of MWR. This implies, the learning
 model is over-fitting the training data. Results hold for the test set. 
 
 \begin{figure}
-	\includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho.CDR.10x10.equal}.pdf}
+	\includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho_CDR_10x10_equal}.pdf}
 	\caption{Box plot for deviation from optimality, $\rho$, (\%) for the best 
 		CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from 
 		\cref{sec:opt:sdr}, both for training and test sets.}\label{fig:boxplot:CDR}
@@ -1148,9 +1085,9 @@ performance of $\rho$ to diminish by 8.5\%.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.j.rnd}.pdf}\\
-	\includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.j.rndn}.pdf}\\
-	\includegraphics[width=\textwidth]{figures/exhaust/{pareto.equal.phi.f.rnd}.pdf}
+	\includegraphics[width=\textwidth]{figures/exhaust/{pareto_equal_phi_j_rnd}.pdf}\\
+	\includegraphics[width=\textwidth]{figures/exhaust/{pareto_equal_phi_j_rndn}.pdf}\\
+	\includegraphics[width=\textwidth]{figures/exhaust/{pareto_equal_phi_f_rnd}.pdf}
 	\caption{Normalised weights for CDR models from \cref{tbl:CDR:pareto}, 
 		models are grouped w.r.t. its dimensionality, $d$. Note, a triangle 
 		indicates a solution on the Pareto front.}\label{fig:CDR:weights}
