@@ -46,14 +46,7 @@
 \date{Received: \today / Accepted: date}
 % The correct dates will be entered by the editor
 
-
-\input{../shorthand} % put your own shorthand declarations in this document
-\input{../shorthandCommon}
-\usepackage{amssymb,bm,amsmath}
-%\renewcommand{\vphi}{\boldsymbol\phi}
-\renewcommand{\vphi}{\bm{\phi}}
-\renewcommand{\vsigma}{\bm \sigma}
-\renewcommand{\vchi}{\bm \chi}
+\input{shorthand} % put your own shorthand declarations in this document
 
 \begin{document}
 \maketitle
@@ -118,7 +111,7 @@ Group the literature on learning heuristics. I have moved this material from old
 
 
 A recent editorial of the state-of-the-art approaches in advanced dispatching 
-rules for large-scale manufacturing systems by \citet{Chen13} points out that:
+rules for large-scale manufacturing systems by \cite{Chen13} points out that:
 \lq\lq ... most traditional dispatching rules are based on historical data. 
 With the emergence of data mining and on-line analytic processing, dispatching 
 rules can now take predictive information into account.\rq\rq 
@@ -130,17 +123,17 @@ still in its infancy.
 
 
 With meta heuristics one can use existing DRs and use for example 
-portfolio-based algorithm selection \citep{Rice76,Gomes01}, either based on a 
-single instance or class of instances \citep{Xu07} to determine which DR to 
+portfolio-based algorithm selection \cite{Rice76,Gomes01}, either based on a 
+single instance or class of instances \cite{Xu07} to determine which DR to 
 choose from. 
 
-\citet{Kalyanakrishnan11} point out that meta learning can be very fruitful in 
+\cite{Kalyanakrishnan11} point out that meta learning can be very fruitful in 
 reinforcement learning, and in their experiments they discovered some key 
 discriminants between competing algorithms for their particular problem 
 instances, which provided them with a hybrid algorithm which combines the 
 strengths of the algorithms.
 
-\citet{Nguyen13} proposed a novel iterative dispatching rules (IDRs) for \JSP~
+\cite{Nguyen13} proposed a novel iterative dispatching rules (IDRs) for \JSP~
 which learns from completed schedules in order to iteratively improve new ones. 
 At each dispatching step, the method can utilise the current feature space to 
 \emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
@@ -148,7 +141,7 @@ reverse lookahead).  Their method is straightforward, and thus easy to
 implement and more importantly computationally inexpensive, although the 
 authors do stress that there is still remains room for improvement.
 
-\citet{Korytkowski13} implement ant colony optimisation to select the best DR 
+\cite{Korytkowski13} implement ant colony optimisation to select the best DR 
 from a selection of nine DRs for \JSP~and their experiments showed that the 
 choice of DR do affect the results and that for all performance measures 
 considered it was better to have a all the DRs to choose from rather than just 
@@ -264,7 +257,7 @@ C_{\max} :=
 Additional constraints commonly considered are job release-dates and due-dates 
 or sequence dependent set-up times, however, these will not be considered here. 
 This family of scheduling problems is denoted by $J||C_{\max}$ 
-\citep{Pinedo08}.  
+\cite{Pinedo08}.  
 
 \todo[inline]{Here we must say something about the computational complexity of 
 the $J||C_{\max}$ compared to other scheduling problems, and why we consider 
@@ -379,9 +372,9 @@ Similarly, for the longest processing time (LPT) heuristic, $J_5$ would have the
 Dispatching can also be based on attributes related to the partial schedule. 
 Examples of these are dispatching the job with the most work remaining (MWR) or 
 alternatively the least work remaining (LWR). A survey of more than $100$ of 
-such rules are presented in \citet{Panwalkar77}. 
+such rules are presented in \cite{Panwalkar77}. 
 However, the reader is referred to an in-depth survey for single-priority or 
-\emph{simple dispatching rules} (SDR) by \citet{Haupt89}.  
+\emph{simple dispatching rules} (SDR) by \cite{Haupt89}.  
 The SDRs assign an index to each job in the job-list and is generally only based on a
 few attributes and simple mathematical operations.
 
@@ -457,7 +450,7 @@ the CDRs are a combination of those two key features of the schedule and then
 the SDRs. However, there are no combinations of the basic SDRs explored, only 
 said two features.  
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
-\citet{Yu13} had 48 priority rules combinations, yielding 48 different models 
+\cite{Yu13} had 48 priority rules combinations, yielding 48 different models 
 to implement and test. 
 It is intuitive to get a boost in performance by introducing new CDRs, since 
 where one DR might be failing, another could be excelling so combining them 
@@ -501,7 +494,7 @@ are referred to as random and random-narrow, respectively.
 
 Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
 the uniform distribution, it is however chosen in accordance with the 
-literature \citep{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
+literature \cite{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
 instances. In addition, w.r.t. the machine ordering, one could look into a 
 subset of JSP where the machines are partitioned into two (or more) sets, where 
 all jobs must be processed on the machines from the first set (in some random 
@@ -521,7 +514,7 @@ generated for training and testing, respectively. Moreover, of the training
 data, 20\% is reserved for validation.
 Summary of problem classes is given in \cref{tbl:data:sim}.  
 Note, that difficult problem instances are not filtered out beforehand, such as 
-the approach in \citet{Whitley}. 
+the approach in \cite{Whitley}. 
 
 
 %\subsubsection{Job-shop}\label{data:sim:jssp}
@@ -675,7 +668,7 @@ induce the preference is defined by a linear function in the feature space,
 
 Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$. 
 For this study, L2-regularized logistic regression from the \textsc{liblinear} 
-package \citep{liblinear} without bias is used to learn the preference set $S$, 
+package \cite{liblinear} without bias is used to learn the preference set $S$, 
 defined by \eqref{eq:Sjssp}.
 Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let $\vphi_j$ denote 
 its corresponding  post-decision state. Then the job chosen to be dispatched, 
@@ -1257,7 +1250,7 @@ dispatches, it is possible to pinpoint vulnerable times in the scheduling
 process. 
 
 \bibliographystyle{spmpsci} % spmpsci ??
-\bibliography{../references}  
+\bibliography{references}  
 
 %\clearpage \listoftodos[Todo and remarks]
 \end{document}
