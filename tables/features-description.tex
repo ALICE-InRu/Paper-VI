@@ -30,17 +30,18 @@
 	macFree      \\
 	\phiwrmMac       & total work remaining for machine          & $\sum_{j'\in\mathcal{J}\setminus \mathcal{J}_{a}}p_{j'a} $                         & wrmMac       \\
 	\phimacOps       & number of assigned operations for machine & $|\mathcal{J}_a|$                                                                  & macOps       \\
-	\midrule
-	\multicolumn{4}{c}{\textbf{flow related}}\\
-	\phislotsReduced & change in idle time by assignment         & $\Delta s(a,j)$                                                                    & slotsReduced \\
-	\phislots        & total idle time for machine               & $\sum_{j'\in \mathcal{J}_a}s(a,j')$                                                & slots        \\
-	\phislotsTotal   & total idle time for all machines          & $\sum_{a'\in \mathcal{M}}\sum_{j'\in \mathcal{J}_{a'}}s(a',j')$                    & slotsTotal   \\
-	\midrule
-	\multicolumn{4}{c}{\textbf{current makespan related}}\\
+	\phislotsReduced & change in idle time by assignment         & $\Delta 
+	s(a,j)$                                                                    & 
+	reducedSlack \\
+	\phislots        & total idle time for machine               & $\sum_{j'\in 
+	\mathcal{J}_a}s(a,j')$                                                & 
+	slack        \\
+	\phislotsTotal   & total idle time for all machines          & $\sum_{a'\in 
+	\mathcal{M}}\sum_{j'\in \mathcal{J}_{a'}}s(a',j')$                    & 
+	totalSlack   \\
 	\phimakespan     & current makespan                          & 
 	$\max_{(j',a')\in \mathcal{J} \times 
 	\mathcal{M}_{j'}}\{x_f(j',a')\}$              & makespan     \\
 	\bottomrule
 \end{tabular}
 
-%Feature description for job $J_j$ on machine $M_a$ given current temporal schedule, where the set of jobs already dispatched are $J\subset\mathcal{J}$ on corresponding set of machines $\mathcal{M}_j\subset\mathcal{M}$

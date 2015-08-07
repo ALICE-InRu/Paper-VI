@@ -25,7 +25,7 @@
 \journalname{Journal of Heuristics}
 
 \title{Learning Linear Composite Dispatch Rules for Scheduling}
-\subtitle{Case study for the job- and flow-shop problem}
+\subtitle{Case study for the job-shop problem}
 
 \author{Helga Ingimundardottir \and Thomas Philip Runarsson }
 %\authorrunning{Short form of author list} % if too long for running head
@@ -399,13 +399,13 @@ attributes of the partial schedules needed to create a good scheduling rule.
 These attributes attempt to grasp key features of the schedule being 
 constructed. Which attributes are most important will necessarily depend on the
 objectives of the scheduling problem. Attributes used in this study applied for 
-each possible operation are given in \cref{tbl:jssp:feat}.
+each possible operation are given in \cref{tbl:jssp:feat}, where the set of 
+machines already dispatched for $J_j$ is $\mathcal{M}_j\subset\mathcal{M}$, 
+and similarly, $M_a$ has already had the jobs $\mathcal{J}_a\subset\mathcal{J}$ 
+previously dispatched.
 The attributes of particular interest were obtained by inspecting the 
 aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are 
-job-related and machine-related, respectively. 
-Then there are flow-related attributes, \phiFlowRelated, which measure the 
-influence of idle time on the schedule, and current makespan related, 
-\phiScheduleRelated.
+job-related and machine-related, respectively.
 All of these attributes vary throughout the scheduling process, w.r.t. 
 operation belonging to the same time step $k$, with the exception of 
 and \phitotalProc\ which is static for a given problem instance but varying for 
@@ -529,11 +529,6 @@ Summary of problem classes is given in \cref{tbl:data:sim}.
 Note, that difficult problem instances are not filtered out beforehand, such as 
 the approach in \cite{Whitley}. 
 
-
-%\subsubsection{\jsp\}\label{data:sim:jssp}
-%Whereas, structured problem subclasses will be explored for FSP.  
-
-%\subsubsection{Flow-shop}\label{data:sim:fsp}
 Problem instances for FSP are such that processing times are i.i.d. and 
 uniformly distributed, \frnd{n}{m}  where $\vec{p}\sim\mathcal{U}(1,99)$, 
 referred to as random. In the JSP context \frnd{n}{m}  is analogous to 
@@ -1053,22 +1048,6 @@ The weights have been normalised for clarity purposes, such that it is scaled
 to $\norm{\vec{w}}=1$, thereby giving each feature their proportional 
 contribution to the  preference $I_j^{CDR}$ defined by \cref{eq:CDR}.
 
-%Part of 10x10.joh.Features run, now no longer apart of the Pareto-front so not 
-%in the main table
-%As discussed in \cref{sec:expr:ks} for \jrndn{10}{10}, there is no statistical 
-%difference between models 3.501, 3.508 and 3.510 w.r.t. validation accuracy. 
-%As 
-%\cref{fig:CDR:weights} shows, \phimakespan\ and \phiwrmJob\  are similar in 
-%value, however it's the third feature that yields the difference in 
-%performance. In fact, the contribution from \phiproc\ in 3.501 is on par with 
-%\phimac\ in 3.508, as those models are not statistically different w.r.t. 
-%$\rho$ performance. However, the decreased contribution of \phimakespan\  in 
-%favour for \phimacFree\ in 3.510 results in approximately 1\% increase in 
-%$\rho$. Furthermore, it's sufficient to use only \phimakespan\ and 
-%\phiwrmJob\  
-%as active features, as model 2.116 has no statistical difference from either 
-%3.508 or 3.510, for both $\rho$ and validation accuracy.
-
 For \jrndn{10}{10}, there is no statistical difference between models 2.116 and 
 3.521 w.r.t. either $\rho$ or validation accuracy. As \cref{fig:CDR:weights} 
 shows, \phimakespan\ and \phiwrmJob\  are similar in value. However, looking at 
@@ -1115,7 +1094,7 @@ However, they are generally taken for granted as there is clear lack of
 investigation of \emph{how} these \dr s actually work, and what 
 makes them so successful (or in some cases unsuccessful)? 
 For instance, of the four SDRs this study focuses on, why does MWR outperform 
-so significantly for \jsp\, yet completely fail for flow-shop? 
+so significantly for \jsp\, yet completely fail for \fsp? 
 MWR seems to be able to adapt to varying distributions of processing times, 
 however manipulating the machine ordering causes MWR to break down. 
 By inspecting optimal schedules, and meticulously researching what's going on, 
