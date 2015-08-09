@@ -1,42 +1,70 @@
-if(Sys.info()['user']=="hei2"){  setwd('~/alice/Code/R')  
-} else if(Sys.info()['user']=="helga"){ setwd('C:/Users/Helga/alice/Code/R') }
+setwd('C:/Users/helga/alice/Code/R.shiny/')
 
-rm(list=ls(all=TRUE))
-source('myFigures.R')
-extension='pdf';mainPalette='Set1';subdir='../../Papers/JOH.Features/figures/'
+source('global.R')
+subdir='../../JSP-Expert/figures/'
+save='half';extension='pdf'
+input=list(dimension='10x10',problem='j.rnd',problems=c('j.rnd','j.rndn','f.rnd'))
+SDR=subset(dataset.SDR,Problem %in% input$problems & Dimension %in% input$dimension)
+input$bias='equal'
+input$timedependent=F
+input$smooth=F
 
-source('getfiles.R')
-# -------------------------------------------------------------------
-OPT=getOPTs()
-# ----- Box plots for SDRs -----------------------------------------
-SDR=getfiles('../SDR/','f.rnd|j.rnd')
-SDR <- subset(SDR, Name %in% OPT$Name)
-SDR <- join(SDR,OPT[,c('Name','Optimum')],by='Name',type='inner')
+source('opt.uniqueness.R');
+all.StepwiseOptimality=get.StepwiseOptimality(input$problems,input$dimension,'OPT')
+#FIGURE 2
+plot.stepwiseUniqueness(all.StepwiseOptimality,input$dimension,input$smooth,save)
+#FIGURE 3
+plot.stepwiseOptimality(all.StepwiseOptimality,input$dimension,F,input$smooth,save)
 
-SDR=subset(SDR,Set=='train' & Dimension=='10x10')
-SDR=subset(SDR,Problem != 'j.rnd, J1' & Problem != 'j.rnd, M1' & Problem!='f.rndn')
+source('opt.SDR.R')
+all.StepwiseExtremal=get.StepwiseExtremal(input$problems,input$dimension)
+plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,all.StepwiseExtremal,input$dimension,F,'full')
 
-SDR=as.data.table(SDR)
-setkey(SDR,'Dimension', 'Problem','Set')
+source('opt.bw.R')
+#FIGURE 4
+plot.BestWorst(input$problems,input$dimension,'OPT',save)
 
-# ------------------------------------------------------------------
-source('difficultywrtSDR.R'); 
-p=boxplotSDR(SDR)
-fname=paste(subdir,'boxplotRho.SDR.10x10.pdf',sep='')
-ggsave(fname,width=WidthMM,height=HeightMM.half,dpi=dpi,units=units)
+source('opt.SDR.R')
+StepwiseExtremal=get.StepwiseExtremal(input$problems,input$dimension)
+#FIGURE 5
+plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,StepwiseExtremal,input$dimension,F)
 
-# ------------------------------------------------------------------
-source('inspectBDR.R')
-p=checkBDR(OPT,SDR,'SPT','MWR',40)
-p = p + ggplotFill('Dispatching rule',3,c('SPT (first 40%), MWR (last 60%)','Most Work Remaining','Shortest Processing Time'))
-fname=paste(subdir,'boxplotRho.BDR.10x10.pdf',sep='')
-ggsave(fname,width=WidthMM,height=HeightMM.half,dpi=dpi,units=units)
+source('sdr.R')
+#FIGURE 6
+plot.SDR(SDR,'boxplot', save)
+#FIGURE 7
+plot.BDR(input$dimension,input$problems,'SPT','MWR',40,save)
 
-# ------------------------------------------------------------------
-source('optimalityOfDispatches.R')
-inspectOptimalityFromMatlab()
+source('pref.exhaustive.R'); source('pref.settings.R')
+prefSummary=get.prefSummary(input$problems,input$dimension,'OPT','p',F,input$bias)
+paretoFront=get.paretoFront(prefSummary)
+bestPrefModel=get.bestPrefModel(paretoFront)
 
-# ------------------------------------------------------------------
-source('difficultywrtFeatures.R');
-TRDAT.10x10=getfilesTraining('10x10',Global=F)
-features.evolution(TRDAT.10x10)
+#FIGURE 8
+plot.exhaust.acc(prefSummary,save)
+
+#FIGURE 9
+plot.exhaust.paretoFront(prefSummary,paretoFront,T,save)
+
+#FIGURE 10
+plot.exhaust.bestAcc(all.StepwiseOptimality,bestPrefModel,save)
+
+#FIGURE 11
+plot.exhaust.bestBoxplot(bestPrefModel,SDR,save)
+
+for(problem in input$problems){
+  #FIGURE 12
+  print(plot.exhaust.paretoWeights(subset(paretoFront,Problem == problem),F,save))
+}
+
+#TABLE 3
+cat(print(table.exhaust.paretoFront(paretoFront),
+          include.rownames=FALSE, sanitize.text.function=function(x){x}),
+    file = paste0(subdir,'../tables/PREF-',input$bias,'.tex'))
+
+ks=suppressWarnings(get.pareto.ks(paretoFront,input$problem, onlyPareto = F, SDR=NULL))
+if(!is.null(ks)){
+  print(ks$Rho.train,sanitize.text.function=function(x){x})
+  print(ks$Rho.test,sanitize.text.function=function(x){x})
+  print(ks$Acc,sanitize.text.function=function(x){x})
+}

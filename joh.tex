@@ -408,8 +408,9 @@ aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are
 job-related and machine-related, respectively.
 All of these attributes vary throughout the scheduling process, w.r.t. 
 operation belonging to the same time step $k$, with the exception of 
-and \phitotalProc\ which is static for a given problem instance but varying for 
-each $J_j\in\mathcal{J}$. 
+\phijobTotProcTime\ and \phimacTotProcTime\ which are static for a given 
+problem instance but varying for each $J_j\in\mathcal{J}$ and 
+$M_a\in\mathcal{M}$, respectively. 
 
 Priority \dr s are attractive since they are relatively easy to 
 implement, 
@@ -439,8 +440,8 @@ be broken randomly. \todo[color=pink]{We break randomly? We do now!}
 Investigating 11 SDRs for JSP, \cite{Lu13} created a pool of 33 CDRs that 
 strongly outperformed the ones they were based on, by using multi-contextual 
 functions based on either on job waiting time or machine idle time 
-(similar to \phiwait\ and \phislots\ in \cref{tbl:jssp:feat}), i.e., the CDRs 
-are a combination of those two key attributes and then the SDRs. 
+(similar to \phiwait\ and \phimacSlack\ in \cref{tbl:jssp:feat}), i.e., the 
+CDRs are a combination of those two key attributes and then the SDRs. 
 However, there are no combinations of the basic SDRs explored, only 
 said two attributes.  
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
@@ -762,7 +763,7 @@ the probability of choosing an optimal dispatch.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_OPT_matlab}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_OPT}.pdf}
 	\caption{Probability of choosing optimal move}
 	\label{fig:opt}
 \end{figure}
@@ -818,7 +819,7 @@ investigate what happens once we encounter suboptimal state spaces.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_matlab}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}
 	\caption{Probability of SDR being optimal}
 	\label{fig:opt:SDR}
 \end{figure}
@@ -879,7 +880,7 @@ The SDRs we've inspected so-far are based on two features from
 \cref{tbl:jssp:feat}, namely
 \begin{itemize}
 	\item \phiproc\ for SPT and LPT 
-	\item \phiwrmJob\ for LWR and MWR 
+	\item \phijobWrm\ for LWR and MWR 
 \end{itemize}
 by choosing the lowest value for the first SDR, and highest value for the 
 latter SDR, i.e., the extremal values for those given features. 
@@ -888,7 +889,7 @@ There is nothing that limits us to using just those two features.
 For this study we will consider all combinations of features using either one,
 two, three or all of the features, for a total of
 $\nchoosek{d}{1}+\nchoosek{d}{2}+\nchoosek{d}{3}+\nchoosek{d}{d}$, i.e., total
-of 576 combinations. The reason for such a limiting number of active features,
+of 697 combinations. The reason for such a limiting number of active features,
 are due to the fact we want to keep the models simple enough for improved model
 interpretability
 
@@ -921,7 +922,7 @@ choosing the optimal move, as expected that measure is considerably lower.
 
 \begin{figure}[th!]
 	\centering
-	\includegraphics[width=\linewidth]{figures/exhaust/{training_accuracy_equal}.pdf}
+	\includegraphics[width=\linewidth]{figures/{training_accuracy_equal}.pdf}
 	\caption{Various methods of reporting validation accuracy for preference 
 	learning}
 	\label{fig:stepwise_vs_classification}
@@ -931,12 +932,12 @@ choosing the optimal move, as expected that measure is considerably lower.
 When training the learning model one wants to keep the validation accuracy 
 high, as that would imply a higher likelihood of making optimal decisions, 
 which would in turn translate into a low final makespan. To test the validity 
-of this assumptions, each of the 576 models is run on the preference set, and 
+of this assumptions, each of the 697 models is run on the preference set, and 
 its mean $\rho$ is reported against its corresponding validation accuracy in 
 \cref{fig:CDR:scatter}. The models are colour-coded w.r.t. the number of active 
 features, and a line is drawn through its Pareto front. Moreover, those 
 solutions are labelled with their corresponding model ID. Moreover, the Pareto 
-front over all 576 models, irrespective of active feature count, is denoted 
+front over all 697 models, irrespective of active feature count, is denoted 
 with triangles. Moreover, their values are reported in \cref{tbl:CDR:pareto}, 
 where the best objective is given in boldface. 
 
@@ -958,7 +959,7 @@ worse mean $\rho$. So even looking at stepwise optimality by itself is very
 fickle, because slight variations can be quite dramatic to the end result. 
 
 Note, for both \jrnd{10}{10} and \jrndn{10}{10}, model 1.16 is on the Pareto 
-front. The model corresponds to feature \phiwrmJob, and in both cases has a 
+front. The model corresponds to feature \phijobWrm, and in both cases has a 
 weight strictly greater than zero (cf. \cref{fig:CDR:weights}). Revisiting 
 \cref{sec:learningmodels:interpret}, we observe that this implies the learning 
 model was able to discover MWR as one of the Pareto solutions. 
@@ -972,9 +973,10 @@ considerably worse off due to overfitting of classifying the preference set.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=\linewidth]{figures/exhaust/{pareto_equal}.pdf}
+	\includegraphics[width=\linewidth]{figures/{pareto_rho_vs_acc}.pdf}
 	\caption{Scatter plot for validation accuracy  (\%) against its 
-		corresponding mean expected $\rho$ (\%) for all 576 linear models, based on 
+		corresponding mean expected $\rho$ (\%) for all 697 linear models, 
+		based on 
 		either one, two, three or all $d$ combinations of features.
 		Pareto fronts for each active feature count based on maximum validation 
 		accuracy and minimum mean expected $\rho$ (\%), and labelled with their 
@@ -1014,7 +1016,7 @@ step-by-step basis, e.g., weighted w.r.t. a curve such as depicted in
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\linewidth]{figures/exhaust/{trdat_prob_moveIsOptimal_10x10_OPT_equal_best}.pdf}
+	\includegraphics[width=0.8\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_OPT_best}.pdf}
 	\caption{Probability of choosing optimal move for models corresponding to 
 		highest mean validation accuracy (grey) and lowest mean deviation from 
 		optimality, $\rho$, (black) compared to the baseline of probability of 
@@ -1033,7 +1035,7 @@ performance. In some cases it's better off, e.g., compared to LWR, yet for
 model is over-fitting the training data. Results hold for the test set. 
 
 \begin{figure}
-	\includegraphics[width=1\linewidth]{figures/exhaust/{boxplotRho_CDR_10x10_equal}.pdf}
+	\includegraphics[width=1\linewidth]{figures/{boxplotRho_CDR_10x10}.pdf}
 	\caption{Box plot for deviation from optimality, $\rho$, (\%) for the best 
 		CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from 
 		\cref{sec:opt:sdr}, both for training and test sets.}\label{fig:boxplot:CDR}
@@ -1050,7 +1052,7 @@ contribution to the  preference $I_j^{CDR}$ defined by \cref{eq:CDR}.
 
 For \jrndn{10}{10}, there is no statistical difference between models 2.116 and 
 3.521 w.r.t. either $\rho$ or validation accuracy. As \cref{fig:CDR:weights} 
-shows, \phimakespan\ and \phiwrmJob\  are similar in value. However, looking at 
+shows, \phimakespan\ and \phijobWrm\  are similar in value. However, looking at 
 model 3.502 which has a slight statistical difference w.r.t. accuracy, the 
 third feature yields the staggering difference in performance, about 20\% 
 increase in $\rho$. 
@@ -1069,19 +1071,19 @@ As these features often coincide in \jsp\, it is justifiable to use only
 either one, as the it contains the same information as its counterpart. 
 Assuming this holds, then for models 3.498 and 3.503 where there is similar 
 contributions between \phimacFree\ and \phiendTime, respectively, and 
-\phiwrmJob\ for both, the weights are similar, yet statistically significant 
+\phijobWrm\ for both, the weights are similar, yet statistically significant 
 from one another. There the third feature is the key to the success of the CDR, 
 as opting for \phimakespan\ instead of \phiwait\ for 3.503 boosts the $\rho$ 
 performance by 8.6\%. 
 In addition, models 2.115 and 3.498, have similar contributions for 
-\phimacFree\ and \phiwrmJob, however the additional \phiwait, which causes the 
+\phimacFree\ and \phijobWrm, however the additional \phiwait, which causes the 
 performance of $\rho$ to diminish by 8.5\%.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{figures/exhaust/{pareto_equal_phi_j_rnd}.pdf}\\
-	\includegraphics[width=\textwidth]{figures/exhaust/{pareto_equal_phi_j_rndn}.pdf}\\
-	\includegraphics[width=\textwidth]{figures/exhaust/{pareto_equal_phi_f_rnd}.pdf}
+	\includegraphics[width=\textwidth]{figures/{pareto_10x10_phi_jrnd}.pdf}\\
+	\includegraphics[width=\textwidth]{figures/{pareto_10x10_phi_jrndn}.pdf}\\
+	\includegraphics[width=\textwidth]{figures/{pareto_10x10_phi_frnd}.pdf}
 	\caption{Normalised weights for CDR models from \cref{tbl:CDR:pareto}, 
 		models are grouped w.r.t. its dimensionality, $d$. Note, a triangle 
 		indicates a solution on the Pareto front.}\label{fig:CDR:weights}

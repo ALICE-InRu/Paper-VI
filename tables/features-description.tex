@@ -1,47 +1,57 @@
 \centering
 \renewcommand{\arraystretch}{1.5}
+
 \begin{tabular}{clll} %p{0.45\textwidth}|p{0.4\textwidth}|}
 	\toprule
-	$\vphi$          & Feature description                       & Mathematical formulation                                                           & Shorthand    \\ 
+	$\vphi$ & Feature description   & Mathematical formulation & Shorthand  \\ 
 	%\hline  \multicolumn{4}{c}{\textbf{Local features}}  \\
 	\midrule
 	\multicolumn{4}{c}{\textbf{job related}}\\
-	\phiproc         & job processing time                       & $p_{ja}$                                                                           & proc         \\
-	\phistartTime    & job start-time                            & $x_s(j,a)$                                                                         & startTime    \\
-	\phiendTime      & job end-time                              & 
-	$x_e(j,a)$                                                                    
-	     &
-	 endTime      \\
-	\phiarrivalTime  & job arrival time                          & 
-	$x_e(j,a-1)$                                                                  
-	     &
-	 arrival      \\ 
-	\phitotalProc    & total processing time                     & $\sum_{a\in \mathcal{M}}p_{ja}$                                                    & totalProc    \\
+	\phiproc         & job processing time                       & $p_{ja}$   & 
+	proc         \\
+	\phistartTime    & job start-time                            & $x_s(j,a)$ & 
+    startTime    \\
+	\phiendTime      & job end-time                              & $x_e(j,a)$ &
+    endTime      \\
+	\phiarrivalTime  & job arrival time                          & $x_e(j,a-1)$&
+    arrival      \\ 
 	\phiwait         & time job had to wait                      & 
-	$x_s(j,a)-x_e(j,a-1) 
-	$                                                             & wait         
-	\\   
-	\phiwrmJob       & total work remaining for job              & $\sum_{a'\in\mathcal{M}\setminus \mathcal{M}_{j}}p_{ja'}$                          & wrmJob       \\
-	\phijobOps       & number of assigned operations for job     & $|\mathcal{M}_j|$                                                                  & jobOps       \\ 
+	$x_s(j,a)-x_e(j,a-1)$ & 
+    wait         \\   
+	\phijobTotProcTime    & total processing time for job             & 
+    $\sum_{a\in \mathcal{M}}p_{ja}$ & 
+    jobTotProcTime \\
+	\phijobWrm       & total work remaining for job              & 
+	$\sum_{a'\in\mathcal{M}\setminus \mathcal{M}_{j}}p_{ja'}$ & 
+    jobWrm       \\
+	\phijobOps       & number of assigned operations for job     & 
+	$|\mathcal{M}_j|$ & 
+    jobOps       \\ 
 	\midrule
 	\multicolumn{4}{c}{\textbf{machine related}}\\
-	\phimacFree      & when machine is next free                 & $\max_{j'\in 
-	\mathcal{J}_a} \{x_e(j',a)\}$                                         & 
+	\phimacFree      & when machine is next free                 & 
+    $\max_{j'\in \mathcal{J}_a} \{x_e(j',a)\}$ &
 	macFree      \\
-	\phiwrmMac       & total work remaining for machine          & $\sum_{j'\in\mathcal{J}\setminus \mathcal{J}_{a}}p_{j'a} $                         & wrmMac       \\
-	\phimacOps       & number of assigned operations for machine & $|\mathcal{J}_a|$                                                                  & macOps       \\
-	\phislotsReduced & change in idle time by assignment         & $\Delta 
-	s(a,j)$                                                                    & 
+	\phimacTotProcTime    & total processing time for machine    & 
+    $\sum_{j\in \mathcal{J}}p_{ja}$ & 
+    macTotProcTime \\
+	\phimacWrm       & total work remaining for machine          & 
+	$\sum_{j'\in\mathcal{J}\setminus \mathcal{J}_{a}}p_{j'a}$ &  
+    macWrm       \\
+	\phimacOps       & number of assigned operations for machine & 
+	$|\mathcal{J}_a|$ & 
+    macOps       \\
+	\phireducedSlack & change in idle time by assignment         & 
+    $\Delta s(a,j)$ &
 	reducedSlack \\
-	\phislots        & total idle time for machine               & $\sum_{j'\in 
-	\mathcal{J}_a}s(a,j')$                                                & 
-	slack        \\
-	\phislotsTotal   & total idle time for all machines          & $\sum_{a'\in 
+	\phimacSlack        & total idle time for machine               & 
+    $\sum_{j'\in \mathcal{J}_a}s(a,j')$ &
+    macSlack        \\
+	\phiallSlack   & total idle time for all machines          & $\sum_{a'\in 
 	\mathcal{M}}\sum_{j'\in \mathcal{J}_{a'}}s(a',j')$                    & 
-	totalSlack   \\
-	\phimakespan     & current makespan                          & 
-	$\max_{(j',a')\in \mathcal{J} \times 
-	\mathcal{M}_{j'}}\{x_f(j',a')\}$              & makespan     \\
+	allSlack   \\
+	\phimakespan     & current makespan                          &
+    $\max_{(j',a')\in \mathcal{J} \times \mathcal{M}_{j'}}\{x_f(j',a')\}$ & 
+    makespan     \\
 	\bottomrule
 \end{tabular}
-

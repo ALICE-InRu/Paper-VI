@@ -50,38 +50,27 @@
 \newcommand{\Fmc}{\FSP~machine-correlated}
 \newcommand{\Fmxc}{\FSP~mixed-correlated}
 
-\newcounter{FeatCounter}
 % job-related
 \newcommand{\phiproc}{$\phi_1$}
 \newcommand{\phistartTime}{$\phi_2$}
 \newcommand{\phiendTime}{$\phi_3$}
 \newcommand{\phiarrivalTime}{$\phi_4$}
-\newcommand{\phitotalProc}{$\phi_5$}
-\newcommand{\phiwait}{$\phi_6$}
-\newcommand{\phiwrmJob}{$\phi_7$}
+\newcommand{\phiwait}{$\phi_5$}
+\newcommand{\phijobTotProcTime}{$\phi_6$}
+\newcommand{\phijobWrm}{$\phi_7$}
 \newcommand{\phijobOps}{$\phi_8$}
 \newcommand{\phiJobRelated}{\phiproc\!-\phijobOps}
 % mac-related
 \newcommand{\phimacFree}{$\phi_{9}$}
-\newcommand{\phiwrmMac}{$\phi_{10}$}
-\newcommand{\phimacOps}{$\phi_{11}$}
-\newcommand{\phislotsReduced}{$\phi_{12}$} 
-\newcommand{\phislots}{$\phi_{13}$}
-\newcommand{\phislotsTotal}{$\phi_{14}$} 
-\newcommand{\phimakespan}{$\phi_{15}$}
+\newcommand{\phimacTotProcTime}{$\phi_{10}$}
+\newcommand{\phimacWrm}{$\phi_{11}$}
+\newcommand{\phimacOps}{$\phi_{12}$}
+\newcommand{\phireducedSlack}{$\phi_{13}$} 
+\newcommand{\phimacSlack}{$\phi_{14}$}
+\newcommand{\phiallSlack}{$\phi_{15}$} 
+\newcommand{\phimakespan}{$\phi_{16}$}
 \newcommand{\phiMacRelated}{\phimacFree\!-\phimakespan}
-% global
-\newcommand{\phiSPT}{$\phi_{16}$}
-\newcommand{\phiLPT}{$\phi_{17}$}
-\newcommand{\phiLWR}{$\phi_{18}$}
-\newcommand{\phiMWR}{$\phi_{19}$}
-\newcommand{\phiRND}{$\phi_{20}$}
-\newcommand{\phiSDRRelated}{\phiSPT\!-\phiMWR}
-\newcommand{\phiGlobalRelated}{\phiMWR\!-\phiRND}
-\newcommand{\phiLocalRelated}{\phiproc\!-\phimakespan}
-\newcommand{\NrFeatLocal}{15}
-\newcommand{\NrFeatGlobal}{5}
-\newcommand{\NrFeatTotal}{20}
+\newcommand{\NrFeatLocal}{16}
 
 \hyphenation{heur-ist-ics}
 \hyphenation{algo-rithm}
