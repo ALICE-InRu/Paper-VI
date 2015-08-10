@@ -941,28 +941,38 @@ front over all 697 models, irrespective of active feature count, is denoted
 with triangles. Moreover, their values are reported in \cref{tbl:CDR:pareto}, 
 where the best objective is given in boldface. 
 
-For \jrnd{10}{10}  there is no statistical difference between models 2.115, 
-3.503, 3.549 and 3.556 w.r.t. $\rho$, however only (2.115, 3.503) and (3.549, 
-3.556) w.r.t. validation accuracy. Other models were statistically significant 
-to one another, using a Kolmogorov-Smirnov test with 
-$\alpha=0.05$.\label{sec:expr:ks} 
-However, the solutions on the Pareto front for \jrndn{10}{10} are more or less 
-with no (or minimal) statistical difference w.r.t. validation accuracy, and 
-considerably fewer w.r.t. $\rho$. Most notably are the 	2.107, 2.115, 3.486 
-and 3.549 (latter two have the lowest mean $\rho$) which are all statistically 
-insignificant w.r.t. $\rho$ and the latter three w.r.t. validation accuracy as 
-well. 
-For \frnd{10}{10} 3.80, 3.120, 3.260 are equivalent to model corresponding to 
-the lowest $\rho$, 3.244. Although, w.r.t. validation accuracy models 3.260 and 
-2.40 are statistically insignificant, where the latter yields a approx 1.5\% 
-worse mean $\rho$. So even looking at stepwise optimality by itself is very 
-fickle, because slight variations can be quite dramatic to the end result. 
+For \jrnd{10}{10}  there is no statistical difference between models (1.3, 1.6) 
+w.r.t. $\rho$ and validation accuracy. 
+Same goes for (2.69, 3.355, 3.358, 3.524), except only the latter three w.r.t. 
+accuracy. These models are therefore equivalently best for the problem space.
+In addition, (2.111, 3.300) and (16.1, 3.355) are statistically insignificant 
+w.r.t. validation accuracy, however, they have considerable performance 
+difference w.r.t. $\rho$ ($\Delta\rho \approx 18\%$). 
+So even looking at stepwise optimality by itself is very fickle, because slight 
+variations can be quite dramatic to the end result. 
+Other models were statistically significant to one another, using a 
+Kolmogorov-Smirnov test with $\alpha=0.05$.
 
-Note, for both \jrnd{10}{10} and \jrndn{10}{10}, model 1.16 is on the Pareto 
+The solutions on the Pareto front for \jrndn{10}{10} are quite a few models
+with no (or minimal) statistical difference w.r.t. $\rho$, and 
+considerably more w.r.t. validation accuracy. 
+Most notably are (3.281, 2.73, 2.75, 1.13), 
+(note, first one has the lowest mean $\rho$) which are all statistically 
+insignificant w.r.t. validation accuracy yet none w.r.t. $\rho$, with 
+difference up to $\Delta\rho=6.32\%$.
+
+For \frnd{10}{10} there are more or less no (or minimal) statistical difference 
+w.r.t. $\rho$, only exception is (1.6, 1.7).
+Although, w.r.t. validation accuracy models there are a few equivalent models, 
+namely, (3.151, 2.51), (2.94, 1.6) and (3.216, 3.213, 16.1), with $1.2\%$, 
+$2.3\%$ and $5.75\%$ difference in mean $\rho$, respectively. 
+
+Note, for both \jrnd{10}{10} and \jrndn{10}{10}, model 1.13 is on the Pareto 
 front. The model corresponds to feature \phijobWrm, and in both cases has a 
 weight strictly greater than zero (cf. \cref{fig:CDR:weights}). Revisiting 
 \cref{sec:learningmodels:interpret}, we observe that this implies the learning 
-model was able to discover MWR as one of the Pareto solutions. 
+model was able to discover MWR as one of the Pareto solutions, and as is 
+expected, there is no statistical difference to between 1.13 and MWR.
 
 As one can see from \cref{fig:CDR:scatter}, adding additional features to 
 express the linear model boosts performance in both validation accuracy and 
@@ -1000,7 +1010,7 @@ As one can see for both \jrnd{10}{10} and \jrndn{10}{10}, despite having a
 higher mean validation accuracy overall, the probabilities vary significantly. 
 A lower mean $\rho$ is obtained when the validation accuracy is gradually 
 increasing over time, and especially during the last phase of the 
-scheduling.\footnote{It's almost too illegible to notice this shift directly 
+scheduling.\footnote{It's almost illegible to notice this shift directly 
 	from \cref{fig:CDR:opt}, as the difference between the two best models is 
 	oscillating up to only 3\% at any given step. In fact \jrndn{10}{10} has the 
 	most clear difference w.r.t. classification accuracy of indicating when a 
@@ -1042,43 +1052,50 @@ model is over-fitting the training data. Results hold for the test set.
 	\label{fig:boxplot:CDR}
 \end{figure}
 
-\subsection{Interpreting CDR}\label{sec:CDR:interpret}
+\subsection{Interpreting CDRs}\label{sec:CDR:interpret}
 \Cref{sec:learningmodels:interpret} showed how to interpret the linear 
 preference models by their weights. 
 \Cref{fig:CDR:weights} depicts the linear weights, $\vec{w}$, from 
 \cref{eq:linear} for all of the CDR models reported in \cref{tbl:CDR:pareto}. 
 The weights have been normalised for clarity purposes, such that it is scaled 
 to $\norm{\vec{w}}=1$, thereby giving each feature their proportional 
-contribution to the  preference $I_j^{CDR}$ defined by \cref{eq:CDR}.
+contribution to the preference $I_j^{\pi}$ defined by \cref{eq:CDR}.
 
-For \jrndn{10}{10}, there is no statistical difference between models 2.116 and 
-3.521 w.r.t. either $\rho$ or validation accuracy. As \cref{fig:CDR:weights} 
-shows, \phimakespan\ and \phijobWrm\  are similar in value. However, looking at 
-model 3.502 which has a slight statistical difference w.r.t. accuracy, the 
-third feature yields the staggering difference in performance, about 20\% 
-increase in $\rho$. 
-It's also interesting to inspect the full model for \frnd{10}{10}, 16.1. 
-Despite having similar contributions as all the active features of one of the 
-its best model, 3.80, then the substantial interference from \phijobOps\ along 
-with other features present, hinders the full model from achieving a low 
-$\rho$, thereby stressing the importance of feature selection, to steer clear 
-of over-fitting. 
-
-Furthermore, in the case of  models 3.80 and 3.120 for \frnd{10}{10} 
-(equivalent both w.r.t. $\rho$ and accuracy) the only difference is features 
-\phiendTime\ and \phimacFree. 
-In addition, models 3.549 and 3.556 for \jrnd{10}{10} show the same behaviour. 
+As was stated before, there is no statistical difference between \jrnd{10}{10} 
+models (2.69, 3.355, 3.358, 3.524). As \cref{fig:CDR:weights} 
+shows, \phiendTime, \phijobWrm\ and \phimacWrm\ are similar in value, and in 
+the case of 3.358, then \phimacFree\ has similar contribution as the 
+\phiendTime\ for the other models. 
+Which, as standalone models are 1.6 and 1.3, respectively, and yield equivalent 
+mean $\rho$
 As these features often coincide in \jsp\, it is justifiable to use only 
-either one, as the it contains the same information as its counterpart. 
-Assuming this holds, then for models 3.498 and 3.503 where there is similar 
-contributions between \phimacFree\ and \phiendTime, respectively, and 
-\phijobWrm\ for both, the weights are similar, yet statistically significant 
-from one another. There the third feature is the key to the success of the CDR, 
-as opting for \phimakespan\ instead of \phiwait\ for 3.503 boosts the $\rho$ 
-performance by 8.6\%. 
-In addition, models 2.115 and 3.498, have similar contributions for 
-\phimacFree\ and \phijobWrm, however the additional \phiwait, which causes the 
-performance of $\rho$ to diminish by 8.5\%.
+either one, as the it contains the same information as its 
+counterpart.\footnote{Note, 
+  \phiendTime$~\leq~$\phimacFree, where \phiendTime$~=~$\phimacFree\ implies 
+  $J_j$ is the latest job on $M_a$, otherwise placed in a previously created 
+  slot on $M_a$.} 
+Most likely, the equivalence of these features is indicating that the 
+schedules are rarely able to dispatch in earlier slots, i.e., 
+\phiendTime$~\equiv~$\phimacFree. 
+
+%However, looking at model 3.502 which has a slight statistical difference 
+%w.r.t. accuracy, the third feature yields the staggering difference in 
+%performance, about 20\% increase in $\rho$. 
+
+It's interesting to inspect the full model for \frnd{10}{10}, 16.1. 
+Despite having similar contributions as all the active features as (3.213, 
+3.216), then the (slight) interference from of other features, hinders the full 
+model from achieving a low $\rho$. 
+Only considering \phijobOps\ and \phimacOps\ with either \phiendTime\ and 
+\phimacFree, boosts performance by 5.28\% and 5.72\%, respectively. 
+Thereby stressing the importance of feature selection, to steer clear of 
+over-fitting. Note, unlike \jrnd{10}{10}, now \phiendTime\ differs from 
+\phimacFree, so there are some slots created, which could be better utilised.
+
+Moreover, looking at model 2.111 for \frnd{10}{10}, which has similar 
+contributions as the best model, 3.539. Then introducing a third feature, 
+\phimacWrm, is the key to the success of the CDR, with a boost of $\rho$ 
+performance by 1.33\%. 
 
 \begin{figure}
 	\centering

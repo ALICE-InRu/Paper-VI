@@ -48,6 +48,9 @@ plot.exhaust.paretoFront(prefSummary,paretoFront,T,save)
 
 #FIGURE 10
 plot.exhaust.bestAcc(all.StepwiseOptimality,bestPrefModel,save)
+x=dcast(subset(bestPrefModel$Stepwise,Accuracy=='Optimality'),Problem+Step~variable+Accuracy,value.var = 'value')
+x=ddply(x,~Problem+Step,mutate,diff.acc=abs(Max.Acc.Opt_Optimality-Min.Rho_Optimality))
+print(paste('Max oscillationg',round(mean(x$diff.acc)*100),'%'))
 
 #FIGURE 11
 SDR=subset(SDR, (substr(Problem,1,1)=='j' & SDR=='MWR') |
@@ -64,9 +67,20 @@ cat(print(table.exhaust.paretoFront(paretoFront),
           include.rownames=FALSE, sanitize.text.function=function(x){x}),
     file = paste0(subdir,'../tables/PREF-',input$bias,'.tex'))
 
-ks=suppressWarnings(get.pareto.ks(paretoFront,input$problem, onlyPareto = F, SDR=NULL))
-if(!is.null(ks)){
-  print(ks$Rho.train,sanitize.text.function=function(x){x})
-  print(ks$Rho.test,sanitize.text.function=function(x){x})
-  print(ks$Acc,sanitize.text.function=function(x){x})
+ks.readable <- function(ks,alpha=0.05){
+  ks=unique(round(ks>1-alpha))
+  ks=ks[rowSums(ks)>1,]
+  if(is.matrix(ks)) ks=ks[,colSums(ks)>0]
+  print(ks)
 }
+
+clc()
+for(problem in input$problems){
+  print(problem)
+  ks=suppressWarnings(get.pareto.ks(paretoFront, problem, onlyPareto = F, SDR=NULL))
+  if(!is.null(ks)){
+    ks.readable(ks$Rho.train)
+    ks.readable(ks$Acc)
+  }
+}
+
