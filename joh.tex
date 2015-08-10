@@ -625,7 +625,7 @@ instances, the partial subsequent ranking becomes necessary, as full ranking is
 computationally infeasible. This is due to the fact the size of the preference 
 set, $\abs{S}$, becomes too large with full ranking, and would need sampling.
 For the following experimental set up, the preference set was limited to 
-$\abs{S}\leq200,000$ by random sampling.
+$\abs{S}\leq 500,000$ by random sampling.
 
 \subsection{Linear Learning}\label{sec:liblinear}
 
@@ -1037,8 +1037,9 @@ model is over-fitting the training data. Results hold for the test set.
 \begin{figure}
 	\includegraphics[width=1\linewidth]{figures/{boxplotRho_CDR_10x10}.pdf}
 	\caption{Box plot for deviation from optimality, $\rho$, (\%) for the best 
-		CDR models (cf. \cref{tbl:CDR:pareto}) and compared against SDRs from 
-		\cref{sec:opt:sdr}, both for training and test sets.}\label{fig:boxplot:CDR}
+	CDR models (cf. \cref{tbl:CDR:pareto}) and compared against the best SDRs 
+	from \cref{sec:opt:sdr}, both for training and test sets.} 
+	\label{fig:boxplot:CDR}
 \end{figure}
 
 \subsection{Interpreting CDR}\label{sec:CDR:interpret}
