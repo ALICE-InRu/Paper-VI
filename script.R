@@ -50,6 +50,8 @@ plot.exhaust.paretoFront(prefSummary,paretoFront,T,save)
 plot.exhaust.bestAcc(all.StepwiseOptimality,bestPrefModel,save)
 
 #FIGURE 11
+SDR=subset(SDR, (substr(Problem,1,1)=='j' & SDR=='MWR') |
+             (substr(Problem,1,1)=='f' & SDR=='LWR'))
 plot.exhaust.bestBoxplot(bestPrefModel,SDR,save)
 
 for(problem in input$problems){
