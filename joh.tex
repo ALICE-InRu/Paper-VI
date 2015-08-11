@@ -76,78 +76,56 @@ generalised to any kind of combinatorial problem.
 % ----------------------------- Introduce idea
 \section{Introduction}\label{sec:introduction}
 
-\todo[inline]{The introduction must be completely re-written to reflect what was done in this paper.)}
+\todo[inline,color=green]{The introduction must be completely re-written to 
+reflect what was done in this paper.) -- Ongoing}
 
-The problem is to learn new problem specific priority \dr s.
-
+The problem is to learn new problem specific priority \dr s for scheduling. 
 A subclass of scheduling problems is the \jsp\ scheduling problem (JSP), 
-which is widely studied in operations research.  \jsp\ deals with the 
+which is widely studied in operations research.  \JSP\ deals with the 
 allocation of tasks of competing resources where its goal is to optimise a 
 single or multiple objectives.  Its analogy is from manufacturing industry 
 where a set of jobs are broken down into tasks that must be processed on 
 several machines in a workshop.  
-
-\todo{Why is it interesting?} 
-Hardness, connect to what has bee done before ... test-bed for learning heuristics ...
-
-\todo{Helga working on the literature review here}
-Group the literature on learning heuristics. I have moved this material from old chapter 4 to the intro I think it will flow better, we then say we will concentrate on the last approach here:
-\begin{itemize}
-\item Direct search (GA based, Poli, etc)
-\item Reinforcement learning based, Diettrich, also Kendall \& Burke
-\item Supervised learning (Siggi, etc)
-\end{itemize}
-
-
-A recent editorial of the state-of-the-art approaches in advanced dispatching 
-rules for large-scale manufacturing systems by \cite{Chen13} points out that:
-\lq\lq ... most traditional \dr s are based on historical data. 
-With the emergence of data mining and on-line analytic processing, dispatching 
-rules can now take predictive information into account.\rq\rq 
-The importance of automated discovery of DR was also emphasised by 
-\cite{Monch13}. 
-Several of successful implementations in the field of semiconductor wafer 
-fabrication facilities are discussed, however, this sort of investigation is 
-still in its infancy.
-
-With meta heuristics one can use existing DRs and use for example 
-portfolio-based algorithm selection \cite{Rice76,Gomes01}, either based on a 
-single instance or class of instances \cite{Xu07} to determine which DR to 
-choose from. 
-
-\cite{Kalyanakrishnan11} point out that meta learning can be very fruitful in 
-reinforcement learning, and in their experiments they discovered some key 
-discriminants between competing algorithms for their particular problem 
-instances, which provided them with a hybrid algorithm which combines the 
-strengths of the algorithms.
-
-\cite{Nguyen13} proposed a novel iterative \dr s for \JSP\ which learns from 
-completed schedules in order to iteratively improve new ones. 
-At each dispatching step, the method can utilise the current feature space to 
-\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
-reverse lookahead).  Their method is straightforward, and thus easy to 
-implement and more importantly computationally inexpensive, although the 
-authors do stress that there is still remains room for improvement.
-
-\cite{Korytkowski13} implement ant colony optimisation to select the best DR 
-from a selection of nine DRs for \JSP\ and their experiments showed that the 
-choice of DR do affect the results and that for all performance measures 
-considered it was better to have a all the DRs to choose from rather than just 
-a single DR at a time. 	
-
 Furthermore, its formulation can be applied on a wide variety of practical 
 problems in real-life applications which involve decision making, therefore its
 problem-solving capabilities has a high impact on many manufacturing 
 organisations.
 
-\JSP\ is NP-hard \cite{Garey76:NPhard}, hence finding optimal solutions of high 
-dimensionality is exceedingly difficult in a reasonable amount of time. 
-As a result, heuristics methods are adopted. Generally, this is done by 
-applying a hand-crafted dispatching rule for a given problem space. 
+In order to find an optimal (or near optimal) solution for scheduling problems 
+one could either use exact methods or heuristics methods. Exact methods 
+guarantee an optimal solution, however, \jsp\ scheduling is strongly NP-hard 
+\cite{Garey76:NPhard}. Any exact algorithm generally suffers from the curse of 
+dimensionality, which impedes the application in finding the global optimum in 
+a reasonable amount of time. Heuristics are generally more time efficient but 
+do not necessarily attain the global optimum. Therefore, \jsp\ has the 
+reputation of being notoriously difficult to solve. 
+As a result, it's been widely studied in deterministic scheduling theory and 
+its class of problems has been tested on a plethora of different solution 
+methodologies from various research fields \cite{Meeran12}, all from simple and 
+straight forward \dr s to highly sophisticated frameworks.
+
+Generally, \jsp\ is solved by applying a hand-crafted dispatching rule (DR) for 
+a given problem space. 
 Due to the exorbitant amounts of DRs to choose from, and any kind of alteration 
 to the problem space, this can become quite a time-consuming selection process 
 for the heuristic designer, which any kind of automation would alleviate 
 immensely. 
+% automation for selecting DRs #1 - Portfolio
+With meta heuristics one can use existing DRs, and use for example 
+portfolio-based algorithm selection \cite{Rice76,Gomes01}, either based on a 
+single instance or class of instances \cite{Xu07} to determine which DR to 
+choose from. 
+% automation for selecting DRs #2 - ACO
+Implementing ant colony optimisation to select the best DR 
+from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13} 
+showed that the choice of DR do affect the results and that for all performance 
+measures considered. They showed that it was better to have a all the DRs to 
+choose from rather than just a single DR at a time.
+% automation for selecting DRs #3 - GA
+Combining \dr s, with the aid of genetic programming (GP), results from 
+\cite{Tay08} were promising compared to the benchmarks DRs from the literature.
+The main drawback, is that the rules from their GP framework is quite complex, 
+and difficult to contrive a meaningful description to a layman.
 
 Heuristics algorithms for scheduling are typically either a construction or 
 improvement heuristics. The improvement heuristic starts with a complete 
@@ -155,8 +133,91 @@ schedule and then tries to find similar, but better schedules.  A construction
 heuristic starts with an empty schedule and adds one job at a time until the 
 schedule is complete. The work presented here will focus on construction 
 heuristics, \dr s, although the techniques developed could be adapted to 
-improvement
-heuristics also. 
+improvement heuristics also. 
+
+\todo[inline,color=pink]{Direct search (GA based, Poli, etc)}
+
+A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
+learned from completed schedules in order to iteratively improve new ones. 
+At each dispatching step, the method can utilise the current feature space to 
+\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
+reverse lookahead). Their method is straightforward, and thus easy to 
+implement and more importantly computationally inexpensive, although the 
+authors do stress that there is still remains room for improvement.
+
+In the field of Artificial Intelligence, \cite{Meeran12} point out that despite 
+their `intelligent' solutions, the effectiveness of finding the optimum has 
+been rather limited. However, combined with local-search methodologies, they 
+can be improved upon significantly, as \cite{Meeran12} showed with the 
+use of a hybrid method using Genetic Algorithms (GA) and Tabu Search (TS). 
+Therefore, getting the best of both worlds, namely, the diverse global search 
+obtained from GA and being complemented with the intensified local search 
+capabilities of TS. 
+Now, hybridisation of global and local methodologies is non-trivial. In 
+general combination of the two improves performance, however, they often come 
+at a great computational cost.  
+
+\todo[inline,color=green]{Cite Poli here!}
+
+\vfill 
+
+\todo[inline,color=pink]{Reinforcement learning based, Diettrich, also Kendall 
+\& Burke}
+
+Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
+processing by using reinforcement learning (RL), in particular, temporal 
+difference learning. 
+Starting with a relaxed problem, each job was scheduled as early as its 
+temporal partial order would permit, there by initially ignoring any resource 
+constraints on the machines, yielding the schedule's critical path. Then the 
+schedule would be repaired so the resource constraints were satisfied in the 
+minimum amount of iterations.
+
+\vfill
+
+Meta learning can be very fruitful in RL, as experiments from 
+\cite{Kalyanakrishnan11} discovered some key discriminants between 
+competing algorithms for their particular problem instances, which provided 
+them with a hybrid algorithm which combines the strengths of the algorithms.
+
+\vfill 
+\todo[inline,color=green]{Cite Burke here!}
+
+Using case based reasoning for timetable scheduling, training data in 
+\cite{Burke06} is guided by the two best heuristics in the literature.
+They point out that in order for their framework to be successful, problem 
+features need to be sufficiently explanatory and training data need to be 
+selected carefully so they can suggest the appropriate solution for a specific 
+range of new cases. Again, stressing the importance of meaningful feature 
+selection. 
+
+\vfill
+
+\todo[inline,color=pink]{Supervised learning (Siggi, etc) -- concentrate on 
+this!}
+
+A recent editorial of the state-of-the-art approaches in advanced \dr s for 
+large-scale manufacturing systems by \cite{Chen13} points out that:
+\lq\lq ... most traditional \dr s are based on historical data. 
+With the emergence of data mining and on-line analytic processing, dispatching 
+rules can now take predictive information into account.\rq\rq~The importance of 
+automated discovery of DR was also emphasised by \cite{Monch13}. 
+Several of successful implementations in the field of semiconductor wafer 
+fabrication facilities are discussed, however, this sort of investigation is 
+still in its infancy.
+
+The alternative to hand-crafting heuristics, is to implement an automatic way 
+of learning heuristics using a data driven approach. 
+Data can be generated using a known heuristic, such an approach is taken in 
+\cite{Siggi05} for \jsp\, where a LPT-heuristic is applied. Afterwards, a 
+decision tree is used to create a \dr\ with similar logic. However, this method 
+cannot outperform the original LPT-heuristic used to guide the search. For 
+instruction scheduling, this drawback is confronted in 
+\cite{Malik08,Russell09,Siggi10} by using an optimal scheduler, computed 
+off-line. The optimal solutions are used as training data and a decision tree 
+learning algorithm applied as before. Preferring simple to complex models, the 
+resulting \dr s gave significantly better schedules than using popular 
+heuristics in that field, and a lower worst-case factor from optimality. 
 
 The focus on this study is better understanding of \emph{how} and \emph{when} 
 \dr s work in general, in order to mediate the set-up for the 
@@ -178,21 +239,23 @@ paramount importance to inspect the actual end-performance when choosing a
 suitable model, not just staring blindly at the validation accuracy. Moreover, 
 different measures on how to report training accuracy is discussed.
 
+\todo[inline,color=pink]{Outline of paper}
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and  
-\cref{sec:constructionjssp} goes into how their schedules are constructed along 
-with a background on what has been done previously in learning new dispatching 
-rules in similar fields. 
+\cref{sec:constructionjssp} describes the main attributes for \jsp, 
+and goes into how to create schedules with \dr s. In \cref{sec:learnCDR} we 
+show how to create \cdr s using preference learning, focusing on how to 
+compare operations and collect training data.
 \Cref{sec:opt} sets up the framework for learning from optimal schedules. In 
 particular, the probability of choosing optimal decisions and the effects of 
 making a suboptimal decision. 
-Furthermore, the optimality of common \dr s is investigated, from 
-which a blended dispatching rule is created. 
+Furthermore, the optimality of common \sdr s is investigated.
 With those guidelines, \cref{ch:expr:CDR} goes into detail how to create 
 meaningful \cdr s, with the importance of good feature 
 selection and the polysemy of how to report accuracy. 
 The paper finally concludes in \cref{sec:con} with discussion and conclusions.
 
+%\setcounter{tocdepth}{2} \tableofcontents
 
 \section{\Jsp~Scheduling}\label{sec:problemdef}
 The \jsp~problem (\JSP) involves the scheduling of jobs on a set of 
@@ -472,7 +535,8 @@ rule apriori.  A more attractive approach would be to learn these weights from
 problem examples directly. We will now investigate how this may be accomplished.
 
 
-\section{Learning Priority Dispatching Rules from Problem Instances}\label{sec:gentrainingdata}
+\section{Learning Priority Dispatching Rules from Problem 
+Instances}\label{sec:learnCDR}
 
 In this section we will describe issues that must be addresses when learning 
 new priority \dr s. At the same time we will describe the experimental setup 
@@ -497,8 +561,8 @@ difference of priority \dr s on different problem distributions,
 within the same class of problems, consider the following three cases.
 
 Problem instances for JSP are generated stochastically by fixing the number of 
-jobs and machines to ten. A discrete processing time is sampled independently from a 
-discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., 
+jobs and machines to ten. A discrete processing time is sampled independently 
+from a discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., 
 $\vec{p}\sim \mathcal{U}(u_1,u_2)$. 
 The machine order is a random permutation of all of the machines in the 
 \jsp\. Two different processing times distributions were explored, namely 
@@ -661,7 +725,7 @@ $\mathcal{O}^{(k)}\cap\mathcal{S}^{(k)}=\emptyset$.
 
 For JSP there are $d=\NrFeatLocal$ features (cf. \cref{tbl:jssp:feat} and 
 explained in more detail in \cref{sec:CDR}), and the training set is created in 
-the manner described in \cref{sec:gentrainingdata}.
+the manner described in \cref{sec:learnCDR}.
 
 Now consider the model space $\mathcal{H} = \{h(\cdot) : X \mapsto Y\}$ of 
 mappings from solutions to ranks. Each such function $h$ induces an ordering 
@@ -724,7 +788,7 @@ which indicates the percentage relative deviation from optimality. %Note, for
 
 
 
-\section{Performance of SDR and BDR}\label{sec:opt}
+\section{Performance of SDR}\label{sec:opt}
 In order to create successful \dr s, a good starting point is to 
 investigate the properties of optimal solutions and hopefully be able to learn 
 how to mimic such "good" behaviour. For this, we follow an optimal solution, 
@@ -900,7 +964,7 @@ predetermined feature combination. This was done with the software package from
 	\url{http://www.csie.ntu.edu.tw/~cjlin/liblinear}},
 by training on the full preference set $S$ obtained from the
 $N_{\text{train}}=300$ problem instances following the framework set up in
-\cref{sec:gentrainingdata}. 
+\cref{sec:learnCDR}. 
 Note, in order to report the validation accuracy, 20\% ($N=60$) of the training 
 set was set aside for validation of reporting the accuracy.
 
