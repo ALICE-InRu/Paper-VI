@@ -165,7 +165,7 @@ minima.
 
 % automation for selecting DRs #4 - GA
 By applying genetic programming (GP) on a terminal set of job attributes for 
-flexible \jsp,\footnote{Flexible \jsp, allows jobs to be processed on different 
+flexible \jsp,\footnote{Flexible \jsp\ allows jobs to be processed on different 
 machines, i.e., the problem has the additional complexity of making a routing 
 decision of operations to machines.} \cite{Tay08} optimised a multi-objective 
 \jsp~(transformed into a single objective by linearly combining their 
@@ -191,6 +191,17 @@ At each dispatching step, the method can utilise the current feature space to
 reverse lookahead). Their method is straightforward, and thus easy to 
 implement and more importantly computationally inexpensive, although the 
 authors do stress that there is still remains room for improvement.
+
+Adopting a two-stage hyper-heuristic approach to generate a set of 
+machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
+CDRs from basic attributes, along with evolutionary algorithm to assign a CDR 
+to a specific machine. 
+The problem space consists of \jsp s in semiconductor manufacturing, with 
+additional shop constraints, as machines are grouped to similar work centres, 
+which can have different set-up time, workload, etc. 
+In fact, the GP emphasised on efficiently dispatching on the work 
+centres with set-up requirements and batching capabilities, which are rules 
+that are non-trivial to determine manually.
 
 In the field of Artificial Intelligence, \cite{Meeran12} point out that despite 
 their `intelligent' solutions, the effectiveness of finding the optimum has 
@@ -234,8 +245,7 @@ features need to be sufficiently explanatory and training data need to be
 selected carefully so they can suggest the appropriate solution for a specific 
 range of new cases. Stressing the importance of meaningful feature selection. 
 
-\todo[inline,color=pink]{Supervised learning (Siggi, etc) -- concentrate on 
-this!}
+\todo[inline,color=pink]{Supervised learning (Siggi, etc)}
 
 A recent editorial of the state-of-the-art approaches in advanced \dr s for 
 large-scale manufacturing systems by \cite{Chen13} points out that:
@@ -250,12 +260,14 @@ still in its infancy.
 The alternative to hand-crafting heuristics, is to implement an automatic way 
 of learning heuristics using a data driven approach. 
 Data can be generated using a known heuristic, such an approach is taken in 
-\cite{Siggi05} for \jsp\, where a LPT-heuristic is applied. Afterwards, a 
-decision tree is used to create a \dr\ with similar logic. However, this method 
-cannot outperform the original LPT-heuristic used to guide the search. For 
-instruction scheduling, this drawback is confronted in 
-\cite{Malik08,Russell09,Siggi10} by using an optimal scheduler, computed 
-off-line. The optimal solutions are used as training data and a decision tree 
+\cite{Siggi05} for single-machine \jsp\ %, namely $5\times1$, 
+where a LPT-heuristic is applied.
+Afterwards, a decision tree is used to create a \dr\ with similar logic. 
+However, this method cannot outperform the original 
+LPT-heuristic used to guide the search. 
+This drawback is confronted in \cite{Malik08,Russell09,Siggi10} by using an 
+optimal scheduler, computed off-line. 
+The optimal solutions are used as training data and a decision tree 
 learning algorithm applied as before. Preferring simple to complex models, the 
 resulting \dr s gave significantly better schedules than using popular 
 heuristics in that field, and a lower worst-case factor from optimality. 
@@ -486,8 +498,8 @@ alternatively the least work remaining (LWR). A survey of more than $100$ of
 such rules are presented in \cite{Panwalkar77}. 
 However, the reader is referred to an in-depth survey for simple or 
 \emph{\sdr} (SDR) by \cite{Haupt89}.  
-The SDRs assign an index to each job in the job-list and is generally only based on a
-few attributes and simple mathematical operations.
+The SDRs assign an index to each job in the job-list and is generally only 
+based on a few attributes and simple mathematical operations.
 
 \begin{table}[t!] \centering
 	\caption[Attribute space $\mathcal{A}$ for \JSP]{Attribute space 
@@ -502,7 +514,8 @@ Designing priority \dr s requires recognizing the important
 attributes of the partial schedules needed to create a good scheduling rule. 
 These attributes attempt to grasp key features of the schedule being 
 constructed. Which attributes are most important will necessarily depend on the
-objectives of the scheduling problem. Attributes used in this study applied for 
+objectives of the scheduling problem. 
+Attributes used in this study applied for 
 each possible operation are given in \cref{tbl:jssp:feat}, where the set of 
 machines already dispatched for $J_j$ is $\mathcal{M}_j\subset\mathcal{M}$, 
 and similarly, $M_a$ has already had the jobs $\mathcal{J}_a\subset\mathcal{J}$ 
@@ -510,8 +523,14 @@ previously dispatched.
 The attributes of particular interest were obtained by inspecting the 
 aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are 
 job-related and machine-related, respectively.
-All of these attributes vary throughout the scheduling process, w.r.t. 
-operation belonging to the same time step $k$, with the exception of 
+In fact, \cite{Pickardt2013} note that in the current literature, there is a 
+lack of global perspective in the attribute space, as omitting them won't 
+address the possible negative impact an operation might have on other machines 
+at a later time, it is for that reason we consider features such as 
+\phiSlackRelated, that are slack related and are a means of indicating the 
+current quality of the schedule.
+All of attributes, $\vphi$, vary throughout the scheduling process, 
+w.r.t. operation belonging to the same time step $k$, with the exception of 
 \phijobTotProcTime\ and \phimacTotProcTime\ which are static for a given 
 problem instance but varying for each $J_j\in\mathcal{J}$ and 
 $M_a\in\mathcal{M}$, respectively. 
