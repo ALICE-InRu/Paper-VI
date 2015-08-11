@@ -72,13 +72,7 @@ generalised to any kind of combinatorial problem.
 \and Feature Selection}
 \end{abstract}
 
-
-% ----------------------------- Introduce idea
 \section{Introduction}\label{sec:introduction}
-
-\todo[inline,color=green]{The introduction must be completely re-written to 
-reflect what was done in this paper.) -- Ongoing}
-
 The problem is to learn new problem specific priority \dr s for scheduling. 
 A subclass of scheduling problems is the \jsp\ scheduling problem (JSP), 
 which is widely studied in operations research.  \JSP\ deals with the 
@@ -121,11 +115,6 @@ from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13}
 showed that the choice of DR do affect the results and that for all performance 
 measures considered. They showed that it was better to have a all the DRs to 
 choose from rather than just a single DR at a time.
-% automation for selecting DRs #3 - GA
-Combining \dr s, with the aid of genetic programming (GP), results from 
-\cite{Tay08} were promising compared to the benchmarks DRs from the literature.
-The main drawback, is that the rules from their GP framework is quite complex, 
-and difficult to contrive a meaningful description to a layman.
 
 Heuristics algorithms for scheduling are typically either a construction or 
 improvement heuristics. The improvement heuristic starts with a complete 
@@ -137,6 +126,64 @@ improvement heuristics also.
 
 \todo[inline,color=pink]{Direct search (GA based, Poli, etc)}
 
+Genetic algorithms (GA) are one of the most widely used approaches in \JSP\ 
+literature \cite{Pinedo08}. However, in that case an extensive number of 
+schedules need to be evaluated, and even for low dimensional \JSP\ that can 
+quickly become computationally infeasible.
+GAs can be used directly on schedules 
+\cite{Cheng96,Cheng99,Tsai07,Qing-dao-er-ji12,Ak12,Meeran12}, however, in that 
+case there are many concerns that need to be dealt with. To begin with there 
+are nine encoding schemes for representing the schedules \cite{Cheng96}, in 
+addition there has to be special care when applying cross-over and mutation 
+operators in order for the schedules, now in the role of `chromosomes,' to 
+still remain feasible. 
+
+Another approach is to apply GAs indirectly to \JSP , via dispatching rules, 
+i.e., Dispatching Rules Based Genetic Algorithms (DRGA) 
+\cite{Vazquez-Rodriguez09,Dhingra10,Nguyen13} where a solution is no longer a 
+\emph{proper} schedule but a \emph{representation} of a schedule via applying 
+certain dispatching rules consecutively. 
+DRGA are a special case of \emph{genetic programming} \cite{Koza05} which is 
+the most predominant approach in hyper-heuristics is a framework of creating 
+\emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
+\cite{Burke10}. 
+
+A prevalent approach to solving \JSP\ is to combine several relatively \sdr s 
+such that they may benefit each other for a given problem space. 
+% automation for selecting DRs #3 - GA
+The approach in \cite{InRu14}, was to automate that selection, by 
+translating dispatching rules into measurable features and optimising what 
+their contribution should be via evolutionary search. The framework is straight 
+forward and easy to implement and showed promising and robust results, 
+as models were trained on a lower dimension, and validated on higher dimension. 
+Moreover, \cite{InRu14} showed that the choice of objective 
+function  for evolutionary search is worth investigating. Since the 
+optimisation is based on minimising the expected mean of the fitness function 
+over a large set of problem instances, which can vary within. Then normalising 
+the objective function can stabilise the optimisation process away from local 
+minima. 
+
+% automation for selecting DRs #4 - GA
+By applying genetic programming (GP) on a terminal set of job attributes for 
+flexible \jsp,\footnote{Flexible \jsp, allows jobs to be processed on different 
+machines, i.e., the problem has the additional complexity of making a routing 
+decision of operations to machines.} \cite{Tay08} optimised a multi-objective 
+\jsp~(transformed into a single objective by linearly combining their 
+objectives) with promising results 
+compared to the benchmarks DRs from the literature.
+The main drawback, is that the rules from their GP framework is quite complex, 
+and difficult to contrive a meaningful description to a layman.
+In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} for 
+dynamic \jsp,\footnote{\Jsp\ is considered dynamic when the processing times 
+are not known prior to their arrival.} and tested it against some \sdr s, and 
+found that it only slightly outperformed ERD, and was beat by SPT. The reason 
+behind this staggering change in performance, is most likely due to the choice 
+of objective function, and the underlying problem spaces that were used in 
+training. It's argued that the randomly generated problem instances aren't a 
+proper representative for real-world long-term \jsp\ applications, e.g., by the 
+narrow choice of release times, yielding schedules that are overloading in the 
+beginning phases.
+
 A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
 learned from completed schedules in order to iteratively improve new ones. 
 At each dispatching step, the method can utilise the current feature space to 
@@ -147,9 +194,11 @@ authors do stress that there is still remains room for improvement.
 
 In the field of Artificial Intelligence, \cite{Meeran12} point out that despite 
 their `intelligent' solutions, the effectiveness of finding the optimum has 
-been rather limited. However, combined with local-search methodologies, they 
-can be improved upon significantly, as \cite{Meeran12} showed with the 
-use of a hybrid method using Genetic Algorithms (GA) and Tabu Search (TS). 
+been rather limited. This is the general case for GAs, as they are not well 
+suited for fine-tuning around the optimum \cite{Cheng99}. 
+However, combined with local-search methodologies, they can be improved upon 
+significantly, as \cite{Meeran12} showed with the use of a hybrid method using 
+Genetic Algorithms (GA) and Tabu Search (TS). 
 Therefore, getting the best of both worlds, namely, the diverse global search 
 obtained from GA and being complemented with the intensified local search 
 capabilities of TS. 
@@ -158,8 +207,6 @@ general combination of the two improves performance, however, they often come
 at a great computational cost.  
 
 \todo[inline,color=green]{Cite Poli here!}
-
-\vfill 
 
 \todo[inline,color=pink]{Reinforcement learning based, Diettrich, also Kendall 
 \& Burke}
@@ -173,14 +220,11 @@ constraints on the machines, yielding the schedule's critical path. Then the
 schedule would be repaired so the resource constraints were satisfied in the 
 minimum amount of iterations.
 
-\vfill
-
 Meta learning can be very fruitful in RL, as experiments from 
 \cite{Kalyanakrishnan11} discovered some key discriminants between 
 competing algorithms for their particular problem instances, which provided 
 them with a hybrid algorithm which combines the strengths of the algorithms.
 
-\vfill 
 \todo[inline,color=green]{Cite Burke here!}
 
 Using case based reasoning for timetable scheduling, training data in 
@@ -188,10 +232,7 @@ Using case based reasoning for timetable scheduling, training data in
 They point out that in order for their framework to be successful, problem 
 features need to be sufficiently explanatory and training data need to be 
 selected carefully so they can suggest the appropriate solution for a specific 
-range of new cases. Again, stressing the importance of meaningful feature 
-selection. 
-
-\vfill
+range of new cases. Stressing the importance of meaningful feature selection. 
 
 \todo[inline,color=pink]{Supervised learning (Siggi, etc) -- concentrate on 
 this!}
