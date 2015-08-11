@@ -897,10 +897,11 @@ investigate what happens once we encounter suboptimal state spaces.
 
 \subsection{Simple blended dispatching rule}\label{sec:opt:bdr}
 A naive approach to create a simple blended dispatching rule would be for 
-instance be switching between two SDRs at a predetermined time point. Hence, 
-going back to \cref{fig:opt:SDR} a presumably good BDR for \jrnd{10}{10}  would 
-be starting with SPT and then switching over to MWR at around time step 40, 
-where the SDRs change places in outperforming one another. A box-plot for 
+instance be switching between two SDRs at a predetermined time point, referred 
+to as blended \dr~(BDR). 
+Hence, going back to \cref{fig:opt:SDR} a presumably good BDR for \jrnd{10}{10} 
+would be starting with SPT and then switching over to MWR at around time step 
+40, where the SDRs change places in outperforming one another. A box-plot for 
 $\rho$ for all problem spaces is depicted in \cref{fig:boxplot:BDR}. Now, this 
 little manipulation between SDRs does outperform SPT immensely, yet doesn't 
 manage to gain the performance edge of MWR, save for \frnd{10}{10}. This gives 
