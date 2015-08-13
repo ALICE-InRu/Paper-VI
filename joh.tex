@@ -348,7 +348,7 @@ tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as
 follows,
 \begin{equation}
 C_{\max} := 
-\max\{x_e(j,\vsigma_j(m))\;|\;J_j\in\mathcal{J}\}.\label{eq:makespan}
+\max\left\{x_e(j,\vsigma_j(m))\;\middle|\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
 \end{equation} 
 This family of scheduling problems is denoted by $J||C_{\max}$ 
 \cite{Pinedo08}.
@@ -841,8 +841,8 @@ Then, the preference learning problem is specified by a set of preference pairs,
 \begin{equation}
 Z = 
 \left\{\left(\vec{z}_o,+1\right),\left(\vec{z}_s,-1\right)
-\;|\;\forall (J_o,J_s) \in \mathcal{O}^{(k)} \times \mathcal{S}^{(k)}
-\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:prefset}
+\;\middle|\;\forall \left(J_o,J_s\right) \in \mathcal{O}^{(k)} \times 
+\mathcal{S}^{(k)}\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:prefset}
 \end{equation}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d=\NrFeatLocal$ 
 features (cf. \cref{tbl:jssp:feat}), $Y=\{+1,-1\}$ is the outcome space from 
