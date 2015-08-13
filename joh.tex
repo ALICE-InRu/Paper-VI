@@ -342,16 +342,18 @@ x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1))
 \end{equation}
 for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
 Note, that each job can have its own distinctive flow pattern through the 
-machines, which is independent of the other jobs. However, in the case that all 
-jobs share the same \emph{fixed} permutation route, it will be referred to as 
-\FSP.
+machines, which is independent of the other jobs. 
 
-The disjunctive condition that each machine can handle at most one job at a 
-time is the following,
-\begin{equation}\label{eq:oneJobPerMac}
-x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
-\end{equation}
-for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
+%However, in the case that all 
+%jobs share the same \emph{fixed} permutation route, it will be referred to as 
+%\FSP.
+
+%The disjunctive condition that each machine can handle at most one job at a 
+%time is the following,
+%\begin{equation}\label{eq:oneJobPerMac}
+%x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
+%\end{equation}
+%for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
 
 The objective function is to minimise its maximum completion times for all 
 tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
@@ -360,12 +362,13 @@ follows,
 C_{\max} := 
 \max\{x_e(j,\vsigma_j(m))\;|\;J_j\in\mathcal{J}\}.\label{eq:makespan}
 \end{equation} 
+This family of scheduling problems is denoted by $J||C_{\max}$ 
+\cite{Pinedo08}.
 Additional constraints commonly considered are job release-dates and due-dates 
 or sequence dependent set-up times, however, these will not be considered here. 
-This family of scheduling problems is denoted by $J||C_{\max}$ 
-\cite{Pinedo08}.  
+  
 
-\todo[inline,color=pink]{Here we must say something about the computational 
+\todo[inline,color=red]{Here we must say something about the computational 
 complexity of 
 the $J||C_{\max}$ compared to other scheduling problems, and why we consider 
 only this one in our study. It may be useful to look at Pinedo also on this 
@@ -373,19 +376,21 @@ subject ... perhaps also mention that many of the \dr s in the
 literature have been designed around this problem... use this to tie to he next 
 section -- OK?}
 
-Deterministic \JSP\ is the most \emph{general} case for classical scheduling 
-problems \cite{Jain99}. 
-Many other scheduling problems can be reformulated as \JSP. 
-For instance the widely studied Travelling Salesman Problem can be 
-contrived as \jsp\ with the salesman as a single machine in use and the cities 
-to be visited are the jobs to be processed.
-Moreover, the general form of \JSP\ assumes that each job can have its own 
-distinctive flow pattern through the machines, which is independent of the 
-other jobs. 
-In the case where all jobs share the same permutation route, \jsp\ is reduced 
-to a permutation \fsp\ scheduling problem \cite{Guinet1998,Tay08}. 
-Therefore, without loss of generality, this study is structured around 
-\JSP. 
+Put text here that talks about NP hard and why we need heuristics to solve this problem, one such heuristic is the dispatching rules which are introduced in the following section. What us the maximum size we can solve 14x14 specialized branch and bound ...
+
+%Deterministic \JSP\ is the most \emph{general} case for classical scheduling 
+%problems \cite{Jain99}. 
+%Many other scheduling problems can be reformulated as \JSP. 
+%For instance the widely studied Travelling Salesman Problem can be 
+%contrived as \jsp\ with the salesman as a single machine in use and the cities 
+%to be visited are the jobs to be processed.
+%Moreover, the general form of \JSP\ assumes that each job can have its own 
+%distinctive flow pattern through the machines, which is independent of the 
+%other jobs. 
+%In the case where all jobs share the same permutation route, \jsp\ is reduced 
+%to a permutation \fsp\ scheduling problem \cite{Guinet1998,Tay08}. 
+%Therefore, without loss of generality, this study is structured around 
+%\JSP. 
 
 
 
@@ -428,16 +433,16 @@ on this machine.
 If $J_6$ had been placed earlier, a slot would have been created between it and 
 $J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$. 
 The time in which machine $M_a$ is idle between consecutive jobs $J_j$ and 
-$J_{j'}$ is called idle time, or flow, 
+$J_{j'}$ is called idle time, or flow, \todo{Show me where in the literature where the term flow is used for this?}
 \begin{equation} 
 f(a,j):=x_s(j,a)-x_e(j',a) \label{eq:slack}
 \end{equation}
 where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. 
 
 Construction heuristics are designed in such a way that it limits the search 
-space in a logical manner, respecting not to exclude the optimum. Here, the 
+space in a logical manner, respecting not to exclude the optimum\todo{Are you sure about this, I don't think this is right!}. Here, the 
 construction heuristic is to schedule the dispatches as closely together as 
-possible, i.e., minimise the schedule's flow. 
+possible, i.e., minimise the schedule's flow\todo{...}. 
 More specifically, once an operation $(j,a)$ has been chosen from the job-list, 
 $\mathcal{L}$, by some dispatching rule, it can placed immediately after (but 
 not prior) $x_e(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
@@ -481,6 +486,7 @@ For this reason it will be the placement rule applied here.
 		$C_{\max}$ denoted as dotted line.}
 	\label{fig:jssp:example}
 \end{figure}
+\todo{Is there a PDF version of this figure?}
 
 %\subsection{Priority Dispatching Rules}\label{ch:dispatchrules}
 % \subsection{Simple priority \dr s}
@@ -489,7 +495,7 @@ For this reason it will be the placement rule applied here.
 
 Priority \dr s will use attributes of operations, such as processing time, 
 in order to determine the job with the highest priority. \todo{Inconsist: 
-\emph{attribute} versus \emph{feature}}
+\emph{attribute} versus \emph{feature}}\todo{Let us use attribute rather ad features, search and replace entire document!}
 Consider again \Cref{fig:jssp:example}, if the job with the shortest processing 
 time (SPT) were to be scheduled next, then $J_2$ would be dispatched. 
 Similarly, for the longest processing time (LPT) heuristic, $J_5$ would have the highest priority. 
@@ -526,8 +532,8 @@ aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are
 job-related and machine-related, respectively.
 In fact, \cite{Pickardt2013} note that in the current literature, there is a 
 lack of global perspective in the attribute space, as omitting them won't 
-address the possible negative impact an operation might have on other machines 
-at a later time, it is for that reason we consider features such as 
+address the possible negative impact an operation\todo{Is this an $(j,a)$ operation?} might have on other machines 
+at a later time, it is for that reason we consider attributes such as 
 \phiSlackRelated, that are slack related and are a means of indicating the 
 current quality of the schedule.
 All of attributes, $\vphi$, vary throughout the scheduling process, 
@@ -541,11 +547,10 @@ implement,
 fast and find good schedules. In addition, they are relatively easy to 
 interpret, which makes them desirable for the end-user.
 However, they can also fail unpredictably. 
-A careful combination of \dr s can perform significantly better 
+A careful combination of \dr s have been shown to perform significantly better 
 \cite{Jayamohan04}. These are referred to as \emph{\cdr s} 
 (CDR), where the priority ranking is an expression of several \sdr s. 
-CDRs deal with a greater number of features and 
-more complicated form, in short, CDR is a combination of several SDRs. For 
+CDRs deal with a greater number of more complicated features constructed from the schedules attributes. In short a CDR is a combination of several SDRs. For 
 instance let $\pi$ be a CDR comprised of $d$ DRs, then 
 the index $I$ for $J_j\in\mathcal{L}^{(k)}$ using $\pi$ is, 
 \begin{equation}
@@ -567,7 +572,7 @@ functions based on either on job waiting time or machine idle time
 (similar to \phiwait\ and \phimacSlack\ in \cref{tbl:jssp:feat}), i.e., the 
 CDRs are a combination of those two key attributes and then the SDRs. 
 However, there are no combinations of the basic SDRs explored, only 
-said two attributes.  
+said\todo{Only said?!} two attributes.  
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
 \cite{Yu13} had 48 CDR combinations, yielding 48 different models 
 to implement and test. 
@@ -583,7 +588,7 @@ considered as a special case of a the following general linear value function,
 \begin{equation}\label{eq:jssp:linweights}
 	h(\vchi)=\sum_{i=1}^d w_i\phi_i(\vchi).
 \end{equation}
-where the job to be dispatched, $J_{j^*}$, corresponds to the one highest 
+when $\phi_i=\pi_i(\vec{\phi})$ and the job to be dispatched, $J_{j^*}$, corresponds to the one highest 
 value, i.e.,
 \begin{equation}\label{eq:lin}
 	J_{j^*}=\argmax_{J_j\in \mathcal{L}}\; h(\vphi_j)
@@ -595,13 +600,12 @@ chosen by the designer or the
 rule apriori.  A more attractive approach would be to learn these weights from 
 problem examples directly. We will now investigate how this may be accomplished.
 
+\pagebreak % for now ... remove later
+\section{Learning New Priority Dispatching Rules}\label{sec:learnCDR}
 
-\section{Learning Priority Dispatching Rules from Problem 
-Instances}\label{sec:learnCDR}
-
-In this section we will describe issues that must be addresses when learning 
+In this section we will describe concerns that must be addressed when learning 
 new priority \dr s. At the same time we will describe the experimental setup 
-used in our experimental study. The issues that must be addressed are as 
+used in our study. The matters that must be addressed are as 
 follows. The problem instances used for learning and their optimal solutions. 
 The reconstruction of the optimal solution using a priority dispatching rule. 
 The construction of the training set used for learning. Finally, the
@@ -620,7 +624,6 @@ appropriate. The aim would be to learn a dispatching rule that works well on
 average for a distribution of problem instances. To illustrate the performance 
 difference of priority \dr s on different problem distributions, 
 within the same class of problems, consider the following three cases.
-
 Problem instances for JSP are generated stochastically by fixing the number of 
 jobs and machines to ten. A discrete processing time is sampled independently 
 from a discrete uniform distribution from the interval $I=[u_1,u_2]$, i.e., 
@@ -629,8 +632,36 @@ The machine order is a random permutation of all of the machines in the
 \jsp\. Two different processing times distributions were explored, namely 
 \jrnd{n}{m}  
 where $I=[1,99]$ and \jrndn{n}{m} where $I=[45,55]$. These instances 
-are referred to as random and random-narrow, respectively. 
+are referred to as random and random-narrow, respectively. In addition we consider 
+the case where the machine order is fixed and the same for all jobs, i.e. $\vec{\sigma}=\{1,\ldots,m\}$
+where $\vec{p}\sim\mathcal{U}(1,99)$. These jobs are denoted by \frnd{n}{m} and is analogous to 
+\jrnd{n}{m}.
 
+
+The goal is to minimize the makespan, $C_{\max}$. The optimum 
+makespan is denoted $C_{\max}^{\text{opt}}$, and the makespan obtained from the 
+scheduling policy $A$ under inspection by $C_{\max}^{A}$. Since the optimal 
+makespan varies between problem instances the performance measure is the 
+following,
+\begin{equation}\label{eq:ratio}
+	\rho=\frac{C_{\max}^{A}-C_{\max}^{\text{opt}}}{C_{\max}^{\text{opt}}}\cdot
+	100\%
+\end{equation}
+which indicates the percentage relative deviation from optimality. %Note, for 
+
+In figure~\ref{fig:boxplot:SDR} ...
+
+\todo{use this somewhere else}
+For this study synthetic JSP and FSP problem instances will be considered with 
+the problem size $10\times10$. 
+For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
+generated for training and testing, respectively. Moreover, of the training 
+data, 20\% is reserved for validation.
+Summary of problem classes is given in \cref{tbl:data:sim}.  
+Note, that difficult problem instances are not filtered out beforehand, such as 
+the approach in \cite{Whitley}. 
+
+\todo{not sure what this text below is about?!}
 Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
 the uniform distribution, it is however chosen in accordance with the 
 literature \cite{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
@@ -643,22 +674,7 @@ denoted as $J|2\textrm{sets}|C_{\max}$ problems, but as discussed in
 from best known solution) in comparison with the "easy" or "unchallenging" 
 family with the general $J||C_{\max}$ set-up. % ath. Holtsclaw96 vitnar í 
 %orlib_swv um easy-hard pælinguna
-
-
-\todo{use this somewhere else}
-For this study synthetic JSP and FSP problem instances will be considered with 
-the problem size $10\times10$. 
-For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
-generated for training and testing, respectively. Moreover, of the training 
-data, 20\% is reserved for validation.
-Summary of problem classes is given in \cref{tbl:data:sim}.  
-Note, that difficult problem instances are not filtered out beforehand, such as 
-the approach in \cite{Whitley}. 
-
-Problem instances for FSP are such that processing times are i.i.d. and 
-uniformly distributed, \frnd{n}{m}  where $\vec{p}\sim\mathcal{U}(1,99)$, 
-referred to as random. In the JSP context \frnd{n}{m}  is analogous to 
-\jrnd{n}{m}. 
+ 
 
 \begin{table}\centering
   \caption[Problem space distributions used in experimental studies.]{Problem 
@@ -669,6 +685,12 @@ referred to as random. In the JSP context \frnd{n}{m}  is analogous to
   \input{tables/data-sim}
 \end{table} 
 
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{boxplotRho_SDR_10x10}.pdf}
+	\caption{Box plot for deviation from optimality, $\rho$, (\%) for SDRs}
+	\label{fig:boxplot:SDR}
+\end{figure}
 
 \subsection{Comparing Operations}\label{sec:compare}
 %\subsection{Labelling schedules w.r.t. optimal decisions}
@@ -813,39 +835,7 @@ $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
 \end{equation}
 where $h(\cdot)$ is the classification model obtained by the preference set.
 
-\subsection{Interpreting linear classification 
-	models}\label{sec:learningmodels:interpret}
-Looking at the features description in \cref{tbl:jssp:feat} it is possible for 
-the ordinal regression to `discover' the weights $\vec{w}$ in order for 
-\cref{eq:jssp:linweights} corresponds to applying a \sdr s from 
-\cref{ch:dispatchrules}. For instance, 
-\begin{eqnarray*} %{s'rCl}
-	SPT:~~w_i&=&\bigg\{ \begin{array}{rl}-1&\text{if 
-		}i=1\\0&\text{otherwise}\end{array} \\
-	LPT:~~w_i&=&\bigg\{ \begin{array}{rl}+1&\text{if 
-		}i=1\\0&\text{otherwise}\end{array} \\
-	MWR:~~w_i&=&\bigg\{ \begin{array}{rl}+1&\text{if 
-		}i=7\\0&\text{otherwise}\end{array} \\
-	LWR:~~w_i&=&\bigg\{ \begin{array}{rl}-1&\text{if 
-		}i=7\\0&\text{otherwise}\end{array}
-\end{eqnarray*}
-where $i\in\{1,\ldots,d\}$. % Note, that at each time step $k$ a task 
-%corresponding to the \emph{highest} priority is chosen, i.e., 
-%$\argmax_{J_j\in\mathcal{L}}\{h(\vphi_j)\}$.
-When using a feature space based on SDRs, the linear classification models can 
-very easily be interpreted as CDRs with predetermined weights.
 
-
-The goal is to minimize the makespan, $C_{\max}$. The optimum 
-makespan is denoted $C_{\max}^{\text{opt}}$, and the makespan obtained from the 
-scheduling policy $A$ under inspection by $C_{\max}^{A}$. Since the optimal 
-makespan varies between problem instances the performance measure is the 
-following,
-\begin{equation}\label{eq:ratio}
-	\rho=\frac{C_{\max}^{A}-C_{\max}^{\text{opt}}}{C_{\max}^{\text{opt}}}\cdot
-	100\%
-\end{equation}
-which indicates the percentage relative deviation from optimality. %Note, for 
 
 
 
@@ -949,12 +939,7 @@ investigate what happens once we encounter suboptimal state spaces.
 	\label{fig:opt:SDR}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{boxplotRho_SDR_10x10}.pdf}
-	\caption{Box plot for deviation from optimality, $\rho$, (\%) for SDRs}
-	\label{fig:boxplot:SDR}
-\end{figure}
+
 
 \subsection{Simple blended dispatching rule}\label{sec:opt:bdr}
 A naive approach to create a simple blended dispatching rule would be for 
