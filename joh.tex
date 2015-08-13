@@ -343,17 +343,21 @@ x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1))
 for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
 Note, that each job can have its own distinctive flow pattern through the 
 machines, which is independent of the other jobs. 
+However, in the case that all jobs share the same \emph{fixed} permutation 
+route, referred to as \fsp~(\FSP). 
+\todo[color=pink]{Note, this is not the \textit{common}  \textbf{permutation} 
+flow-shop, but rather FIXED job-shop}
+A very common variant of subclass of \FSP\ in the literature is called 
+permutation \fsp, which has the added constraint that the processing order of 
+the jobs on the machines must be identical as well, i.e., no passing of jobs 
+allowed \cite{Stafford88}.
 
-%However, in the case that all 
-%jobs share the same \emph{fixed} permutation route, it will be referred to as 
-%\FSP.
-
-%The disjunctive condition that each machine can handle at most one job at a 
-%time is the following,
-%\begin{equation}\label{eq:oneJobPerMac}
-%x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
-%\end{equation}
-%for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
+The disjunctive condition that each machine can handle at most one job at a 
+time is the following,
+\begin{equation}\label{eq:oneJobPerMac}
+x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
+\end{equation}
+for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
 
 The objective function is to minimise its maximum completion times for all 
 tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
@@ -375,9 +379,11 @@ only this one in our study. It may be useful to look at Pinedo also on this
 subject ... perhaps also mention that many of the \dr s in the 
 literature have been designed around this problem... use this to tie to he next 
 section -- OK?}
-
-Put text here that talks about NP hard and why we need heuristics to solve this problem, one such heuristic is the dispatching rules which are introduced in the following section. What us the maximum size we can solve 14x14 specialized branch and bound ...
-
+\todo[inline]{
+Put text here that talks about NP hard and why we need heuristics to solve this 
+problem, one such heuristic is the dispatching rules which are introduced in 
+the following section. What us the maximum size we can solve 14x14 specialized 
+branch and bound ...}
 %Deterministic \JSP\ is the most \emph{general} case for classical scheduling 
 %problems \cite{Jain99}. 
 %Many other scheduling problems can be reformulated as \JSP. 
