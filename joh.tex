@@ -433,16 +433,20 @@ on this machine.
 If $J_6$ had been placed earlier, a slot would have been created between it and 
 $J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$. 
 The time in which machine $M_a$ is idle between consecutive jobs $J_j$ and 
-$J_{j'}$ is called idle time, or flow, \todo{Show me where in the literature where the term flow is used for this?}
+$J_{j'}$ is called idle time, or slack, 
 \begin{equation} 
-f(a,j):=x_s(j,a)-x_e(j',a) \label{eq:slack}
+s(a,j):=x_s(j,a)-x_e(j',a) \label{eq:slack}
 \end{equation}
 where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. 
 
 Construction heuristics are designed in such a way that it limits the search 
-space in a logical manner, respecting not to exclude the optimum\todo{Are you sure about this, I don't think this is right!}. Here, the 
+space in a logical manner, respecting not to exclude the 
+optimum\todo{Are you sure about this, I don't think this is 
+right!}\todo[color=pink]{What do you mean? The slot placement matters, I did 
+tests way back when. 
+97\% vs. 100\% reproducability of achieving optimal solution.}. Here, the 
 construction heuristic is to schedule the dispatches as closely together as 
-possible, i.e., minimise the schedule's flow\todo{...}. 
+possible, i.e., minimise the schedule's idle time. 
 More specifically, once an operation $(j,a)$ has been chosen from the job-list, 
 $\mathcal{L}$, by some dispatching rule, it can placed immediately after (but 
 not prior) $x_e(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
@@ -453,7 +457,7 @@ occupy. Bearing in mind that $J_j$ release time is $x_e(j,\vsigma_j(a-1))$ one
 cannot implement \cref{eq:slack} directly, instead it has to be updated as 
 follows,
 \begin{equation}
-\tilde{f}(a,j'):= x_s(j'',a)-\max\{x_e(j',a),x_e(j,\vsigma_j(a-1))\} % 
+\tilde{s}(a,j'):= x_s(j'',a)-\max\{x_e(j',a),x_e(j,\vsigma_j(a-1))\} % 
 %\textrm{ if } x_e(j,\vsigma_j(a-1)\geq x_e(j',a) 
 \end{equation}
 for all already dispatched jobs $J_{j'},J_{j''}\in \mathcal{J}_a$ where 
@@ -461,7 +465,7 @@ $J_{j''}$ is $J_{j'}$ successor on $M_a$. Since pre-emption is not allowed, the
 only applicable slots are whose idle time can process the entire operation, 
 i.e.,
 \begin{equation}
-\tilde{F}_{ja} := \condset{J_{j'}\in \mathcal{J}_a}{\tilde{f}(a,j')\geq p_{ja} 
+\tilde{S}_{ja} := \condset{J_{j'}\in \mathcal{J}_a}{\tilde{s}(a,j')\geq p_{ja} 
 }\label{eq:slots}.
 \end{equation} 
 The placement rule applied will decide where to place the job and 
@@ -797,10 +801,11 @@ each dispatch; a total of $\ell$ linear models for solving $n\times m$ JSP.
 However, the experiments there showed that by fixing the weights to its mean 
 value throughout the dispatching sequence, results remained satisfactory.
 A more sophisticated way, would be to create a \emph{new} linear model, where 
-the preference set, $S$, is the union of the preference pairs across the $\ell$ 
+the preference set, $Z$, is the union of the preference pairs across the 
+$\ell$ 
 dispatches. 
-This would amount to a substantial preference set, and for $S$ to be 
-computationally feasible to learn, $S$ has to be reduced. For this several 
+This would amount to a substantial preference set, and for $Z$ to be 
+computationally feasible to learn, $Z$ has to be reduced. For this several 
 ranking strategies were explored in \cite{InRu15a}, the results there showed 
 that it's sufficient to use partial subsequent rankings, namely, combinations 
 of $r_i$ and $r_{i+1}$ for $i\in\{1,\ldots,n'\}$, are added to the preference 
@@ -835,10 +840,10 @@ exist situations in which more than one operation can be considered optimal.
 
 The preference learning problem is specified by a set of preference pairs,
 \begin{equation}
-	S = 
+	Z = 
 	\left\{\left(\vec{z}_o,+1\right),\left(\vec{z}_s,-1\right)
 	\;|\;\forall (o,s) \in \mathcal{O}^{(k)} \times \mathcal{S}^{(k)}
-	\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:Sjssp}
+	\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:prefset}
 \end{equation}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d$ features,  
 $Y=\{-1,+1\}$ is the outcome space, $\ell=n\times m$ is the total number 
@@ -866,8 +871,9 @@ induce the preference is defined by a linear function in the feature space,
 
 Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$. 
 For this study, L2-regularized logistic regression from the \textsc{liblinear} 
-package \cite{liblinear} without bias is used to learn the preference set $S$, 
-defined by \cref{eq:Sjssp}.
+package \cite{liblinear} without bias is used to learn the preference set 
+$Z$, 
+defined by \cref{eq:prefset}.
 Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let $\vphi_j$ denote 
 its corresponding  post-decision state. Then the job chosen to be dispatched, 
 $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
@@ -996,18 +1002,19 @@ manner described in \cref{ch:learningmodels}, where $\Phi$ is limited to the
 predetermined feature combination. This was done with the software package from
 \cite{liblinear}\footnote{Software available at 
 	\url{http://www.csie.ntu.edu.tw/~cjlin/liblinear}},
-by training on the full preference set $S$ obtained from the
+by training on the full preference set $Z$ obtained from the
 $N_{\text{train}}=300$ problem instances following the framework set up in
 \cref{sec:learnCDR}. 
 Note, in order to report the validation accuracy, 20\% ($N=60$) of the training 
 set was set aside for validation of reporting the accuracy.
 
 \subsection{Validation accuracy}\label{sec:CDR:acc}
-As the preference set $S$ has both preference pairs belonging to optimal
+As the preference set $Z$ has both preference pairs belonging to optimal
 ranking, and subsequent rankings, it is not of primary importance to classify
 \emph{all} rankings correctly, just the optimal ones. Therefore, instead of
 reporting the validation accuracy based on the classification problem of the
-correctly labelling the problem set $S$, it's opted the validation accuracy is
+correctly labelling the problem set $Z$, it's opted the validation accuracy 
+is
 obtained in the same manner as done in \cref{sec:opt:sdr} for SDRs, i.e., the
 probability of choosing optimal decision given the resulting linear weights,
 however in this context, the mean throughout the dispatching process is
