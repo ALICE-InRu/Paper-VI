@@ -347,10 +347,9 @@ However, in the case that all jobs share the same \emph{fixed} permutation
 route, referred to as \fsp~(\FSP). 
 \todo[color=pink]{Note, this is not the \textit{common}  \textbf{permutation} 
 flow-shop, but rather FIXED job-shop}
-A very common variant of subclass of \FSP\ in the literature is called 
-permutation \fsp, which has the added constraint that the processing order of 
-the jobs on the machines must be identical as well, i.e., no passing of jobs 
-allowed \cite{Stafford88}.
+A commonly used subclass of \FSP\ in the literature is permutation \fsp, which 
+has the added constraint that the processing order of the jobs on the machines 
+must be identical as well, i.e., no passing of jobs allowed \cite{Stafford88}.
 
 The disjunctive condition that each machine can handle at most one job at a 
 time is the following,
@@ -378,12 +377,13 @@ the $J||C_{\max}$ compared to other scheduling problems, and why we consider
 only this one in our study. It may be useful to look at Pinedo also on this 
 subject ... perhaps also mention that many of the \dr s in the 
 literature have been designed around this problem... use this to tie to he next 
-section -- OK?}
-\todo[inline]{
+section \\
 Put text here that talks about NP hard and why we need heuristics to solve this 
 problem, one such heuristic is the dispatching rules which are introduced in 
 the following section. What us the maximum size we can solve 14x14 specialized 
 branch and bound ...}
+\todo[inline,color=green]{I've already discussed the NP-hardness in the 
+introduction. Should I repeat that or rather move it down here?}
 %Deterministic \JSP\ is the most \emph{general} case for classical scheduling 
 %problems \cite{Jain99}. 
 %Many other scheduling problems can be reformulated as \JSP. 
@@ -496,7 +496,6 @@ For this reason it will be the placement rule applied here.
 		$C_{\max}$ denoted as dotted line.}
 	\label{fig:jssp:example}
 \end{figure}
-\todo{Is there a PDF version of this figure?}
 
 %\subsection{Priority Dispatching Rules}\label{ch:dispatchrules}
 % \subsection{Simple priority \dr s}
@@ -575,14 +574,13 @@ tie, some other priority measure is used. Generally the priority dispatching
 rules are static during the entire scheduling process, however, ties could also 
 be broken randomly. \todo[color=pink]{We break randomly? We do now!}
 
-\todo[color=pink]{Take one iteration over this paragraph with Helga -- Better?}
 Investigating 11 SDRs for JSP, \cite{Lu13} created a pool of 33 CDRs that 
 strongly outperformed the ones they were based on, by using multi-contextual 
 functions based on either on job waiting time or machine idle time 
 (similar to \phiwait\ and \phimacSlack\ in \cref{tbl:jssp:feat}), i.e., the 
 CDRs are a combination of those two key attributes and then the SDRs. 
-However, there are no combinations of the basic SDRs explored, only 
-said\todo{Only said?!} two attributes.  
+However, there are no combinations of the basic SDRs explored, only those two 
+attributes.  
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
 \cite{Yu13} had 48 CDR combinations, yielding 48 different models 
 to implement and test. 
@@ -610,7 +608,9 @@ chosen by the designer or the
 rule apriori.  A more attractive approach would be to learn these weights from 
 problem examples directly. We will now investigate how this may be accomplished.
 
-\pagebreak % for now ... remove later
+\vfill
+\todo[inline]{Remove page break later!}
+\pagebreak % for now ... remove later 
 \section{Performance Analysis of Priority Dispatching Rules}\label{sec:learnCDR}
 
 In this section we will describe concerns that must be addressed when learning 
