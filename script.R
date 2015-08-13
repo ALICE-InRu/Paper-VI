@@ -11,28 +11,24 @@ input$smooth=F
 
 source('opt.uniqueness.R');
 all.StepwiseOptimality=get.StepwiseOptimality(input$problems,input$dimension,'OPT')
-#FIGURE 2 \label{fig:opt:unique}
-plot.stepwiseUniqueness(all.StepwiseOptimality,input$dimension,input$smooth,save)
-#FIGURE 3 \label{fig:opt}
-plot.stepwiseOptimality(all.StepwiseOptimality,input$dimension,F,input$smooth,save)
+#FIGURE NA \label{fig:opt:unique}
+#plot.stepwiseUniqueness(all.StepwiseOptimality,input$dimension,input$smooth,save)
+#FIGURE NA \label{fig:opt}
+#plot.stepwiseOptimality(all.StepwiseOptimality,input$dimension,F,input$smooth,save)
 
 source('opt.SDR.R')
 all.StepwiseExtremal=get.StepwiseExtremal(input$problems,input$dimension)
-plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,all.StepwiseExtremal,input$dimension,F,'full')
+#FIGURE 3 \label{fig:opt:SDR}
+plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,all.StepwiseExtremal,input$dimension,F,save,T)
 
 source('opt.bw.R')
-#FIGURE 4 \label{fig:case}
+#FIGURE 5 \label{fig:case}
 plot.BestWorst(input$problems,input$dimension,'OPT',save)
 
-source('opt.SDR.R')
-StepwiseExtremal=get.StepwiseExtremal(input$problems,input$dimension)
-#FIGURE 5 \label{fig:opt:SDR}
-plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,StepwiseExtremal,input$dimension,F)
-
 source('sdr.R')
-#FIGURE 6 \label{fig:boxplot:SDR}
+#FIGURE 2 \label{fig:boxplot:SDR}
 plot.SDR(SDR,'boxplot', save)
-#FIGURE 7 \label{fig:boxplot:BDR}
+#FIGURE 4 \label{fig:boxplot:BDR}
 plot.BDR(input$dimension,input$problems,'SPT','MWR',40,save)
 
 source('pref.exhaustive.R'); source('pref.settings.R')
@@ -41,7 +37,7 @@ paretoFront=get.paretoFront(prefSummary)
 bestPrefModel=get.bestPrefModel(paretoFront)
 
 #FIGURE 8 \label{fig:stepwise_vs_classification}
-plot.exhaust.acc(prefSummary,save)
+plot.exhaust.acc(prefSummary,save,bestPrefModel$Summary)
 
 #FIGURE 9 \label{fig:CDR:scatter}
 plot.exhaust.paretoFront(prefSummary,paretoFront,T,save)
@@ -55,7 +51,7 @@ for(problem in input$problems){
 plot.exhaust.bestAcc(all.StepwiseOptimality,bestPrefModel,save)
 x=dcast(subset(bestPrefModel$Stepwise,Accuracy=='Optimality'),Problem+Step~variable+Accuracy,value.var = 'value')
 x=ddply(x,~Problem+Step,mutate,diff.acc=abs(Max.Acc.Opt_Optimality-Min.Rho_Optimality))
-print(paste('Max oscillationg',round(mean(x$diff.acc)*100),'%'))
+print(paste('Max oscillating',round(mean(x$diff.acc)*100),'%'))
 
 #FIGURE 12 \label{fig:boxplot:CDR}
 SDR=subset(SDR, (substr(Problem,1,1)=='j' & SDR=='MWR') |

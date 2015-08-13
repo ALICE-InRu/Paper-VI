@@ -858,9 +858,8 @@ denote optimal and suboptimal dispatches, respectively, at step $k$.
 Note, $\mathcal{O}^{(k)}\cup\mathcal{S}^{(k)}=\mathcal{L}^{(k)}$, and 
 $\mathcal{O}^{(k)}\cap\mathcal{S}^{(k)}=\emptyset$. 
 
-For JSP there are $d=\NrFeatLocal$ features (cf. \cref{tbl:jssp:feat} and 
-explained in more detail in \cref{sec:CDR}), and the training set is created in 
-the manner described in \cref{sec:learnCDR}.
+For JSP there are $d=\NrFeatLocal$ features (cf. \cref{tbl:jssp:feat}), and the 
+training set is created in the manner described in \cref{sec:learnCDR}.
 
 Now consider the model space $\mathcal{H} = \{h(\cdot) : X \mapsto Y\}$ of 
 mappings from solutions to ranks. Each such function $h$ induces an ordering 
@@ -915,30 +914,14 @@ instances which gives the training data variety.
 
 \subsection{Probability of choosing optimal decision}\label{sec:opt:rnd}
 Firstly, we can observe that on a step-by-step basis there are several optimal 
-dispatches to choose from. \Cref{fig:opt:unique} depicts how the number of 
-optimal dispatches evolve at each dispatch iteration. Note, that only one 
-optimal trajectory is pursued (chosen at random), hence this is only a lower 
-bound of uniqueness of optimal solutions.
-As the number of possible dispatches decrease over time, \cref{fig:opt} depicts 
-the probability of choosing an optimal dispatch. 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat_prob_optUniqueness_10x10_OPT}.pdf}
-	\caption{Number of unique optimal dispatches (lower bound)}
-	\label{fig:opt:unique}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_OPT}.pdf}
-	\caption{Probability of choosing optimal move}
-	\label{fig:opt}
-\end{figure}
-
-
-
-
+dispatches to choose from, and the number of possible dispatches decrease over 
+time.
+%\Cref{fig:opt:unique} depicts how the number of 
+%optimal dispatches evolve at each dispatch iteration. Note, that only one 
+%optimal trajectory is pursued (chosen at random), hence this is only a lower 
+%bound of uniqueness of optimal solutions.
+%As the number of possible dispatches decrease over time, \cref{fig:opt} 
+%depicts the probability of choosing an optimal dispatch. 
 
 \subsection{Simple blended dispatching rule}\label{sec:opt:bdr}
 A naive approach to create a simple blended dispatching rule would be for 
@@ -1001,7 +984,7 @@ two, three or all of the features, for a total of
 $\nchoosek{d}{1}+\nchoosek{d}{2}+\nchoosek{d}{3}+\nchoosek{d}{d}$, i.e., total
 of 697 combinations. The reason for such a limiting number of active features,
 are due to the fact we want to keep the models simple enough for improved model
-interpretability
+interpretability.
 
 For each feature combination, a linear preference model is created in the
 manner described in \cref{ch:learningmodels}, where $\Phi$ is limited to the
@@ -1033,7 +1016,7 @@ choosing the optimal move, as expected that measure is considerably lower.
 
 \begin{figure}[th!]
 	\centering
-	\includegraphics[width=\linewidth]{figures/{training_accuracy_equal}.pdf}
+	\includegraphics[width=\linewidth]{figures/{training_accuracy}.pdf}
 	\caption{Various methods of reporting validation accuracy for preference 
 	learning}
 	\label{fig:stepwise_vs_classification}
