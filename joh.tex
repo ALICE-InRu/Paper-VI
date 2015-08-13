@@ -85,19 +85,6 @@ problems in real-life applications which involve decision making, therefore its
 problem-solving capabilities has a high impact on many manufacturing 
 organisations.
 
-In order to find an optimal (or near optimal) solution for scheduling problems 
-one could either use exact methods or heuristics methods. Exact methods 
-guarantee an optimal solution, however, \jsp\ scheduling is strongly NP-hard 
-\cite{Garey76:NPhard}. Any exact algorithm generally suffers from the curse of 
-dimensionality, which impedes the application in finding the global optimum in 
-a reasonable amount of time. Heuristics are generally more time efficient but 
-do not necessarily attain the global optimum. Therefore, \jsp\ has the 
-reputation of being notoriously difficult to solve. 
-As a result, it's been widely studied in deterministic scheduling theory and 
-its class of problems has been tested on a plethora of different solution 
-methodologies from various research fields \cite{Meeran12}, all from simple and 
-straight forward \dr s to highly sophisticated frameworks.
-
 Generally, \jsp\ is solved by applying a hand-crafted dispatching rule (DR) for 
 a given problem space. 
 Due to the exorbitant amounts of DRs to choose from, and any kind of alteration 
@@ -367,39 +354,30 @@ This family of scheduling problems is denoted by $J||C_{\max}$
 \cite{Pinedo08}.
 Additional constraints commonly considered are job release-dates and due-dates 
 or sequence dependent set-up times, however, these will not be considered here. 
-  
 
-\todo[inline,color=red]{Here we must say something about the computational 
-complexity of 
-the $J||C_{\max}$ compared to other scheduling problems, and why we consider 
-only this one in our study. It may be useful to look at Pinedo also on this 
-subject ... perhaps also mention that many of the \dr s in the 
-literature have been designed around this problem... use this to tie to he next 
-section \\
-Put text here that talks about NP hard and why we need heuristics to solve this 
-problem, one such heuristic is the dispatching rules which are introduced in 
-the following section. What us the maximum size we can solve 14x14 specialized 
-branch and bound ...}
-\todo[inline,color=green]{I've already discussed the NP-hardness in the 
-introduction. Should I repeat that or rather move it down here?}
-%Deterministic \JSP\ is the most \emph{general} case for classical scheduling 
-%problems \cite{Jain99}. 
-%Many other scheduling problems can be reformulated as \JSP. 
-%For instance the widely studied Travelling Salesman Problem can be 
-%contrived as \jsp\ with the salesman as a single machine in use and the cities 
-%to be visited are the jobs to be processed.
-%Moreover, the general form of \JSP\ assumes that each job can have its own 
-%distinctive flow pattern through the machines, which is independent of the 
-%other jobs. 
-%In the case where all jobs share the same permutation route, \jsp\ is reduced 
-%to a permutation \fsp\ scheduling problem \cite{Guinet1998,Tay08}. 
-%Therefore, without loss of generality, this study is structured around 
-%\JSP. 
-
+In order to find an optimal (or near optimal) solution for scheduling problems 
+one could either use exact methods or heuristics methods. Exact methods 
+guarantee an optimal solution. However, \jsp\ scheduling is strongly NP-hard 
+\cite{Garey76:NPhard}. Any exact algorithm generally suffers from the curse of 
+dimensionality, which impedes the application in finding the global optimum in 
+a reasonable amount of time. 
+Using a state-of-the-art software for solving scheduling problems, such as 
+LiSA %\footnote{LiSA is distributed under the GNU General Public License, and 
+%is available at \url{http://www.math.ovgu.de/Lisa.html}.} 
+(A Library of Scheduling Algorithms) \cite{LiSA}, which includes a specialised 
+version of branch and bound that manages to find optimums for \jsp\ problems of 
+up to $14\times14$ \cite{Ru12}. However, problems that are of greater size, 
+become intractable. 
+Heuristics are generally more time efficient but 
+do not necessarily attain the global optimum. Therefore, \jsp\ has the 
+reputation of being notoriously difficult to solve. 
+As a result, it's been widely studied in deterministic scheduling theory and 
+its class of problems has been tested on a plethora of different solution 
+methodologies from various research fields \cite{Meeran12}, all from simple and 
+straight forward \dr s to highly sophisticated frameworks.
 
 
 \section{Priority Dispatching Rules} \label{sec:DR}
-
 
 Priority \dr s determine, from a list of incomplete jobs, 
 $\mathcal{L}$, which job should be dispatched next. This process is illustrated 
