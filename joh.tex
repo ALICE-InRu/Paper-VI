@@ -345,8 +345,6 @@ Note, that each job can have its own distinctive flow pattern through the
 machines, which is independent of the other jobs. 
 However, in the case that all jobs share the same \emph{fixed} permutation 
 route, referred to as \fsp~(\FSP). 
-\todo[color=pink]{Note, this is not the \textit{common}  \textbf{permutation} 
-flow-shop, but rather FIXED job-shop}
 A commonly used subclass of \FSP\ in the literature is permutation \fsp, which 
 has the added constraint that the processing order of the jobs on the machines 
 must be identical as well, i.e., no passing of jobs allowed \cite{Stafford88}.
@@ -541,8 +539,8 @@ aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are
 job-related and machine-related, respectively.
 In fact, \cite{Pickardt2013} note that in the current literature, there is a 
 lack of global perspective in the attribute space, as omitting them won't 
-address the possible negative impact an operation\todo{Is this an $(j,a)$ operation?} might have on other machines 
-at a later time, it is for that reason we consider attributes such as 
+address the possible negative impact an operation $(j,a)$ might have on other 
+machines at a later time, it is for that reason we consider attributes such as 
 \phiSlackRelated, that are slack related and are a means of indicating the 
 current quality of the schedule.
 All of attributes, $\vphi$, vary throughout the scheduling process, 
@@ -620,16 +618,6 @@ follows
 \item the construction of the training set used for learning
 \item the machine learning procedure used must be decided
 \end{enumerate*}
-
-\todo[inline]{Reorganize as follows:\\
-4.1: \st{Problem Instances: the instances, the performance criteria,}\\
-4.2: Reconstructing optimal solutions, placement rules, probability of choosing 
-optimal for different SDR \\
-4.3: \st{Blended DR} \\
-4.4: \st{Best worst case analysis for wrong decision}\\
-4.5: Summary, $\rho$ versus classification accuracy. Very critical to choose 
-data set correctly...
-}
 
 \subsection{Problem Instances}\label{sec:data:sim}
 
