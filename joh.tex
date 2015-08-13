@@ -601,7 +601,7 @@ rule apriori.  A more attractive approach would be to learn these weights from
 problem examples directly. We will now investigate how this may be accomplished.
 
 \pagebreak % for now ... remove later
-\section{Learning New Priority Dispatching Rules}\label{sec:learnCDR}
+\section{Performance Analysis of Priority Dispatching Rules}\label{sec:learnCDR}
 
 In this section we will describe concerns that must be addressed when learning 
 new priority \dr s. At the same time we will describe the experimental setup 
@@ -610,6 +610,14 @@ follows. The problem instances used for learning and their optimal solutions.
 The reconstruction of the optimal solution using a priority dispatching rule. 
 The construction of the training set used for learning. Finally, the
 machine learning procedure used must be decided.
+
+\begin{itemize}
+\item Problem Instances: the instances, the performance criteria,
+\item Reconstructing optimal solutions, placement rules, probability of choosing optimal for diff SDR
+\item Blended DR
+\item Best worst case analysis for wrong decision
+\item Summary, $\rho$ versus classification accuracy. Very critical to choose data set correctly...
+\end{itemize}
 
 
 \subsection*{Problem Instances}\label{sec:data:sim}
@@ -651,29 +659,29 @@ which indicates the percentage relative deviation from optimality. %Note, for
 
 In figure~\ref{fig:boxplot:SDR} ...
 
-\todo{use this somewhere else}
-For this study synthetic JSP and FSP problem instances will be considered with 
-the problem size $10\times10$. 
-For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
-generated for training and testing, respectively. Moreover, of the training 
-data, 20\% is reserved for validation.
-Summary of problem classes is given in \cref{tbl:data:sim}.  
-Note, that difficult problem instances are not filtered out beforehand, such as 
-the approach in \cite{Whitley}. 
+The probability of optimality of the aforementioned SDRs from 
+\cref{ch:dispatchrules}, yet still maintaining our optimal trajectory, i.e., 
+the probability of a job chosen by a SDR being able to yield an optimal 
+makespan on a step-by-step basis, is depicted  in   \cref{fig:opt:SDR}. 
+Moreover, the dashed line represents the benchmark of random guessing (cf. 
+\cref{fig:opt}).
 
-\todo{not sure what this text below is about?!}
-Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
-the uniform distribution, it is however chosen in accordance with the 
-literature \cite{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
-instances. In addition, w.r.t. the machine ordering, one could look into a 
-subset of JSP where the machines are partitioned into two (or more) sets, where 
-all jobs must be processed on the machines from the first set (in some random 
-order) before being processed on any machine in the second set, commonly 
-denoted as $J|2\textrm{sets}|C_{\max}$ problems, but as discussed in 
-\cite{orlib_swv} this family of JSP is considered "hard" (w.r.t. relative error 
-from best known solution) in comparison with the "easy" or "unchallenging" 
-family with the general $J||C_{\max}$ set-up. % ath. Holtsclaw96 vitnar í 
-%orlib_swv um easy-hard pælinguna
+Now, let's bare in mind the deviation from optimality of applying SDRs 
+throughout the dispatching process (box-plots of which are depicted in 
+\cref{fig:boxplot:SDR}) then there is a some correspondence between high 
+probability of stepwise optimality and low $\rho$. Alas, this isn't always the 
+case, for \jrnd{10}{10}, SPT always outperforms LPT w.r.t. stepwise optimality, 
+however this does not transcend to SPT having a lower $\rho$ value than LPT. 
+Hence, it's not enough to just learn optimal behaviour, one needs to 
+investigate what happens once we encounter suboptimal state spaces.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}
+	\caption{Probability of SDR being optimal}
+	\label{fig:opt:SDR}
+\end{figure}
+
  
 
 \begin{table}\centering
@@ -692,7 +700,7 @@ family with the general $J||C_{\max}$ set-up. % ath. Holtsclaw96 vitnar í
 	\label{fig:boxplot:SDR}
 \end{figure}
 
-\subsection{Comparing Operations}\label{sec:compare}
+\subsection{Reconstructing Optimal Solutions}\label{sec:reconstruct}
 %\subsection{Labelling schedules w.r.t. optimal decisions}
 When building a complete schedule $\ell=n\cdot m$ dispatches must be made 
 sequentially.  A job is placed at the earliest available time slot for its next 
@@ -747,6 +755,39 @@ final makespan if another optimal dispatching sequence would have been chosen.
 That is to say the data generation takes into consideration when there are 
 multiple optimal solutions to the same problem instance. 
 
+\subsection{Making suboptimal decisions}\label{sec:opt:sub}
+Looking at \cref{fig:opt}, \jrnd{10}{10}  has a relatively high probability 
+($70\%$ and above) of choosing an optimal job. However, it is imperative to 
+keep making optimal decisions, because once off the optimal track the 
+consequences can be dire. To demonstrate this \cref{fig:case} depicts mean 
+worst and best case scenario of the resulting deviation from optimality, 
+$\rho$, once you've fallen off the optimal track. Note, that this is given that 
+you make \emph{one} wrong turn. Generally, there will be more, and then the 
+compound effects of making suboptimal decisions really start adding up. 
+
+It is interesting that for JSP, that over time making suboptimal decisions make 
+more of an impact on the resulting makespan. This is most likely due to the 
+fact that if suboptimal decision is made in the early stages, then there is 
+space to rectify the situation with the subsequent dispatches. However, if done 
+at a later point in time, little is to be done as the damage is already 
+inflicted upon the schedule. However, for FSP, the case is the exact opposite. 
+Then it's imperative to make good decisions right from the beginning. This is 
+due to the major structural differences between JSP and FSP, namely the latter 
+having a homogeneous machine ordering, constricting the solution immensely. 
+Luckily, this does have the added benefit of making it less vulnerable for 
+suboptimal decisions later in the decision process. 
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
+	\caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
+		bound) and worst (upper bound) case scenario of choosing suboptimal 
+		dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
+	\label{fig:case}
+\end{figure}
+
+
 \subsection{Generating Training Data}\label{sec:gentrdata}
 
 Preliminary experiments for creating step-by-step model was done in 
@@ -774,7 +815,7 @@ set, $\abs{S}$, becomes too large with full ranking, and would need sampling.
 For the following experimental set up, the preference set was limited to 
 $\abs{S}\leq 500,000$ by random sampling.
 
-\subsection{Linear Learning}\label{sec:liblinear}
+\subsection{Machine Learning}\label{sec:liblinear}
 
 Learning models considered in this study are based on ordinal regression in 
 which the learning task is formulated as learning preferences. In the case of 
@@ -883,61 +924,7 @@ the probability of choosing an optimal dispatch.
 	\label{fig:opt}
 \end{figure}
 
-\subsection{Making suboptimal decisions}\label{sec:opt:sub}
-Looking at \cref{fig:opt}, \jrnd{10}{10}  has a relatively high probability 
-($70\%$ and above) of choosing an optimal job. However, it is imperative to 
-keep making optimal decisions, because once off the optimal track the 
-consequences can be dire. To demonstrate this \cref{fig:case} depicts mean 
-worst and best case scenario of the resulting deviation from optimality, 
-$\rho$, once you've fallen off the optimal track. Note, that this is given that 
-you make \emph{one} wrong turn. Generally, there will be more, and then the 
-compound effects of making suboptimal decisions really start adding up. 
 
-It is interesting that for JSP, that over time making suboptimal decisions make 
-more of an impact on the resulting makespan. This is most likely due to the 
-fact that if suboptimal decision is made in the early stages, then there is 
-space to rectify the situation with the subsequent dispatches. However, if done 
-at a later point in time, little is to be done as the damage is already 
-inflicted upon the schedule. However, for FSP, the case is the exact opposite. 
-Then it's imperative to make good decisions right from the beginning. This is 
-due to the major structural differences between JSP and FSP, namely the latter 
-having a homogeneous machine ordering, constricting the solution immensely. 
-Luckily, this does have the added benefit of making it less vulnerable for 
-suboptimal decisions later in the decision process. 
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
-	\caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
-		bound) and worst (upper bound) case scenario of choosing suboptimal 
-		dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
-	\label{fig:case}
-\end{figure}
-
-\subsection{Optimality of \sdr s}\label{sec:opt:sdr}
-The probability of optimality of the aforementioned SDRs from 
-\cref{ch:dispatchrules}, yet still maintaining our optimal trajectory, i.e., 
-the probability of a job chosen by a SDR being able to yield an optimal 
-makespan on a step-by-step basis, is depicted  in   \cref{fig:opt:SDR}. 
-Moreover, the dashed line represents the benchmark of random guessing (cf. 
-\cref{fig:opt}).
-
-Now, let's bare in mind the deviation from optimality of applying SDRs 
-throughout the dispatching process (box-plots of which are depicted in 
-\cref{fig:boxplot:SDR}) then there is a some correspondence between high 
-probability of stepwise optimality and low $\rho$. Alas, this isn't always the 
-case, for \jrnd{10}{10}, SPT always outperforms LPT w.r.t. stepwise optimality, 
-however this does not transcend to SPT having a lower $\rho$ value than LPT. 
-Hence, it's not enough to just learn optimal behaviour, one needs to 
-investigate what happens once we encounter suboptimal state spaces.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}
-	\caption{Probability of SDR being optimal}
-	\label{fig:opt:SDR}
-\end{figure}
 
 
 
@@ -1310,6 +1297,32 @@ process.
 %\clearpage \listoftodos[Todo and remarks]
 \end{document}
 
+\todo{use this somewhere else}
+For this study synthetic JSP and FSP problem instances will be considered with 
+the problem size $10\times10$. 
+For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
+generated for training and testing, respectively. Moreover, of the training 
+data, 20\% is reserved for validation.
+Summary of problem classes is given in \cref{tbl:data:sim}.  
+Note, that difficult problem instances are not filtered out beforehand, such as 
+the approach in \cite{Whitley}. 
+
+\todo{not sure what this text below is about?!}
+Although in the case of \jrnd{n}{m}  this may be an excessively large range for 
+the uniform distribution, it is however chosen in accordance with the 
+literature \cite{Demirkol98} for creating synthesised $J||C_{\max}$ problem 
+instances. In addition, w.r.t. the machine ordering, one could look into a 
+subset of JSP where the machines are partitioned into two (or more) sets, where 
+all jobs must be processed on the machines from the first set (in some random 
+order) before being processed on any machine in the second set, commonly 
+denoted as $J|2\textrm{sets}|C_{\max}$ problems, but as discussed in 
+\cite{orlib_swv} this family of JSP is considered "hard" (w.r.t. relative error 
+from best known solution) in comparison with the "easy" or "unchallenging" 
+family with the general $J||C_{\max}$ set-up. % ath. Holtsclaw96 vitnar í 
+%orlib_swv um easy-hard pælinguna
+
+
+
 \section{Scheduling Heuristics} \label{sec:constructionjssp}
 Heuristics algorithms for scheduling are typically either a construction or 
 improvement heuristics. The improvement heuristic starts with a complete 
@@ -1366,3 +1379,4 @@ hence the current available jobs to be scheduled
 $\mathcal{L}=\{J_1,J_2,J_4,J_5,J_6\}$, and will be referred to as our job-list, 
 describes the 5 potential jobs to be dispatched at step $k=16$ (note that $J_3$ 
 is completed).
+
