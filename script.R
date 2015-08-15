@@ -5,7 +5,6 @@ subdir='../../JSP-Expert/figures/'
 save='half';extension='pdf'
 input=list(dimension='10x10',problem='j.rnd',problems=c('j.rnd','j.rndn','f.rnd'))
 SDR=subset(dataset.SDR,Problem %in% input$problems & Dimension %in% input$dimension)
-input$bias='equal'
 input$timedependent=F
 input$smooth=F
 
@@ -32,7 +31,7 @@ plot.SDR(SDR,'boxplot', save)
 plot.BDR(input$dimension,input$problems,'SPT','MWR',40,save)
 
 source('pref.exhaustive.R'); source('pref.settings.R')
-prefSummary=get.prefSummary(input$problems,input$dimension,'OPT','p',F,input$bias)
+prefSummary=get.prefSummary(input$problems,input$dimension,'OPT','p',F)
 paretoFront=get.paretoFront(prefSummary)
 bestPrefModel=get.bestPrefModel(paretoFront)
 
