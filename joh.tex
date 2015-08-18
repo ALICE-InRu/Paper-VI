@@ -835,12 +835,12 @@ are multiple optimal solutions\footnote{
 to the same problem instance. 
 
 One could label which feature sets were considered optimal, 
-$\vec{z}_{o}=\vphi_{o}-\vphi_{s}$, and suboptimal, 
-$\vec{z}_{s}=\vphi_{s}-\vphi_{o}$ by $y_o=+1$ and $y_s=-1$ respectively.  
+$\vpsi_{o}=\vphi_{o}-\vphi_{s}$, and suboptimal, 
+$\vpsi_{s}=\vphi_{s}-\vphi_{o}$ by $y_o=+1$ and $y_s=-1$ respectively.  
 Then, the preference learning problem is specified by a set of preference pairs,
 \begin{equation}
-Z = 
-\left\{\left(\vec{z}_o,+1\right),\left(\vec{z}_s,-1\right)
+\Psi = 
+\left\{\left(\vpsi_o,+1\right),\left(\vpsi_s,-1\right)
 \;\middle|\;\forall \left(J_o,J_s\right) \in \mathcal{O}^{(k)} \times 
 \mathcal{S}^{(k)}\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:prefset}
 \end{equation}
@@ -873,7 +873,7 @@ h(\vec{x})=\sum_{i=1}^d w_i\phi_i(\vec{x})=\inner{\vec{w}}{\vphi(\vec{x})}.
 Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$. 
 For this study, L2-regularized logistic regression from the \textsc{liblinear} 
 package \cite{liblinear} without bias is used to learn the preference set 
-$Z$, defined by \cref{eq:prefset}.
+$\Psi$, defined by \cref{eq:prefset}.
 Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let $\vphi_j$ denote 
 its corresponding  post-decision state. Then the job chosen to be dispatched, 
 $J_{j^*}$, is the one corresponding to the highest preference estimate, i.e.,
@@ -889,10 +889,10 @@ each dispatch; a total of $\ell$ linear models for solving $n\times m$ JSP.
 However, the experiments there showed that by fixing the weights to its mean 
 value throughout the dispatching sequence, results remained satisfactory.
 A more sophisticated way, would be to create a \emph{new} linear model, where 
-the preference set, $Z$, is the union of the preference pairs across the 
+the preference set, $\Psi$, is the union of the preference pairs across the 
 $\ell$ dispatches, such as described in \cref{eq:prefset}. 
-This would amount to a substantial preference set, and for $Z$ to be 
-computationally feasible to learn, $Z$ has to be reduced. For this several 
+This would amount to a substantial preference set, and for $\Psi$ to be 
+computationally feasible to learn, $\Psi$ has to be reduced. For this several 
 ranking strategies were explored in \cite{InRu15a}, the results there showed 
 that it's sufficient to use partial subsequent rankings, namely, combinations 
 of $r_i$ and $r_{i+1}$ for $i\in\{1,\ldots,n'\}$, are added to the preference 
@@ -904,7 +904,7 @@ Moreover, for this study, which deals with $10\times 10$ problem instances,
 the partial subsequent ranking becomes necessary, as full ranking is 
 computationally infeasible due to its size. 
 Furthermore, for the following experimental set up, the preference set was 
-limited to $\abs{Z}\leq 500,000$ by random sampling.
+limited to $\abs{\Psi}\leq 500,000$ by random sampling.
 
 \subsection{Feature Selection}
 The SDRs we've inspected so-far are based on two job-attributes from
@@ -929,18 +929,18 @@ $\Phi$ is limited to the predetermined feature combination.
 This was done with the software package from
 \cite{liblinear}\footnote{Software available at
   \url{http://www.csie.ntu.edu.tw/~cjlin/liblinear}},
-by training on the full preference set $Z$ obtained from 
+by training on the full preference set $\Psi$ obtained from 
 \mbox{$N_{\text{train}}=300$} problem instances following the framework set up 
 in \cref{sec:learnCDR}. 
 Note, in order to report the validation accuracy, 20\% ($N_{\text{val}}=60$) of 
 the training set was set aside for validation of reporting the accuracy.
 
 \subsection{Validation accuracy}\label{sec:CDR:acc}
-As the preference set $Z$ has both preference pairs belonging to optimal
+As the preference set $\Psi$ has both preference pairs belonging to optimal
 ranking, and subsequent rankings, it is not of primary importance to classify
 \emph{all} rankings correctly, just the optimal ones. Therefore, instead of
 reporting the validation accuracy based on the classification problem of the
-correctly labelling the problem set $Z$, it's opted the validation accuracy 
+correctly labelling the problem set $\Psi$, it's opted the validation accuracy 
 is
 obtained in the same manner as done in \cref{sec:opt:sdr} for SDRs, i.e., the
 probability of choosing optimal decision given the resulting linear weights,
