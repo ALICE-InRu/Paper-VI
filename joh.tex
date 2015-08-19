@@ -183,8 +183,7 @@ authors do stress that there is still remains room for improvement.
 Adopting a two-stage hyper-heuristic approach to generate a set of 
 machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
 \cdr s (CDR) from basic attributes, along with evolutionary algorithm to assign 
-a CDR 
-to a specific machine. 
+a CDR to a specific machine. 
 The problem space consists of \jsp s in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped to similar work centres, 
 which can have different set-up time, workload, etc. 
@@ -527,26 +526,25 @@ to interpret, which makes them desirable for the end-user.
 However, they can also fail unpredictably. 
 A careful combination of \dr s have been shown to perform significantly better 
 \cite{Jayamohan04}. These are referred to as \emph{\cdr s} 
-(CDR), where the priority ranking is an expression of several \sdr s. 
+(CDR), where the priority ranking is an expression of several \dr s. 
 CDRs deal with a greater number of more complicated functions (or features) 
 constructed from the schedules attributes. In short, a CDR is a combination of 
-several SDRs. 
+several DRs. 
 For instance let $\pi$ be a CDR comprised of $d$ DRs, then the index $I$ for 
 $J_j\in\mathcal{L}^{(k)}$ using $\pi$ is, 
-\begin{equation}
-	I_j^{\pi} = \sum_{i=1}^d w_i \pi_i(\vchi^j) \label{eq:CDR}
+\begin{equation}	I_j^{\pi} = \sum_{i=1}^d w_i \pi_i(\vchi^j) 
+    \label{eq:CDR}
 \end{equation}
 where $w_i>0$ and $\sum_{i=0}^d w_i = 1$ with $w_i$ giving the weight of the 
 influence of $\pi_i$ (which could be a SDR or another CDR) to $\pi$. Note, 
 each $\pi_i$ is function of $J_j$'s attributes from the current sequence 
 $\vchi$, where $\vchi^j$ implies that $J_j$ was the latest dispatch, i.e., the 
-post-decision state given $\chi_k=J_j$.
+partial schedule given $\chi_k=J_j$.
 
 At each time step $k$, an operation is dispatched which has the highest 
-priority.  If there is a 
-tie, some other priority measure is used. Generally the priority dispatching 
-rules are static during the entire scheduling process, however, ties could also 
-be broken randomly (RND). 
+priority.  If there is a tie, some other priority measure is used. Generally 
+the \dr s are static during the entire scheduling process, however, ties could 
+also be broken randomly (RND). 
 
 Investigating 11 SDRs for JSP, \cite{Lu13} created a pool of 33 CDRs that 
 strongly outperformed the ones they were based on, by using multi-contextual 
