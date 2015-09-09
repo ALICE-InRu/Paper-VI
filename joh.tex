@@ -381,7 +381,7 @@ straight forward \dr s to highly sophisticated frameworks.
 Priority \dr s determine, from a list of incomplete jobs, 
 $\mathcal{L}$, which job should be dispatched next. This process is illustrated 
 in \Cref{fig:jssp:example}, where an example of 
-a temporal partial schedule of six-jobs scheduled on five-machines is given. 
+a temporal partial schedule of six-jobs scheduled on five-machines is illustrated. 
 The numbers in the boxes represent the job identification $j$. 
 The width of the box illustrates the processing times for a given job for a 
 particular machine $M_a$ (on the vertical axis). 
@@ -497,7 +497,7 @@ based on a few attributes and simple mathematical operations.
 \end{table}
 
 Designing priority \dr s requires recognizing the important 
-attributes of the partial schedules needed to create a good scheduling rule. 
+attributes of the partial schedules needed to create a reasonable scheduling rule. 
 These attributes attempt to grasp key features of the schedule being 
 constructed. Which attributes are most important will necessarily depend on the
 objectives of the scheduling problem. 
@@ -521,7 +521,7 @@ w.r.t. operation belonging to the same time step $k$, with the exception of
 problem instance but varying for each $J_j$ and $M_a$, respectively. 
 
 Priority \dr s are attractive since they are relatively easy to 
-implement, fast and find good schedules. In addition, they are relatively easy 
+implement, fast and find reasonable schedules. In addition, they are relatively easy 
 to interpret, which makes them desirable for the end-user.
 However, they can also fail unpredictably. 
 A careful combination of \dr s have been shown to perform significantly better 
@@ -582,16 +582,27 @@ problem examples directly. We will now investigate how this may be accomplished.
 
 \section{Performance Analysis of Priority Dispatching Rules}\label{sec:learnOPT}
 
+In order to create successful \dr s, a good starting point is to 
+investigate the properties of optimal solutions and hopefully be able to learn 
+how to mimic the construction of such solutions. For this, we follow optimal solutions, 
+obtained by using a commercial software package \cite{gurobi}, and inspect 
+the probability of SDRs being optimal, which serves as an indicator of how hard 
+it is to put our objective up as a machine learning problem. 
+However, we must also take into consideration the end-goal, which is minimising 
+\namerho, because it's its relationship to stepwise optimality is not fully 
+understood.
+
+
 In this \lcnamecref{sec:learnOPT} we will describe concerns that must be 
 addressed when learning new priority \dr s. At the same time we will describe 
 the experimental set-up used in our study. 
-The matters that must be addressed are as follows
-\begin{enumerate*}[itemjoin*={{, and finally }}]
-\item the problem instances used for learning and their optimal solutions
-\item the reconstruction of the optimal solution using a \dr
-\item the construction of the training set used for learning
-\item the machine learning procedure used must be decided
-\end{enumerate*}
+%The matters that must be addressed are as follows
+%\begin{enumerate*}[itemjoin*={{, and finally }}]
+%\item the problem instances used for learning and their optimal solutions
+%\item the reconstruction of the optimal solution using a \dr
+%\item the construction of the training set used for learning
+%\item the machine learning algorithm applied
+%\end{enumerate*}
 
 \subsection{Problem Instances}\label{sec:data:sim}
 
@@ -602,7 +613,7 @@ therefore create different challenges for a priority dispatching rule.
 Dispatching rules learned will be customized for the problems used for their 
 training. For real world application using historical data would be most 
 appropriate. The aim would be to learn a dispatching rule that works well on 
-average for a distribution of problem instances. To illustrate the performance 
+average for a given distribution of problem instances. To illustrate the performance 
 difference of priority \dr s on different problem distributions, 
 within the same class of problems, consider the following three cases.
 Problem instances for JSP are generated stochastically by fixing the number of 
@@ -630,6 +641,7 @@ following,
 which indicates the percentage relative deviation from optimality. 
 \Cref{fig:boxplot:SDR} depicts the box-plot for \cref{eq:ratio} when using the 
 SDRs from \cref{sec:DR} for all of the problem spaces from \cref{tbl:data:sim}.
+These box-plots show the difference in performance of the various SDRs. The MWR performs on average the best on the \jrnd{n}{m} and \jrndn{n}{m} problems instances, whereas for \frnd{n}{m} is is LWR that performs best. It is also interesting to observe that all but the MWR perform statistically worse than random job dispatching on the \jrnd{n}{m} and \jrndn{n}{m} problems instances.
 
 \begin{table}\centering
   \caption[Problem space distributions used in experimental studies.]{Problem 
@@ -652,7 +664,7 @@ When building a complete schedule, $\ell=n\cdot m$ dispatches must be made
 sequentially.  A job is placed at the earliest available time slot for its next 
 machine, whilst still fulfilling that each machine can handle at most one job 
 at each time, and jobs need to have finished their previous machines according 
-to its machine order. Unfinished jobs are dispatched one at a time according to 
+to their machine order. Unfinished jobs are dispatched one at a time according to 
 some heuristic. After each dispatch\footnote{Dispatch and time step are used 
 interchangeably.} the schedule's current features (cf. \cref{tbl:jssp:feat}) 
 are updated based on the half-finished schedule.
@@ -665,33 +677,23 @@ in the next iteration $J_2$. Now this sequence would yield the same schedule as
 if $J_2$ would have been dispatched first and then $J_1$ in the next iteration, 
 i.e., these are non-conflicting jobs.  In this particular instance, one cannot 
 infer that choosing $J_1$ is better and $J_2$ is worse (or vice versa) since
-they can both yield the same solution. 
-
-Note that in some cases there can be multiple optimal solutions to the same 
+they can both yield the same solution. Furthermore, 
+there may be multiple optimal solutions to the same 
 problem instance. Hence not only is the sequence representation `flawed' in the 
 sense that slight permutations on the sequence are in fact equivalent w.r.t. 
 the end-result, but very varying permutations on the dispatching sequence 
 (although given the same partial initial sequence) can result in very different 
-complete schedules but can still achieve the same makespan, and thus same 
-\namerho, which is the measure under consideration. 
+complete schedules but can still achieve the same makespan. 
 %Care must be taken in this case that neither resulting features are labelled 
 %as undesirable. Only the resulting features from a dispatch resulting in a 
 %suboptimal solution should be labelled undesirable.
 
-The probability of optimality of the aforementioned SDRs from 
-\cref{sec:DR}, yet still maintaining our optimal trajectory, i.e., 
-the probability of a job chosen by a SDR being able to yield an optimal 
-makespan on a step-by-step basis, is depicted  in  \cref{fig:opt:SDR}. 
+The redundancy in building optimal solutions using dispatching rules means that many 
+different dispatches may yield an optimal solution to the problem instance.
+The probability that a job chosen by a SDR yields an optimal 
+makespan, on a step-by-step basis, is depicted in \cref{fig:opt:SDR}. These probabilities
+vary quite a bit between the different problem instances distributions studied. From \cref{fig:opt:SDR} one observed that MWR has a higher probability than random guessing, in choosing a dispatch which may result in an optimal schedule. This is especially true towards the end of the schedule building process. Similarly, the LWR chooses dispatches resulting in optimal schedules with a higher probability. This would appear to be support the idea that the higher the probability of dispatching jobs that may lead to an optimal schedule, the better the SDRs performance, as illustrated by \cref{fig:boxplot:SDR}. However, there is a counter example. The SPT has a higher probability than random dispatching of selecting a jobs that may lead to an optimal solution. Nevertheless, the random dispatching performs better than SPT on problem instances \jrnd{10}{10} and \jrndn{10}{10}. 
 
-Now, let's bare in mind the deviation from optimality of applying SDRs 
-throughout the dispatching process (cf. \cref{fig:boxplot:SDR}), then there is 
-a some correspondence between high probability of stepwise optimality and low 
-$\rho$. 
-Alas, this isn't always the case, for \jrnd{10}{10}, SPT always outperforms LPT 
-w.r.t. stepwise optimality, however, this does not transcend to SPT having a 
-lower $\rho$ value than LPT. 
-Hence, it's not enough to just learn optimal behaviour, one needs to 
-investigate what happens once we encounter suboptimal state spaces.
 
 \begin{figure}
   \centering
@@ -700,20 +702,42 @@ investigate what happens once we encounter suboptimal state spaces.
   \label{fig:opt:SDR}
 \end{figure}
 
+Looking at \cref{fig:opt:SDR}, then \jrnd{10}{10}  has a relatively high 
+probability ($70\%$ and above) of choosing an optimal job at random. 
+However, it is imperative to keep making optimal decisions, because once off 
+the optimal track the consequences are unknown. 
+To demonstrate this \cref{fig:case} depicts mean worst and best case scenario 
+of the resulting \namerho, once off the optimal track. Note, that 
+this is given that one makes \emph{one} non-optimal dispatch. 
+Generally, there will be more, and then the compound effects of making 
+suboptimal decisions cumulate. 
+
+It is interesting to observe that for \jrnd{10}{10} and \jrndn{10}{10} making suboptimal decisions later impacts on the resulting makespan more than doing a mistake early. 
+The opposite seems to be the case for \frnd{10}{10}. 
+In this case it is imperative to make good decisions right from the start. This is 
+due to the major structural differences between JSP and FSP, namely the latter 
+having a homogeneous machine ordering, constricting the solution immensely. 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
+  \caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
+    bound) and worst (upper bound) case scenario of choosing suboptimal 
+    dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
+  \label{fig:case}
+\end{figure}
 
 \subsection{Blended \dr s}\label{sec:opt:bdr}
-A naive approach to create a simple blended \dr~(BDR) would be for instance be 
-switching between two SDRs at a predetermined time point.
-Hence, going back to \cref{fig:opt:SDR}, a presumably good BDR for 
-\jrnd{10}{10} would be starting with SPT and then switching over to MWR at 
+A naive approach to create a simple blended \dr~(BDR) would be to 
+switch between SDRs at a predetermined time.
+Observing again \cref{fig:opt:SDR}, a presumably good BDR for 
+\jrnd{10}{10} would be to start with SPT and then switch over to MWR at 
 around time step 40, where the SDRs change places in outperforming one another. 
-A box-plot for $\rho$ for all problem spaces is depicted in 
-\cref{fig:boxplot:BDR}. 
-Now, this little manipulation between SDRs does outperform SPT immensely, yet 
-doesn't manage to gain the performance edge of MWR, save for \frnd{10}{10}. 
-This gives us insight that for \jsp\ based problem spaces, the attribute based 
-on MWR is quite fruitful for good dispatches, whereas the same cannot be said 
-about SPT -- a more sophisticated BDR is needed to improve upon MWR. 
+A box-plot for $\rho$ for the BDR compared with MWR and SPT is depicted in 
+\cref{fig:boxplot:BDR}. \todo{just use \jrnd{10}{10}}
+This simple swap between SDRs does outperform the SPT, yet 
+doesn't manage to gain the performance edge of MWR. Using SPT downgrades the performance of MWR.
+\todo{add random dispatching on this figure, does it perform like random?}
 
 A reason for this lack of performance of our proposed BDR is perhaps that by 
 starting out with SPT in the beginning, it sets up the schedules in such a way 
@@ -727,10 +751,9 @@ over to MWR will handle that situation which applying SPT has already created.
 in the latter stages, does help the schedule to be more compact w.r.t. SPT. 
 However, in the case of \jrnd{10}{10}  and \jrndn{10}{10}  the fact remains 
 that the schedules have diverged too far from what MWR would have been able to 
-achieve on its own. Preferably the blended dispatching rule should use  best of 
-both worlds, and outperform all of its inherited DRs, otherwise it goes without 
-saying one would simply still use the original DR that achieved the best 
-results.
+achieve on its own. 
+ \todo{this last paragraph ends with the hope the CDRs will perform better than BDRs, and so motivate the next section, we also observe here that there will no be one SDR that fits all problem distributions and that custom build ones will be required for each instance distribution.}
+
 
 \begin{figure}
   \centering
@@ -741,55 +764,7 @@ results.
 \end{figure}
 
 
-\subsection{Making suboptimal decisions}\label{sec:opt:sub}
-Looking at \cref{fig:opt:SDR}, then \jrnd{10}{10}  has a relatively high 
-probability ($70\%$ and above) of choosing an optimal job at random. 
-However, it is imperative to keep making optimal decisions, because once off 
-the optimal track the consequences can be dire. 
-To demonstrate this \cref{fig:case} depicts mean worst and best case scenario 
-of the resulting \namerho, once you've fallen off the optimal track. Note, that 
-this is given that you make \emph{one} wrong turn. 
-Generally, there will be more, and then the compound effects of making 
-suboptimal decisions really start adding up. 
 
-It is interesting that for JSP, that over time, making suboptimal decisions 
-make more of an impact on the resulting makespan. 
-This is most likely due to the fact that if suboptimal decision is made in the 
-early stages, then there is space to rectify the situation with the subsequent 
-dispatches. 
-However, if done at a later point in time, little is to be done as the damage 
-is already inflicted upon the schedule. 
-Alternatively, for FSP, the case is the exact opposite. 
-Then it's imperative to make good decisions right from the beginning. This is 
-due to the major structural differences between JSP and FSP, namely the latter 
-having a homogeneous machine ordering, constricting the solution immensely. 
-Luckily, this does have the added benefit of making it less vulnerable for 
-suboptimal decisions later in the decision process. 
-
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
-  \caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
-    bound) and worst (upper bound) case scenario of choosing suboptimal 
-    dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
-  \label{fig:case}
-\end{figure}
-
-
-\subsection{Summary} 
-In order to create successful \dr s, a good starting point is to 
-investigate the properties of optimal solutions and hopefully be able to learn 
-how to mimic such `good' behaviour. For this, we follow optimal solutions, 
-obtained by using a commercial software package \cite{gurobi}, and inspect 
-the probability of SDRs being optimal, which serves as an indicator of how hard 
-it is to put our objective up as a classification problem. 
-However, we must also take into consideration the end-goal, which is minimising 
-\namerho, because it's its relationship to stepwise optimality is not fully 
-understood.
-In addition, it's imperative to base the analysis on problem space that is 
-similar to the final test set, as small change in problem generation can effect 
-the performance of the algorithm on the intended data immensely.
 
 
 \section{Learning CDR}\label{ch:expr:CDR}
