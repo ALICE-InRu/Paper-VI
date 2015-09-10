@@ -746,7 +746,8 @@ A naive approach to create a simple blended \dr~(BDR) would be to
 switch between SDRs at a predetermined time.
 Observing again \cref{fig:opt:SDR}, a presumably good BDR for 
 \jrnd{10}{10} would be to start with SPT and then switch over to MWR at 
-around time step 40, where the SDRs change places in outperforming one another. 
+around time step $k=40$, where the SDRs change places in outperforming one 
+another. 
 A box-plot for $\rho$ for the BDR compared with MWR and SPT is depicted in 
 \cref{fig:boxplot:BDR}. 
 This simple swap between SDRs does outperform the SPT, yet 
@@ -765,21 +766,48 @@ in the latter stages, does help the schedule to be more compact w.r.t. SPT.
 However, in the case of \jrnd{10}{10}  and \jrndn{10}{10}  the fact remains 
 that the schedules have diverged too far from what MWR would have been able to 
 achieve on its own. 
- \todo[inline]{this last paragraph ends with the hope the CDRs will perform 
+\todo[inline]{this last paragraph ends with the hope the CDRs will perform 
  better than BDRs, and so motivate the next section, we also observe here that 
- there will no be one SDR that fits all problem distributions and that custom 
+ there will now be one SDR that fits all problem distributions and that custom 
  build ones will be required for each instance distribution.}
-
 
 \begin{figure}
   \centering
   \includegraphics[width=1\linewidth]{figures/{boxplotRho_BDR_10x10}.pdf}
   \caption{Box-plot for deviation from optimality, $\rho$, (\%) for BDR where 
-    SPT is applied for the first 40\% of the dispatches, followed by MWR}
+    SPT is applied for the first 10\%, 15\% or 40\% of the dispatches, followed 
+    by MWR}
   \label{fig:boxplot:BDR}
 \end{figure}
 
-\todo[inline]{Show stepwise optimality for a fixed track -- only \jrnd{10}{10}}
+In \cref{fig:opt:SDR} we inspected the stepwise optimality, given that we were 
+on the optimal trajectory. Since we're bound to make mistakes at some points, 
+it's interesting to see how that stepwise optimality evolves for that intended 
+trajectory, which is depicted in \cref{fig:opt:SDR:jrnd} for \jrnd{10}{10}.
+There we can see that even though SPT is generally more likely to find optimal 
+dispatches in the initial steps, then shortly after $k=15$ MWR becomes a 
+contender again. This could explain why our BDR switch at $k=40$ from 
+\cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k=10$ or 
+$k=15$ is not statically significant from MWR (boost in mean $\rho$ is at most 
+1.25\%). But as pointed in \cref{fig:case}, it's not so fatal to make bad moves 
+in the very first dispatches for \jrnd{10}{10}, hence little gain with improved 
+classification accuracy in that region.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+  \node[anchor=south west] (image) at (0,0,0) 
+  {\includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}};
+  \begin{scope}[x={(image.south east)},y={(image.north east)}]
+  \node (zoom) at (0.25,.47)
+  {\includegraphics[width=0.35\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_zoom}.pdf}};
+  \end{scope}
+  \end{tikzpicture}
+  \caption{Probability of SDR being optimal for \jrnd{10}{10}, both when 
+  following optimal and its corresponding SDR trajectories}
+  \label{fig:opt:SDR:jrnd}
+\end{figure}
+
 
 \section{Learning CDR}\label{ch:expr:CDR}
 \Cref{sec:opt:bdr} demonstrated there is definitely something to be gained by
