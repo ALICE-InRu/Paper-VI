@@ -234,7 +234,7 @@ Several of successful implementations in the field of semiconductor wafer
 fabrication facilities are discussed, however, this sort of investigation is 
 still in its infancy.
 
-The alternative to hand-crafting heuristics, is to implement an automatic way 
+An alternative to hand-crafting heuristics, is to implement an automatic way 
 of learning heuristics using a data driven approach. 
 Data can be generated using a known heuristic, such an approach is taken in 
 \cite{Siggi05} for single-machine \jsp\ where a LPT-rule is applied.
@@ -248,25 +248,32 @@ learning algorithm applied as before. Preferring simple to complex models, the
 resulting \dr s gave significantly better schedules than using popular 
 heuristics in that field, and a lower worst-case factor from optimality. 
 
+Although, using expert policy for creating training data gives vital 
+information on how to learn good scheduling rules, it is a good starting point, 
+but not sufficient. This is due to the fact our models are only based on 
+optimal decisions, then once we make a suboptimal choice we are in uncharted 
+territory and its effects are relatively unknown. For this reason, it is of 
+paramount importance to inspect the actual end-performance when choosing a 
+suitable model, not just staring blindly at the classification accuracy. 
+When it comes to designing algorithms there needs to be emphasis on where to 
+innovate and imitate when visiting state-spaces. 
+This study will show, that when using these guidelines when accumulating 
+training data for supervised  learning, it's possible to automate its 
+generation in such a way that the resulting model will be an accurate 
+representative of the instances it will later come across. 
+For this purpose, \JSP\ is used as a case study to illustrate a methodology for 
+generating meaningful training set autonomously, which can be successfully 
+learned using preference-based imitation learning (IL).
+
 The focus on this study is better understanding of \emph{how} and \emph{when} 
 \dr s work in general, in order to mediate the set-up for the 
 learning problem.
 For this reason, we propose a framework for learning the indicators of optimal 
 solutions, such as done by \cite{Siggi10}, as an in-depth analysis of a expert 
 policy gives a benchmark of what is theoretically possible to learn. 
-
 The study shows that during the scheduling process, it varies \emph{when} it's 
 most fruitful to make the `right' decision, and depending on the problem space 
 those pivotal moments can vary greatly. 
-
-Although, using optimal trajectory for creating training data gives vital 
-information on how to learn good scheduling rules, it is a good starting point, 
-but not sufficient. This is due to the fact our models are only based on 
-optimal decisions, then once we make a suboptimal choice we are in uncharted 
-territory and its effects are relatively unknown. For this reason, it is of 
-paramount importance to inspect the actual end-performance when choosing a 
-suitable model, not just staring blindly at the validation accuracy. Moreover, 
-different measures on how to report training accuracy is discussed.
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and  
@@ -278,8 +285,13 @@ making a suboptimal decision. Furthermore, the optimality of common \sdr s is
 investigated.
 With those guidelines, \cref{ch:expr:CDR} goes into detail how to create 
 meaningful \cdr s using preference learning, focusing on how to 
-compare operations and collect training data with the importance of good 
-feature selection and the polysemy of how to report accuracy. 
+compare operations and collect training data with the importance of good state 
+sampling. 
+\Cref{sec:il,sec:expertPolicy,sec:perturbedLeader} explain the trajectories for 
+sampling meaningful schedule state-spaces used in preference learning. 
+Experimental results in jointly presented in \cref{sec:expr} with comparison 
+for a single randomly generated problem space. Furthermore, some general 
+adjustments for performance boost is also considered.
 The paper finally concludes in \cref{sec:con} with discussion and conclusions.
 
 %\setcounter{tocdepth}{2} \tableofcontents
@@ -1124,7 +1136,7 @@ which is roughly the amount of features encountered from one pass of sampling a
 \mbox{$\ell$-stepped} trajectory using a fixed policy $\hat{\pi}$ for the 
 default $N_{\text{train}}$.
 However, \ref{expr:boost:newdata} strategy showed a considerable change in 
-performance. Summary of $N_{\text{train}}$ is given in \cref{tbl:Ntrain}. 
+performance. 
 Note, for the conventional $\Phi^{\text{OPT}}$ trajectory the extended training 
 set was simply obtained by iterating over more examples. 
 However, for the DAgger trajectories the extended set consisted of each 
