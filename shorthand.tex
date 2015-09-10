@@ -17,6 +17,8 @@
 \newcommand{\argmax}{\mathop{\rm argmax}}
 \newcommand{\nchoosek}[2]{\tiny \left(\begin{array}{c}#1\\#2\end{array}\right)}
 \newcommand{\condset}[2]{\left\{#1\;\middle|\;#2\right\}}
+\newcommand{\limit}[3]{\lim_{#2}#1=#3}
+\newcommand{\bigOh}[1]{{O}\left(#1\right)}
 
 % percentage relative deviation from optimality
 \newcommand{\Namerho}{Deviation from optimality, $\rho$}
@@ -94,4 +96,19 @@
 \usepackage{comment}
 \usepackage{soul}
 
+\usepackage{subfig}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+\algnewcommand\algorithmicto{~\textbf{to}~}
+\algnewcommand\algorithmicand{~\textbf{and}~}
+\algrenewtext{For}[3]%
+{\algorithmicfor\ $#1 \gets #2 \algorithmicto\ #3$~\algorithmicdo}
+
 \usepackage[capitalise,nameinlink]{cleveref} % must come last!
+
+\hyphenation{heur-ist-ics}
+\hyphenation{algo-rithm}
+\hyphenation{DAgger}
