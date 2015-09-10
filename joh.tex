@@ -111,8 +111,6 @@ schedule is complete. The work presented here will focus on construction
 heuristics, \dr s, although the techniques developed could be adapted to 
 improvement heuristics also. 
 
-%\todo[inline,color=pink]{Direct search (GA based, Poli, etc)}
-
 Genetic algorithms (GA) are one of the most widely used approaches in \JSP\ 
 literature \cite{Pinedo08}. However, in that case an extensive number of 
 schedules need to be evaluated, and even for low dimensional \JSP\ that can 
@@ -205,11 +203,6 @@ Now, hybridisation of global and local methodologies is non-trivial. In
 general combination of the two improves performance, however, they often come 
 at a great computational cost.  
 
-%\todo[inline,color=green]{Another citation from Poli, besides \cite{Koza05}?}
-
-%\todo[inline,color=pink]{Reinforcement learning based, Diettrich, also Kendall 
-%\& Burke}
-
 Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
 processing by using reinforcement learning (RL), in particular, temporal 
 difference learning. 
@@ -224,17 +217,12 @@ Meta learning can be very fruitful in RL, as experiments from
 competing algorithms for their particular problem instances, which provided 
 them with a hybrid algorithm which combines the strengths of the algorithms.
 
-%\todo[inline,color=green]{Burke \cite{Burke06} on reinforcement learning from 
-%2006. However, \cite{Burke10} from 2010 above (GA section)}
-
 Using case based reasoning for timetable scheduling, training data in 
 \cite{Burke06} is guided by the two best heuristics in the literature.
 They point out that in order for their framework to be successful, problem 
 features need to be sufficiently explanatory and training data need to be 
 selected carefully so they can suggest the appropriate solution for a specific 
 range of new cases. Stressing the importance of meaningful feature selection. 
-
-%\todo[inline,color=pink]{Supervised learning (Siggi, etc)}
 
 A recent editorial of the state-of-the-art approaches in advanced \dr s for 
 large-scale manufacturing systems by \cite{Chen13} points out that:
@@ -280,7 +268,6 @@ paramount importance to inspect the actual end-performance when choosing a
 suitable model, not just staring blindly at the validation accuracy. Moreover, 
 different measures on how to report training accuracy is discussed.
 
-%\todo[inline,color=pink]{Outline of paper}
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and  
 \cref{sec:DR} describes the main attributes for \jsp, 
@@ -734,10 +721,11 @@ Observing again \cref{fig:opt:SDR}, a presumably good BDR for
 \jrnd{10}{10} would be to start with SPT and then switch over to MWR at 
 around time step 40, where the SDRs change places in outperforming one another. 
 A box-plot for $\rho$ for the BDR compared with MWR and SPT is depicted in 
-\cref{fig:boxplot:BDR}. \todo{just use \jrnd{10}{10}}
+\cref{fig:boxplot:BDR}. 
 This simple swap between SDRs does outperform the SPT, yet 
 doesn't manage to gain the performance edge of MWR. Using SPT downgrades the performance of MWR.
-\todo{add random dispatching on this figure, does it perform like random?}
+\todo{add random dispatching on this figure, does it perform like random? No 
+beter!}
 
 A reason for this lack of performance of our proposed BDR is perhaps that by 
 starting out with SPT in the beginning, it sets up the schedules in such a way 
@@ -752,7 +740,10 @@ in the latter stages, does help the schedule to be more compact w.r.t. SPT.
 However, in the case of \jrnd{10}{10}  and \jrndn{10}{10}  the fact remains 
 that the schedules have diverged too far from what MWR would have been able to 
 achieve on its own. 
- \todo{this last paragraph ends with the hope the CDRs will perform better than BDRs, and so motivate the next section, we also observe here that there will no be one SDR that fits all problem distributions and that custom build ones will be required for each instance distribution.}
+ \todo[inline]{this last paragraph ends with the hope the CDRs will perform 
+ better than BDRs, and so motivate the next section, we also observe here that 
+ there will no be one SDR that fits all problem distributions and that custom 
+ build ones will be required for each instance distribution.}
 
 
 \begin{figure}
