@@ -711,11 +711,31 @@ complete schedules but can still achieve the same makespan.
 %as undesirable. Only the resulting features from a dispatch resulting in a 
 %suboptimal solution should be labelled undesirable.
 
-The redundancy in building optimal solutions using dispatching rules means that many 
-different dispatches may yield an optimal solution to the problem instance.
-The probability that a job chosen by a SDR yields an optimal 
-makespan, on a step-by-step basis, is depicted in \cref{fig:opt:SDR}. These probabilities
-vary quite a bit between the different problem instances distributions studied. From \cref{fig:opt:SDR} one observed that MWR has a higher probability than random guessing, in choosing a dispatch which may result in an optimal schedule. This is especially true towards the end of the schedule building process. Similarly, the LWR chooses dispatches resulting in optimal schedules with a higher probability. This would appear to be support the idea that the higher the probability of dispatching jobs that may lead to an optimal schedule, the better the SDRs performance, as illustrated by \cref{fig:boxplot:SDR}. However, there is a counter example. The SPT has a higher probability than random dispatching of selecting a jobs that may lead to an optimal solution. Nevertheless, the random dispatching performs better than SPT on problem instances \jrnd{10}{10} and \jrndn{10}{10}. 
+The redundancy in building optimal solutions using dispatching rules means that 
+many different dispatches may yield an optimal solution to the problem instance.
+Let's formalise the probability of optimality (or stepwise 
+classification accuracy) for a given policy $\pi$, is defined as, 
+\begin{equation} \label{eq:tracc:opt}
+\xi_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi_{\star} \right\}
+\end{equation}
+that is to say the mean likelihood of our policy $\pi$ being equivalent to the 
+expert policy $\pi_\star$.
+The probability that a job chosen by a SDR yields an optimal makespan on a 
+step-by-step basis, i.e., $\xi_{\langle \text{SDR} \rangle}$, is depicted in 
+\cref{fig:opt:SDR}. These probabilities
+vary quite a bit between the different problem instances distributions studied. 
+From \cref{fig:opt:SDR} one observed that $\xi_{\text{MWR}}$ has a higher 
+probability than random guessing, in choosing a dispatch which may result in an 
+optimal schedule. This is especially true towards the end of the schedule 
+building process. Similarly, the $\xi_{\text{LWR}}$ chooses dispatches 
+resulting in optimal schedules with a higher probability. This would appear to 
+be support the idea that the higher the probability of dispatching jobs that 
+may lead to an optimal schedule, the better the SDRs performance, as 
+illustrated by \cref{fig:boxplot:SDR}. However, there is a counter example, 
+$\xi_{\text{SPT}}$ has a higher probability than random dispatching of 
+selecting a jobs that may lead to an optimal solution. Nevertheless, the random 
+dispatching performs better than SPT on problem instances \jrnd{10}{10} and 
+\jrndn{10}{10}. 
 
 
 \begin{figure}
@@ -754,9 +774,9 @@ having a homogeneous machine ordering, constricting the solution immensely.
 A naive approach to create a simple blended \dr~(BDR) would be to 
 switch between SDRs at a predetermined time.
 Observing again \cref{fig:opt:SDR}, a presumably good BDR for 
-\jrnd{10}{10} would be to start with SPT and then switch over to MWR at 
-around time step $k=40$, where the SDRs change places in outperforming one 
-another. 
+\jrnd{10}{10} would be to start with $\xi_{\text{SPT}}$ and then switch over to 
+$\xi_{\text{MWR}}$ at around time step $k=40$, where the SDRs change places in 
+outperforming one another. 
 A box-plot for $\rho$ for the BDR compared with MWR and SPT is depicted in 
 \cref{fig:boxplot:BDR}. 
 This simple swap between SDRs does outperform the SPT, yet 
@@ -792,9 +812,15 @@ achieve on its own.
 In \cref{fig:opt:SDR} we inspected the stepwise optimality, given that we were 
 on the optimal trajectory. Since we're bound to make mistakes at some points, 
 it's interesting to see how that stepwise optimality evolves for its intended 
-trajectory, which is depicted in \cref{fig:opt:SDR:jrnd} for \jrnd{10}{10}.
-There we can see that even though SPT is generally more likely to find optimal 
-dispatches in the initial steps, then shortly after $k=15$ MWR becomes a 
+trajectory, thereby updating \cref{eq:tracc:opt} to
+\begin{equation} \label{eq:tracc:track}
+\hat{\xi}_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi \right\}
+\end{equation}
+\Cref{fig:opt:SDR:jrnd} shows the difference between $\xi_{\langle \text{SDR} 
+\rangle}$ and $\hat{\xi}_{\langle \text{SDR} \rangle}$ for \jrnd{10}{10}.
+There we can see that even though $\hat{\xi}_{\text{SPT}}$ is generally more 
+likely to find optimal dispatches in the initial steps, then shortly after 
+$k=15$, $\hat{\xi}_{\text{MWR}}$ becomes a 
 contender again. This could explain why our BDR switch at $k=40$ from 
 \cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k=10$ or 
 $k=15$ is not statically significant from MWR (boost in mean $\rho$ is at most 
