@@ -53,7 +53,6 @@
 \selectlanguage{english}
 
 \begin{abstract}
-\todo{Needs a rewrite}
 Instead of creating new \dr s in an ad-hoc manner,
 this study gives a framework on how to analyse heuristics for scheduling 
 problems.  Before starting to create new \cdr s, 
@@ -64,6 +63,9 @@ failure.  Furthermore, the stepwise optimality of individual features imply
 their explanatory predictability. From which, a preference set is collected and 
 a preference based learning model is created based on what feature states are 
 preferable to others w.r.t. the end result, here minimising the final makespan.
+Moreover, the learned model should be created in an active  imitation learning 
+manner in order for learned state spaces to properly represent one that should 
+be eventually encountered.
 By doing so it's possible to learn new \cdr s that 
 outperform the models they are based on. 
 Even though this study is based around the \jsp\ scheduling problem, it can be 
@@ -128,7 +130,8 @@ i.e., Dispatching Rules Based Genetic Algorithms (DRGA)
 \cite{Vazquez-Rodriguez09,Dhingra10,Nguyen13} where a solution is no longer a 
 \emph{proper} schedule but a \emph{representation} of a schedule via applying 
 certain dispatching rules consecutively. 
-DRGA are a special case of \emph{genetic programming} \cite{Koza05} which is 
+DRGA are a special case of \emph{genetic programming} (GP) \cite{Koza05} which 
+is 
 the most predominant approach in hyper-heuristics is a framework of creating 
 \emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
 \cite{Burke10}. 
@@ -149,12 +152,12 @@ the objective function can stabilise the optimisation process away from local
 minima. 
 
 % automation for selecting DRs #4 - GA
-By applying genetic programming (GP) on a terminal set of job-attributes for 
-flexible \jsp,\footnote{Flexible \jsp\ allows jobs to be processed on different 
-machines, i.e., the problem has the additional complexity of making a routing 
-decision of operations to machines.} \cite{Tay08} optimised a multi-objective 
-\jsp~(transformed into a single objective by linearly combining their 
-objectives) with promising results 
+By applying GP on a terminal set of job-attributes for flexible \jsp,\footnote{
+    Flexible \jsp\ allows jobs to be processed on different machines, i.e., the 
+    problem has the additional complexity of making a routing decision of 
+    operations to machines.} 
+\cite{Tay08} optimised a multi-objective \jsp~(transformed into a single 
+objective by linearly combining their objectives) with promising results 
 compared to the benchmarks DRs from the literature.
 The main drawback, is that the rules from their GP framework is quite complex, 
 and difficult to contrive a meaningful description to a layman.
@@ -287,9 +290,10 @@ With those guidelines, \cref{ch:expr:CDR} goes into detail how to create
 meaningful \cdr s using preference learning, focusing on how to 
 compare operations and collect training data with the importance of good state 
 sampling. 
-\Cref{sec:il,sec:expertPolicy,sec:perturbedLeader} explain the trajectories for 
-sampling meaningful schedule state-spaces used in preference learning. 
-Experimental results in jointly presented in \cref{sec:expr} with comparison 
+\Cref{sec:il:active,sec:il:passive} explain the trajectories for 
+sampling meaningful schedule state-spaces used in preference learning, either 
+using passive or active imitation learning. 
+Experimental results are jointly presented in \cref{sec:expr} with comparison 
 for a single randomly generated problem space. Furthermore, some general 
 adjustments for performance boost is also considered.
 The paper finally concludes in \cref{sec:con} with discussion and conclusions.
@@ -492,7 +496,7 @@ based on a few attributes and simple mathematical operations.
 	resulting temporal schedule after operation $(j,a)$.
 	}
 	\label{tbl:jssp:feat}
-	\input{tables/features-description}
+	{\setlength{\tabcolsep}{3pt} \input{tables/features-description}}
 \end{table}
 
 Designing priority \dr s requires recognizing the important 
@@ -609,7 +613,7 @@ The class of problem instances used in our studies is the \jsp\ scheduling
 problem described in \cref{sec:problemdef}. Each instance will have 
 different processing times, machine ordering and dimensions. Each instance will 
 therefore create different challenges for a priority dispatching rule. 
-Dispatching rules learned will be customized for the problems used for their 
+Dispatching rules learned will be customised for the problems used for their 
 training. For real world application using historical data would be most 
 appropriate. The aim would be to learn a dispatching rule that works well on 
 average for a given distribution of problem instances. To illustrate the performance 
@@ -624,20 +628,25 @@ The machine order is a random permutation of all of the machines in the
 \jrnd{n}{m} where $I=[1,99]$ and \jrndn{n}{m} where $I=[45,55]$. These 
 instances are referred to as random and random-narrow, respectively. In 
 addition we consider the case where the machine order is fixed and the same for 
-all jobs, i.e. $\vec{\sigma}=\{1,\ldots,m\}$ where 
+all jobs, i.e. $\vsigma=\{1,\ldots,m\}$ where 
 $\vec{p}\sim\mathcal{U}(1,99)$. 
 These jobs are denoted by \frnd{n}{m} and is analogous to \jrnd{n}{m}.
 
-The goal is to minimize the makespan, $C_{\max}$. The optimum 
-makespan is denoted $C_{\max}^{\text{opt}}$, and the makespan obtained from the 
+The goal is to minimise the makespan, $C_{\max}$. The optimum 
+makespan is denoted $C_{\max}^{\pi_\star}$ (using the expert policy 
+$\pi_\star$), and the makespan obtained from the 
 scheduling policy $\pi$ under inspection by $C_{\max}^{\pi}$. Since the optimal 
 makespan varies between problem instances the performance measure is the 
 following,
 \begin{equation}\label{eq:rho}
-\rho=\frac{C_{\max}^{\pi}-C_{\max}^{\text{opt}}}{C_{\max}^{\text{opt}}}\cdot
+\rho=\frac{C_{\max}^{\pi}-C_{\max}^{\pi_\star}}{C_{\max}^{\pi_\star}}\cdot
 100\%
 \end{equation}
 which indicates the percentage relative deviation from optimality. 
+Note, \cref{eq:rho} measures the discrepancy between predicted value and true 
+outcome, and is commonly referred to as a loss function, which we would like to 
+minimise for $\pi$.
+
 \Cref{fig:boxplot:SDR} depicts the box-plot for \cref{eq:rho} when using the 
 SDRs from \cref{sec:DR} for all of the problem spaces from \cref{tbl:data:sim}.
 These box-plots show the difference in performance of the various SDRs. The MWR performs on average the best on the \jrnd{n}{m} and \jrndn{n}{m} problems instances, whereas for \frnd{n}{m} is is LWR that performs best. It is also interesting to observe that all but the MWR perform statistically worse than random job dispatching on the \jrnd{n}{m} and \jrndn{n}{m} problems instances.
@@ -659,7 +668,7 @@ These box-plots show the difference in performance of the various SDRs. The MWR 
 
 \subsection{Reconstructing optimal solutions}\label{sec:opt:sdr}
 
-When building a complete schedule, $\ell=n\cdot m$ dispatches must be made 
+When building a complete schedule, $K=n\cdot m$ dispatches must be made 
 sequentially.  A job is placed at the earliest available time slot for its next 
 machine, whilst still fulfilling that each machine can handle at most one job 
 at each time, and jobs need to have finished their previous machines according 
@@ -675,7 +684,7 @@ For each possible post-decision state the temporal features are collected (cf.
 $N_{\text{train}}$ problem instances available, namely, 
 \begin{equation} \label{eq:Phi}
 \Phi := \bigcup_{\{\vec{x}_i\}_{i=1}^{N_{\text{train}}}} 
-\condset{\vphi^j}{J_j\in\mathcal{L}^{(k)}}_{k=1}^\ell
+\condset{\vphi^j}{J_j\in\mathcal{L}^{(k)}}_{k=1}^K
 \subset\mathcal{F}
 \end{equation}
 where the feature space $\mathcal{F}$ is described in \cref{tbl:jssp:feat}, and 
@@ -782,16 +791,16 @@ achieve on its own.
 
 In \cref{fig:opt:SDR} we inspected the stepwise optimality, given that we were 
 on the optimal trajectory. Since we're bound to make mistakes at some points, 
-it's interesting to see how that stepwise optimality evolves for that intended 
+it's interesting to see how that stepwise optimality evolves for its intended 
 trajectory, which is depicted in \cref{fig:opt:SDR:jrnd} for \jrnd{10}{10}.
 There we can see that even though SPT is generally more likely to find optimal 
 dispatches in the initial steps, then shortly after $k=15$ MWR becomes a 
 contender again. This could explain why our BDR switch at $k=40$ from 
 \cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k=10$ or 
 $k=15$ is not statically significant from MWR (boost in mean $\rho$ is at most 
-1.25\%). But as pointed in \cref{fig:case}, it's not so fatal to make bad moves 
-in the very first dispatches for \jrnd{10}{10}, hence little gain with improved 
-classification accuracy in that region.
+1.25\%). But as pointed out for \cref{fig:case}, it's not so fatal to make bad 
+moves in the very first dispatches for \jrnd{10}{10}, hence little gain with 
+improved classification accuracy in that region.
 
 \begin{figure}
   \centering
@@ -853,7 +862,7 @@ Then, the preference learning problem is specified by a set of preference pairs,
 \Psi = 
 \left\{\left(\vpsi^o,+1\right),\left(\vpsi^s,-1\right)
 \;\middle|\;\forall \left(J_o,J_s\right) \in \mathcal{O}^{(k)} \times 
-\mathcal{S}^{(k)}\right\}_{k=1}^{\ell} \subset \Phi\times Y \label{eq:prefset}
+\mathcal{S}^{(k)}\right\}_{k=1}^{K} \subset \Phi\times Y \label{eq:prefset}
 \end{equation}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d=\NrFeatLocal$ 
 features (cf. \cref{tbl:jssp:feat}), $Y=\{+1,-1\}$ is the outcome space from 
@@ -895,12 +904,12 @@ classification model obtained by the preference set.
 Preliminary experiments for creating step-by-step model was done in 
 \cite{InRu11a} where an optimal trajectory was explored, i.e., at each dispatch 
 some (random) optimal task is dispatched, resulting in local linear model for 
-each dispatch; a total of $\ell$ linear models for solving $n\times m$ JSP. 
+each dispatch; a total of $K$ linear models for solving $n\times m$ JSP. 
 However, the experiments there showed that by fixing the weights to its mean 
 value throughout the dispatching sequence, results remained satisfactory.
 A more sophisticated way, would be to create a \emph{new} linear model, where 
 the preference set, $\Psi$, is the union of the preference pairs across the 
-$\ell$ dispatches, such as described in \cref{eq:prefset}. 
+$K$ dispatches, such as described in \cref{eq:prefset}. 
 This would amount to a substantial preference set, and for $\Psi$ to be 
 computationally feasible to learn, $\Psi$ has to be reduced. For this several 
 ranking strategies were explored in \cite{InRu15a}, the results there showed 
@@ -938,9 +947,6 @@ optimal path.
 By simply adding training data obtained by following the trajectories of 
 well-known SDRs, their aggregated training set yielded better models with lower 
 \namerho. 
-Note, \cref{eq:rho} measures the discrepancy between predicted value and true 
-outcome, and is commonly referred to as a loss function, which we would like to 
-minimise for $\pi$.
 
 Inspired by the work of \cite{RossB10,RossGB11}, the methodology of generating 
 training data will now be such that it will iteratively improve upon the model, 
@@ -951,15 +957,15 @@ Thereby, eliminating the ad-hoc nature of choosing trajectories to learn, by
 rather letting the model lead its own way in a self-perpetuating manner until 
 it converges.
 
-\section{Passive Imitation Learning}
+\subsection{Passive Imitation Learning}\label{sec:il:passive}
 Using the terms from game-theory used in \cite{CesaBianchi06}, % chapter 2: 
 then our problem is a basic version of the sequential prediction problem where 
 the predictor (or forecaster), $\pi$, observes each element of a sequence 
-$\vchi$ of jobs, where at each time step $k \in \{1,...,\ell\}$, before the 
+$\vchi$ of jobs, where at each time step $k \in \{1,...,K\}$, before the 
 $k$-th job of the sequence is revealed, the predictor guesses its value 
 $\chi_k$ on the basis of the previous $k-1$ observations. 
 
-\subsection{Prediction with Expert Advice}\label{sec:expertPolicy}
+\subsubsection{Prediction with Expert Advice}\label{sec:expertPolicy}
 Let's assume we know the expert policy $\pi^\star$, which we can query what 
 is the optimal choice of $\chi_k={j^*}$ at any given time step $k$. 
 Now we can use \cref{eq:jstar} to back-propagate the relationship between 
@@ -990,7 +996,7 @@ When $\abs{\mathcal{O}^{(k)}}>1$, there can be several trajectories worth
 exploring. However, only one is chosen at random. This is deemed sufficient as 
 the number of problem instances, $N_{\text{train}}$, is relatively large.
 
-\subsection{Follow the Perturbed Leader}\label{sec:perturbedLeader}
+\subsubsection{Follow the Perturbed Leader}\label{sec:perturbedLeader}
 By allowing a predictor to randomise it's possible to achieve improved 
 performance \cite{CesaBianchi06,Hannan57}, which is the inspiration for our new 
 strategy, where we follow the Perturbed Leader, denoted OPT$\epsilon$. 
@@ -1002,7 +1008,7 @@ probability.
 
 \input{pseudocode/perturbedLeader}
 
-\subsection{Summary}
+\subsubsection*{Summary}
 
 Results showed that the expert policy is a promising starting point. 
 However, since \jsp\ is a sequential prediction problem, all future 
@@ -1014,13 +1020,13 @@ This is due to the learner's predictions affects future input observations
 during its execution, which violates the crucial i.i.d. assumptions of the  
 learning approach, and ignoring this interaction leads to poor performance.
 In fact, \cite{RossB10} proves, that assuming the preference model has a 
-training error of $\epsilon$, then the total compound error (for all $\ell$ 
+training error of $\epsilon$, then the total compound error (for all $K$ 
 dispatches) the classifier induces itself grows quadratically, $\bigOh{\epsilon 
-  \ell^2}$, for the entire schedule, rather than having linear loss, 
-$\bigOh{\epsilon \ell}$, if it were i.i.d.
+  K^2}$, for the entire schedule, rather than having linear loss, 
+$\bigOh{\epsilon K}$, if it were i.i.d.
 
 
-\section{Active Imitation Learning}\label{sec:il}
+\subsection{Active Imitation Learning}\label{sec:il:active}
 
 To amend performance from $\Phi^{\text{OPT}}$-based models, suboptimal 
 state-spaces were explored in \cite{InRu15a} by inspecting the features from 
@@ -1125,7 +1131,7 @@ aggregated datasets from all previous iterations, namely,
 \end{equation}
 and its update procedure is detailed in \cref{pseudo:DAgger}.
 
-\subsection*{DAgger Parameters}
+\subsubsection*{DAgger Parameters}
 Due to time constraints, only $T=7$ iterations will be inspected.
 In addition, preliminary experiments showed that DAgger for \jsp\ is not 
 sensitive to choice of $\beta_i$ in \cref{eq:il}. 
@@ -1139,7 +1145,7 @@ function.\footnote{$\beta_0=1$ and $\beta_i=0,\forall i>0$.}
 \input{pseudocode/imitationLearning}
 \input{pseudocode/DAgger}
 
-\section{Experiments}\label{sec:expr}
+\subsection{Experiments}\label{sec:expr}
 
 %\subsection*{Performance boost}
 
@@ -1153,16 +1159,9 @@ In order to boost training accuracy, two strategies were explored
 \end{enumerate}
 Note, that in preliminary experiments for \ref{expr:boost:varylmax} showed no 
 statistical significance in boost of performance. Hence, the default set-up 
-will be, 
-\begin{equation}
-l_{\max} := \Bigg \{ \begin{array}{rccc} 
-5 \cdot 10^5 & \quad\text{for} & 10\times 10 & \text{\JSP} \\
-10^5 & \quad\text{for} & 6\times 5 & \text{\JSP}
-\end{array}
-\end{equation}
-which is roughly the amount of features encountered from one pass of sampling a 
-\mbox{$\ell$-stepped} trajectory using a fixed policy $\hat{\pi}$ for the 
-default $N_{\text{train}}$.
+will be, $l_{\max}=5 \cdot 10^5$, which is roughly the amount of features 
+encountered from one pass of sampling a \mbox{$K$-stepped} trajectory using a 
+fixed policy $\hat{\pi}$ for the default $N_{\text{train}}=300$.
 However, \ref{expr:boost:newdata} strategy showed a considerable change in 
 performance. 
 Note, for the conventional $\Phi^{\text{OPT}}$ trajectory the extended training 
@@ -1181,20 +1180,20 @@ and its main statistics are given in \cref{tbl:il:stats}, for the following
 trajectories
 \begin{enumerate*}
   \item expert policy, trained on $\Phi^{\text{OPT}}$
+  \item perturbed leader, trained on $\Phi^{\text{OPT}\epsilon}$
   \item imitation learning, trained on $\Phi^{\text{DA}i}$ for iterations 
   $i=\{1,..,7\}$
-  \item perturbed leader, trained on $\Phi^{\text{OPT}\epsilon}$
 \end{enumerate*}
 Moreover, results for extended training set is also reported.
 
 At first we see that the perturbed leader ever so-slightly improves the mean 
 for $\rho$, rather than using the baseline expert policy. However, imitation 
-learning is by far the best improvement. With each iteration of DAgger the 
-models generally improve but there can be set-back, most notably the sudden 
-spike at $\Phi^{\text{DA}6}$ but fortunately manages to get back on track at 
-the subsequent iteration. 
+learning is by far the best improvement. With each iteration of DAgger, the 
+models generally improve but there can be some set-backs, most notably the 
+sudden spike at $\Phi^{\text{DA}6}$ but fortunately manages to get back on 
+track at the subsequent iteration. 
 
-Regarding the \ref{expr:boost:newdata} then it's not successful for the expert 
+Regarding \ref{expr:boost:newdata}, then it's not successful for the expert 
 policy, as $\rho$ increases approximately 10\%. This could most likely be 
 counter-acted by increasing $l_{\max}$ to reflect the 700 additional examples.
 What is interesting though, is that \ref{expr:boost:newdata} is very well 
@@ -1238,19 +1237,19 @@ Due to this artefact, feature selection is of paramount importance, and then it
 becomes the case of not having too many features, as they are likely to hinder 
 generalisation due to over-fitting in training. However, the features need to 
 be explanatory enough to maintain predictive ability. 
-For this reason \cref{ch:expr:CDR} was limited to up to three active features, 
-as the full feature set was clearly suboptimal w.r.t. the SDRs used as a 
-benchmark. 
-By using features based on the SDRs, along with some additional local features 
-describing the current schedule, it was possible to `discover' the SDRs when 
-given only one active feature. %Although there is not much to be gained by 
+%For this reason \cref{ch:expr:CDR} was limited to up to three active features, 
+%as the full feature set was clearly suboptimal w.r.t. the SDRs used as a 
+%benchmark. 
+%By using features based on the SDRs, along with some additional local features 
+%describing the current schedule, it was possible to `discover' the SDRs when 
+%given only one active feature. %Although there is not much to be gained by 
 %these models, they at least are a sanity check the learning models are on the 
 %right track. 
-Furthermore, by adding on additional features, a boost in performance was 
-gained, resulting in a \cdr\ that outperformed all of the 
-SDR baseline. 
+%Furthermore, by adding on additional features, a boost in performance was 
+%gained, resulting in a \cdr\ that outperformed all of the 
+%SDR baseline. 
 
-When training the learning model, it's not sufficient to only optimize w.r.t. 
+When training the learning model, it's not sufficient to only optimise w.r.t. 
 highest mean validation accuracy. As there is a trade-off between making the 
 over-all best decisions versus making the right decision on crucial time points 
 in the scheduling process, as \cref{fig:case} clearly illustrated. 
@@ -1336,7 +1335,6 @@ it impractical for some problems, especially if it involves human experts.
 To confront that, \cite{Judah12} introduce Reduction-based Active Imitation 
 Learning (RAIL), which involves a dynamic approach similar to DAgger, but more 
 emphasis is used to minimise the expert's labelling effort.
-
 In fact, it's possible to circumvent querying the expert altogether and still 
 have reasonable performance. By applying Locally Optimal Learning to Search 
 (LOLS) \cite{ChangKADL15} it is possible to use imitation learning (similar to 
@@ -1344,24 +1342,6 @@ DAgger framework) when the reference policy is poor (i.e. $\pi_\star$ in
 \cref{eq:il} is suboptimal), 
 although it's noted that the quality (w.r.t near-optimality) of reference 
 policy is in accordance to its performance, as is to be expected. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Although this study has been structured around the \jsp\ scheduling problem, 
 it is easily extended to other types of deterministic optimisation problems 
