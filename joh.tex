@@ -1147,9 +1147,9 @@ its own state distribution limit.
 %    pure strategy and a probability distribution over actions a mixed strategy 
 %    -- direct quote from \cite{CesaBianchi06}}
 
-\Cref{pseudo:imitationLearning} explains the pseudo code for how to collect 
-partial training set, $\Phi^{\text{IL}i}$ for $i$-th iteration of imitation 
-learning.
+\Cref{pseudo:activeIL} explains the pseudo code for how to collect 
+partial training set, $\Phi^{\text{IL}i}$ for $i$-th iteration of active 
+imitation learning.
 Subsequently, the resulting preference model, $\hat{\pi}_i$, learns on the 
 aggregated datasets from all previous iterations, namely,  
 \begin{equation}\label{eq:DAgger}
