@@ -1,6 +1,7 @@
 setwd('C:/Users/helga/alice/Code/R.shiny/')
 
 source('global.R')
+colorPalette='Greys';
 subdir='../../JSP-Expert/figures/'
 save='half';extension='pdf'
 input=list(dimension='10x10',problem='j.rnd',problems=c('j.rnd','j.rndn','f.rnd'))
