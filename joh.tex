@@ -817,8 +817,8 @@ trajectory, thereby updating \cref{eq:tracc:opt} to
 \begin{equation} \label{eq:tracc:track}
 \hat{\xi}_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi \right\}
 \end{equation}
-\Cref{fig:opt:SDR:xihat} shows the difference between $\xi_{\langle \text{SDR} 
-\rangle}$ and $\hat{\xi}_{\langle \text{SDR} \rangle}$ for \jrnd{10}{10}.
+\Cref{fig:opt:SDR:xihat} shows the log likelihood for $\hat{\xi}_{\langle 
+\text{SDR} \rangle}$ using \jrnd{10}{10}.
 There we can see that even though $\hat{\xi}_{\text{SPT}}$ is generally more 
 likely to find optimal dispatches in the initial steps, then shortly after 
 $k=15$, $\hat{\xi}_{\text{MWR}}$ becomes a 
@@ -832,7 +832,7 @@ improved classification accuracy in that region.
 \begin{figure}
   \centering
   \includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xihat}.pdf}
-  \caption{Log probability of SDR being optimal for \jrnd{10}{10}, when 
+  \caption{Log likelihood of SDR being optimal for \jrnd{10}{10}, when 
   following its corresponding SDR trajectory, i.e.,   
   $\log\left(\hat{\xi}_{\langle\text{SDR}\rangle}\right)$}
   \label{fig:opt:SDR:xihat}
