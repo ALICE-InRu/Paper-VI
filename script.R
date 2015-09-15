@@ -43,8 +43,9 @@ CDR.IL <- get.CDR.IL(input$problem,input$dimension)
 CDR.IL <- subset(CDR.IL, Supervision == 'Unsupervised' | Iter==0)
 p=plot.imitationLearning.boxplot(CDR.IL)
 p=p+ggplotColor('IL',2,values=c('Fixed','Unsupervised'),labels=c('Passive','Active'))
-ggsave('../../JSP-Expert/figures/j_rnd/DAGGER_10x10.pdf',
+ggsave('../../JSP-Expert/figures/j_rnd/DAGGER_10x10.png',
        width = Width, height = Height.half, units = units, dpi = dpi)
+# to get epsilon right: gm convert DAGGER_10x10.png DAGGER_10x10.pdf
 
 stats.imitationLearning(CDR.IL)
 plot.imitationLearning.weights(input$problem,input$dimension)
