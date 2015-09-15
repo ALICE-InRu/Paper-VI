@@ -41,7 +41,8 @@ plot.BDR(input$dimension,input$problem,'SPT','MWR',c(10,15,40),save,F)
 source('pref.imitationLearning.R')
 CDR.IL <- get.CDR.IL(input$problem,input$dimension)
 CDR.IL <- subset(CDR.IL, Supervision == 'Unsupervised' | Iter==0)
-plot.imitationLearning.boxplot(CDR.IL)
+p=plot.imitationLearning.boxplot(CDR.IL)
+p=p+ggplotColor('IL',2,values=c('Fixed','Unsupervised'),labels=c('Passive','Active'))
 ggsave('../../JSP-Expert/figures/j_rnd/DAGGER_10x10.pdf',
        width = Width, height = Height.half, units = units, dpi = dpi)
 
