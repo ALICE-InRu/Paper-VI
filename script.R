@@ -17,8 +17,14 @@ all.StepwiseOptimality=get.StepwiseOptimality(input$problems,input$dimension,'OP
 
 source('opt.SDR.R')
 all.StepwiseExtremal=get.StepwiseExtremal(input$problems,input$dimension)
-#FIGURE 3 \label{fig:opt:SDR}
-plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,all.StepwiseExtremal,input$dimension,F,save,T)
+#FIGURE 3 \label{fig:opt:SDR:xi}
+p=plot.StepwiseSDR.wrtTrack(all.StepwiseOptimality,all.StepwiseExtremal,input$dimension,F,save,T)
+#FIGURE 6 \label{fig:opt:SDR:xihat:jrnd}
+jrnd.StepwiseOptimality=get.StepwiseOptimality(input$problem,input$dimension,'OPT')
+jrnd.StepwiseExtremal=get.StepwiseExtremal(input$problem,input$dimension)
+p=plot.StepwiseSDR.wrtTrack(jrnd.StepwiseOptimality,jrnd.StepwiseExtremal,input$dimension,F,NA,F,T)
+ggsave('../../JSP-Expert/figures/j_rnd/trdat_prob_moveIsOptimal_10x10_SDR_xihat.pdf',
+       width = Width, height = Height.half, units = units, dpi = dpi)
 
 source('opt.bw.R')
 #FIGURE 5 \label{fig:case}

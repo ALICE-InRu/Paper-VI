@@ -722,9 +722,9 @@ that is to say the mean likelihood of our policy $\pi$ being equivalent to the
 expert policy $\pi_\star$.
 The probability that a job chosen by a SDR yields an optimal makespan on a 
 step-by-step basis, i.e., $\xi_{\langle \text{SDR} \rangle}$, is depicted in 
-\cref{fig:opt:SDR}. These probabilities
+\cref{fig:opt:SDR:xi}. These probabilities
 vary quite a bit between the different problem instances distributions studied. 
-From \cref{fig:opt:SDR} one observed that $\xi_{\text{MWR}}$ has a higher 
+From \cref{fig:opt:SDR:xi} one observed that $\xi_{\text{MWR}}$ has a higher 
 probability than random guessing, in choosing a dispatch which may result in an 
 optimal schedule. This is especially true towards the end of the schedule 
 building process. Similarly, the $\xi_{\text{LWR}}$ chooses dispatches 
@@ -741,11 +741,11 @@ dispatching performs better than SPT on problem instances \jrnd{10}{10} and
 \begin{figure}
   \centering
   \includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}
-  \caption{Probability of SDR being optimal}
-  \label{fig:opt:SDR}
+  \caption{Probability of SDR being optimal, ${\xi}_{\langle\text{SDR}\rangle}$}
+  \label{fig:opt:SDR:xi}
 \end{figure}
 
-Looking at \cref{fig:opt:SDR}, then \jrnd{10}{10}  has a relatively high 
+Looking at \cref{fig:opt:SDR:xi}, then \jrnd{10}{10}  has a relatively high 
 probability ($70\%$ and above) of choosing an optimal job at random. 
 However, it is imperative to keep making optimal decisions, because once off 
 the optimal track the consequences are unknown. 
@@ -773,7 +773,7 @@ having a homogeneous machine ordering, constricting the solution immensely.
 \subsection{Blended \dr s}\label{sec:opt:bdr}
 A naive approach to create a simple blended \dr~(BDR) would be to 
 switch between SDRs at a predetermined time.
-Observing again \cref{fig:opt:SDR}, a presumably good BDR for 
+Observing again \cref{fig:opt:SDR:xi}, a presumably good BDR for 
 \jrnd{10}{10} would be to start with $\xi_{\text{SPT}}$ and then switch over to 
 $\xi_{\text{MWR}}$ at around time step $k=40$, where the SDRs change places in 
 outperforming one another. 
@@ -786,7 +786,7 @@ A reason for this lack of performance of our proposed BDR is perhaps that by
 starting out with SPT in the beginning, it sets up the schedules in such a way 
 that it's quite greedy and only takes into consideration jobs with shortest 
 immediate processing times. Now, even though it is possible to find optimal 
-schedules from this scenario, as \cref{fig:opt:SDR} show, the inherent 
+schedules from this scenario, as \cref{fig:opt:SDR:xi} show, the inherent 
 structure that's already taking place, might make it hard to come across by 
 simple methods. Therefore it's by no means guaranteed that by simply swapping 
 over to MWR will handle that situation which applying SPT has already created. 
@@ -809,14 +809,15 @@ achieve on its own.
   \label{fig:boxplot:BDR}
 \end{figure}
 
-In \cref{fig:opt:SDR} we inspected the stepwise optimality, given that we were 
+In \cref{fig:opt:SDR:xi} we inspected the stepwise optimality, given that we 
+were 
 on the optimal trajectory. Since we're bound to make mistakes at some points, 
 it's interesting to see how that stepwise optimality evolves for its intended 
 trajectory, thereby updating \cref{eq:tracc:opt} to
 \begin{equation} \label{eq:tracc:track}
 \hat{\xi}_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi \right\}
 \end{equation}
-\Cref{fig:opt:SDR:jrnd} shows the difference between $\xi_{\langle \text{SDR} 
+\Cref{fig:opt:SDR:xihat} shows the difference between $\xi_{\langle \text{SDR} 
 \rangle}$ and $\hat{\xi}_{\langle \text{SDR} \rangle}$ for \jrnd{10}{10}.
 There we can see that even though $\hat{\xi}_{\text{SPT}}$ is generally more 
 likely to find optimal dispatches in the initial steps, then shortly after 
@@ -830,17 +831,11 @@ improved classification accuracy in that region.
 
 \begin{figure}
   \centering
-  \begin{tikzpicture}
-  \node[anchor=south west] (image) at (0,0,0) 
-  {\includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}};
-  \begin{scope}[x={(image.south east)},y={(image.north east)}]
-  \node (zoom) at (0.25,.47)
-  {\includegraphics[width=0.35\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_zoom}.pdf}};
-  \end{scope}
-  \end{tikzpicture}
-  \caption{Probability of SDR being optimal for \jrnd{10}{10}, both when 
-  following optimal and its corresponding SDR trajectories}
-  \label{fig:opt:SDR:jrnd}
+  \includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xihat}.pdf}
+  \caption{Log probability of SDR being optimal for \jrnd{10}{10}, when 
+  following its corresponding SDR trajectory, i.e.,   
+  $\log\left(\hat{\xi}_{\langle\text{SDR}\rangle}\right)$}
+  \label{fig:opt:SDR:xihat}
 \end{figure}
 
 
