@@ -989,6 +989,10 @@ will be, $l_{\max}=5 \cdot 10^5$, which is roughly the amount of features
 encountered from one pass of sampling a \mbox{$K$-stepped} trajectory using a 
 fixed policy $\pi$ for the default $N_{\text{train}}=300$.
 
+Note, as the following \lcnamecref{sec:il:passive} require repeated collection 
+of training data, and since it's labelling is a very time intensive task the 
+remainder of the paper will solely be focusing on \jrnd{10}{10}.
+
 \section{Passive Imitation Learning}\label{sec:il:passive}
 Using the terms from game-theory used in \cite{CesaBianchi06}, % chapter 2: 
 then our problem is a basic version of the sequential prediction problem where 
