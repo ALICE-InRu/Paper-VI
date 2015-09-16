@@ -1122,18 +1122,6 @@ DAgger has been proven successful on a variety of benchmarks, such as
   \item real-world applications, e.g. autonomous navigation for large unmanned 
   aerial vehicles \cite{Ross13}
 \end{enumerate*}
-To illustrate the effectiveness of DAgger, the Super Mario Bros. experiment 
-gives a very simple and informative understanding of the benefits of the 
-algorithm. In short, Super Mario Bros. is a platform game where the 
-protagonist, Mario, must move across the stage without being hit by enemies or 
-falling through gaps within a certain time limit. 
-One of the reasons the supervised approaches failed, were due to Mario getting 
-stuck up against an obstacle, instead of jumping over it. 
-However, the expert would always jump over them at a greater distance 
-beforehand, and therefore the learned controller would not know of these 
-scenarios. 
-With iterative methods, Mario would encounter these problematic situations and 
-eventually learn how to get himself unstuck. 
 
 \subsection{DAgger}
 The policy of imitation learning at iteration $i>0$ is a mixed strategy given 
