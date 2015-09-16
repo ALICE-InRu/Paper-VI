@@ -1126,7 +1126,7 @@ aggregated datasets from all previous iterations, namely,
 and its update procedure is detailed in \cref{pseudo:DAgger}.
 
 \subsubsection*{DAgger Parameters}
-Due to time constraints, only $T=7$ iterations will be inspected.
+Due to time constraints, only $T=3$ iterations will be inspected.
 In addition, preliminary experiments showed that DAgger for \jsp\ is not 
 sensitive to choice of $\beta_i$ in \cref{eq:il}. 
 Hence, a simple parameter-free version of the DAgger algorithm, which often 
@@ -1198,13 +1198,13 @@ subsequent iterations, as those new states are more likely to be encountered
 learning converge faster, it also consistently improves with each iterations.
 
 \begin{figure}
-  \includegraphics[width=\textwidth]{figures/{j_rnd}/{DAGGER_10x10}.pdf}
+  \includegraphics[width=\textwidth]{figures/{j_rnd}/{boxplot_summary_10x10}.pdf}
   \caption{Box plot for \jrnd{10}{10} \namerho, using either expert policy, 
-  imitation learning or following perturbed leader 
-  strategies.}\label{fig:il:boxplot} 
+  DAgger or following perturbed leader strategies. 
+  MWR shown on far right for reference.}\label{fig:il:boxplot} 
 \end{figure}
 
-\input{tables/stats.DAGGER.10x10.tex}
+\input{tables/stats.boxplot.10x10.tex}
 
 
 \section{Discussion and conclusions}\label{sec:con}
