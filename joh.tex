@@ -795,10 +795,6 @@ in the latter stages, does help the schedule to be more compact w.r.t. SPT.
 However, in the case of \jrnd{10}{10}  and \jrndn{10}{10}  the fact remains 
 that the schedules have diverged too far from what MWR would have been able to 
 achieve on its own. 
-\todo[inline]{this last paragraph ends with the hope the CDRs will perform 
- better than BDRs, and so motivate the next section, we also observe here that 
- there will now be one SDR that fits all problem distributions and that custom 
- build ones will be required for each instance distribution.}
 
 \begin{figure}
   \centering
@@ -1056,26 +1052,6 @@ full execution of following the task chosen by the corresponding SDR.
 This required some trial-and-error as the experiments showed that features 
 obtained by SDR trajectories were not equally useful for learning.
 
-
-\todo[inline]{DAgger can be interpreted as Follow-the-leader algorithm in that 
-  at iteration $i$ we pick the best policy $\hat{\pi}_i$ in hindsight, i.e., 
-  under all trajectories seen so far over the iterations: 
-``\cite{RossGB11} approach is similar to regularised follow the leader 
-algorithm from sec.'' 
-In these models the adversary and nature are the same, and the nature chooses a 
-new cost function for each action of the learner at the each iteration of the 
-game. The goal is to minimise the regret that the learner would suffer, 
-compared to the time that if it knew all of the costs imposed by nature in 
-hindsight and had chosen a fixed strategy as the response
-Ross et  al use a regret minimisation setting for learning to drive a computer 
-simulated car, where the output is a sequence of actions in a limited horizon. 
-in their problem the true cost of taking action $a$ in state $s$, $C(s,a)$ is 
-not known, but they use some expert's knowledge about the loss $l(s,\pi)$ 
-incurred by the policy $a=\pi(s)$ -- policy is the function $\pi:\mathcal{S}\to 
-\mathcal{D}(\mathcal{A})$ that maps an state to an action or a distribution 
-over action, and is almost equivalent hypothesis function $h:\mathcal{X}\to 
-\mathcal{Y}$}
-
 To automate this process, inspiration from \emph{active} imitation learning 
 presented in \cite{RossGB11} is sought, called \emph{Dataset Aggregation} 
 (DAgger) method, which addresses a no-regret algorithm in an on-line learning 
@@ -1137,10 +1113,6 @@ The only requirement for $\{\beta_i\}_i^\infty$ according to \cite{RossGB11} is
 that $\limit{\frac{1}{T}\sum_{i=0}^T\beta_i}{T\to\infty}{0}$ to guarantee 
 finding a policy $\hat{\pi}_i$ that achieves $\epsilon$ surrogate loss under 
 its own state distribution limit.
-
-%\todo[inline]{Adopting a game-theoretic terminology, we often call an action a 
-%    pure strategy and a probability distribution over actions a mixed strategy 
-%    -- direct quote from \cite{CesaBianchi06}}
 
 \Cref{pseudo:activeIL} explains the pseudo code for how to collect 
 partial training set, $\Phi^{\text{IL}i}$ for $i$-th iteration of active 
@@ -1323,14 +1295,6 @@ computational cost due to the substantial amounts of states that need to be
 optimised for their correct labelling. Making it only practical for \jsp\ of 
 a considerable lower dimension. 
 
-\todo[inline,color=red]{From \cite{Ross11} DAgger application: 
-  ``Training such a predictor, however, is non-trivial as the interdependencies 
-  in the sequence of predictions make global optimisation is to leverage 
-  information local to modules to aid learning ... To provide good guarentees 
-  and performance in practice in this non-i.i.d. (as predictions are 
-  interdependent), we also leverage key iterative training methods developped 
-  in prior work for imitation learning and structured prediction''}
-
 Maximum Mean Discrepancy (MMD) imitation learning by \cite{Kim13} is an 
 iterative algorithm similar to DAgger. 
 However, the expert policy is only queried when needed in order to reduce 
@@ -1380,13 +1344,3 @@ process.
 \bibliography{references}  
 
 \end{document}
-
-\todo{use this somewhere else}
-For this study synthetic JSP and FSP problem instances will be considered with 
-the problem size $10\times10$. 
-For each problem space $N_{\text{train}}$  and $N_{\text{test}}$ instances were 
-generated for training and testing, respectively. Moreover, of the training 
-data, 20\% is reserved for validation.
-Summary of problem classes is given in \cref{tbl:data:sim}.  
-Note, that difficult problem instances are not filtered out beforehand, such as 
-the approach in \cite{Whitley}.
