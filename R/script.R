@@ -42,12 +42,34 @@ plot.BDR(input$dimension,input$problem,'SPT','MWR',c(10,15,40),save,F)
 source('pref.imitationLearning.R')
 CDR.IL <- get.CDR.IL(input$problem,input$dimension)
 CDR.IL <- subset(CDR.IL, (Supervision == 'Unsupervised' & Iter <=3) | Iter==0 )
-MWR <- subset(SDR,SDR=='MWR')
-p=plot.imitationLearning.boxplot(CDR.IL)
-p=p+ggplotColor('IL',2,values=c('Fixed','Unsupervised'),labels=c('Passive','Active'))
-ggsave('../../JSP-Expert/figures/j_rnd/DAGGER_10x10.png',
+
+CDR.OPT <- subset(CDR.IL, Iter==0)
+CDR.OPT$Type <- 'Passive Imitation Learning'
+plot.imitationLearning.boxplot(CDR.OPT)+guides(colour=FALSE)+facet_grid(Type~Set)
+ggsave('../../JSP-Expert/figures/j_rnd/boxplot_passive_10x10.png',
        width = Width, height = Height.half, units = units, dpi = dpi)
-# to get epsilon right: gm convert DAGGER_10x10.png DAGGER_10x10.pdf
+# to get epsilon right: gm convert boxplot_passive_10x10.png boxplot_passive_10x10.pdf
+
+CDR.DA.EXT <- subset(CDR.IL, (Supervision == 'Unsupervised') | (Extended==0 & Track=='OPT'))
+CDR.DA.EXT$Type <- 'Active Imitation Learning'
+CDR.DA.EXT$Supervision='Fixed'
+levels(CDR.DA.EXT$Track)[1]='DA0'
+plot.imitationLearning.boxplot(CDR.DA.EXT)+guides(colour=FALSE)+facet_grid(Type~Set)+
+  scale_linetype('New problem instances')+xlab(expression('iteration,' *~T))
+ggsave('../../JSP-Expert/figures/j_rnd/boxplot_active_10x10.pdf',
+       width = Width, height = Height.half, units = units, dpi = dpi)
+
+CDR.IL$Type = 'Imitation Learning'
+CDR.IL <- subset(CDR.IL, (Supervision=='Unsupervised' & Extended==T) |
+                   (Supervision!='Unsupervised' & Extended==F))
+MWR <- subset(dataset.SDR,SDR=='MWR' & Problem == input$problem & Dimension==input$dimension);
+MWR$Supervision='Unsupervised'; MWR$Iter=0; MWR$Track='MWR'; MWR$CDR=MWR$SDR; MWR$NrFeat=1; MWR$Model=1; MWR$Extended=F; MWR$Bias=NA; MWR$Rank=NA; MWR$SDR=NULL; MWR$Type='SDR'
+p=plot.imitationLearning.boxplot(rbind(CDR.IL,MWR))
+p=p+ggplotColor('IL',2,values=c('Fixed','Unsupervised'),labels=c('Passive','Active'))
+p=p + facet_grid(Set~Type, scales='free',space = 'free')
+ggsave('../../JSP-Expert/figures/j_rnd/boxplot_summary_10x10.png',
+       width = Width, height = Height.half, units = units, dpi = dpi)
+# to get epsilon right: gm convert boxplot_summary_10x10.png boxplot_summary_10x10.pdf
 
 stats.imitationLearning(CDR.IL)
 plot.imitationLearning.weights(input$problem,input$dimension)
