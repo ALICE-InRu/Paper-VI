@@ -801,8 +801,8 @@ achieve on its own.
   \centering
   \includegraphics[width=1\linewidth]{figures/j_rnd/{boxplotRho_BDR_10x10}.pdf}
   \caption{Box-plot for deviation from optimality, $\rho$, (\%) for BDR where 
-    SPT is applied for the first 10\%, 15\% or 40\% of the dispatches, followed 
-    by MWR}
+    SPT is applied for the first 10\%, 15\%, 20\%, 30\% or 40\% of the 
+    dispatches, followed by MWR}
   \label{fig:boxplot:BDR}
 \end{figure}
 \input{tables/stats.BDR.10x10.tex}
@@ -820,11 +820,13 @@ There we can see that even though $\hat{\xi}_{\text{SPT}}$ is generally more
 likely to find optimal dispatches in the initial steps, then shortly after 
 $k=15$, $\hat{\xi}_{\text{MWR}}$ becomes a 
 contender again. This could explain why our BDR switch at $k=40$ from 
-\cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k=10$ or 
-$k=15$ is not statically significant from MWR (boost in mean $\rho$ is at most 
-0.5\%). But as pointed out for \cref{fig:case}, it's not so fatal to make bad 
-moves in the very first dispatches for \jrnd{10}{10}, hence little gain with 
-improved classification accuracy in that region.
+\cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k\leq20$
+is not statically significant from MWR (boost in mean $\rho$ 
+is at most 0.5\%). 
+However, after $k>20$ then the BDR starts diverging from MWR. 
+But as pointed out for \cref{fig:case}, it's not so fatal to 
+make bad moves in the very first dispatches for \jrnd{10}{10}, hence little 
+gain with improved classification accuracy in that region. 
 
 \begin{figure}
   \centering

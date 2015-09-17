@@ -36,7 +36,7 @@ source('sdr.R')
 #FIGURE 2 \label{fig:boxplot:SDR}
 plot.SDR(SDR,'boxplot', save)
 #FIGURE 4 \label{fig:boxplot:BDR}
-plot.BDR(input$dimension,input$problem,'SPT','MWR',c(10,15,40),save,F)
+plot.BDR(input$dimension,input$problem,'SPT','MWR',c(10,15,20,40),NA,F)
 
 
 source('pref.imitationLearning.R')
