@@ -25,7 +25,7 @@ jrnd.StepwiseOptimality=get.StepwiseOptimality(input$problem,input$dimension,'OP
 jrnd.StepwiseExtremal=get.StepwiseExtremal(input$problem,input$dimension)
 p=plot.StepwiseSDR.wrtTrack(jrnd.StepwiseOptimality,jrnd.StepwiseExtremal,input$dimension,F,NA,F,T)
 p <- p + scale_x_continuous('Step',limits=c(0,30),expand=c(0,0))
-ggsave('../../JSP-Expert/figures/j_rnd/trdat_prob_moveIsOptimal_10x10_SDR_xihat.pdf',
+ggsave('../../JSP-Expert/figures/j_rnd/trdat_prob_moveIsOptimal_10x10_SDR_xi.pdf',
        width = Width, height = Height.half, units = units, dpi = dpi)
 
 source('opt.bw.R')

@@ -93,11 +93,14 @@ plot.StepwiseSDR.wrtTrack <- function(StepwiseOptimality,StepwiseExtremal,
 
   if(onlyWrtOPT|onlyWrtSDR) {
     if(onlyWrtOPT)
-      p <- p+ylab(expression(xi[SDR]))
+      p <- p+ylab(expression(xi[SDR]^'*'))+scale_linetype('Track')
     else
-      p <- p+ylab(expression(log(hat(xi)[SDR])))
+      p <- p+ylab(expression(log(xi[SDR])))
+
   } else {
     p <- p + ylab('Probability of SDR being optimal')
+    p=p+scale_linetype_manual('Accuracy', values=c(1,2),
+                              labels=c(expression(xi^'*'),expression(xi)))
   }
 
   if(!is.na(save)){

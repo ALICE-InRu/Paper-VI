@@ -716,23 +716,25 @@ many different dispatches may yield an optimal solution to the problem instance.
 Let's formalise the probability of optimality (or stepwise 
 classification accuracy) for a given policy $\pi$, is defined as, 
 \begin{equation} \label{eq:tracc:opt}
-\xi_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi_{\star} \right\}
+\xi^\star_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi_{\star} 
+\right\}
 \end{equation}
 that is to say the mean likelihood of our policy $\pi$ being equivalent to the 
 expert policy $\pi_\star$.
 The probability that a job chosen by a SDR yields an optimal makespan on a 
-step-by-step basis, i.e., $\xi_{\langle \text{SDR} \rangle}$, is depicted in 
-\cref{fig:opt:SDR:xi}. These probabilities
+step-by-step basis, i.e., $\xi^\star_{\langle \text{SDR} \rangle}$, is depicted 
+in \cref{fig:opt:SDR:xistar}. These probabilities
 vary quite a bit between the different problem instances distributions studied. 
-From \cref{fig:opt:SDR:xi} one observed that $\xi_{\text{MWR}}$ has a higher 
-probability than random guessing, in choosing a dispatch which may result in an 
-optimal schedule. This is especially true towards the end of the schedule 
-building process. Similarly, the $\xi_{\text{LWR}}$ chooses dispatches 
+From \cref{fig:opt:SDR:xistar} one observed that $\xi^\star_{\text{MWR}}$ has a 
+higher probability than random guessing, in choosing a dispatch which may 
+result in an optimal schedule. This is especially true towards the end of the 
+schedule building process. 
+Similarly, the $\xi^\star_{\text{LWR}}$ chooses dispatches 
 resulting in optimal schedules with a higher probability. This would appear to 
 be support the idea that the higher the probability of dispatching jobs that 
 may lead to an optimal schedule, the better the SDRs performance, as 
 illustrated by \cref{fig:boxplot:SDR}. However, there is a counter example, 
-$\xi_{\text{SPT}}$ has a higher probability than random dispatching of 
+$\xi^\star_{\text{SPT}}$ has a higher probability than random dispatching of 
 selecting a jobs that may lead to an optimal solution. Nevertheless, the random 
 dispatching performs better than SPT on problem instances \jrnd{10}{10} and 
 \jrndn{10}{10}. 
@@ -740,9 +742,10 @@ dispatching performs better than SPT on problem instances \jrnd{10}{10} and
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR}.pdf}
-  \caption{Probability of SDR being optimal, ${\xi}_{\langle\text{SDR}\rangle}$}
-  \label{fig:opt:SDR:xi}
+  \includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_xistar}.pdf}
+  \caption{Probability of SDR being optimal, 
+  $\xi^\star_{\langle\text{SDR}\rangle}$}
+  \label{fig:opt:SDR:xistar}
 \end{figure}
 
 Looking at \cref{fig:opt:SDR:xi}, then \jrnd{10}{10}  has a relatively high 
@@ -757,9 +760,10 @@ suboptimal decisions cumulate.
 
 It is interesting to observe that for \jrnd{10}{10} and \jrndn{10}{10} making suboptimal decisions later impacts on the resulting makespan more than doing a mistake early. 
 The opposite seems to be the case for \frnd{10}{10}. 
-In this case it is imperative to make good decisions right from the start. This is 
-due to the major structural differences between JSP and FSP, namely the latter 
-having a homogeneous machine ordering, constricting the solution immensely. 
+In this case it is imperative to make good decisions right from the start. This 
+is due to the major structural differences between \JSP\ and \FSP, namely the 
+latter having a homogeneous machine ordering, constricting the solution 
+immensely. 
 
 \begin{figure}
   \centering
@@ -773,29 +777,28 @@ having a homogeneous machine ordering, constricting the solution immensely.
 \subsection{Blended \dr s}\label{sec:opt:bdr}
 A naive approach to create a simple blended \dr~(BDR) would be to 
 switch between SDRs at a predetermined time.
-Observing again \cref{fig:opt:SDR:xi}, a presumably good BDR for 
-\jrnd{10}{10} would be to start with $\xi_{\text{SPT}}$ and then switch over to 
-$\xi_{\text{MWR}}$ at around time step $k=40$, where the SDRs change places in 
-outperforming one another. 
+Observing again \cref{fig:opt:SDR:xistar}, a presumably good BDR for 
+\jrnd{10}{10} would be to start with $\xi^\star_{\text{SPT}}$ and then switch 
+over to $\xi^\star_{\text{MWR}}$ at around time step $k=40$, where the SDRs 
+change places in outperforming one another. 
 A box-plot for $\rho$ for the BDR compared with MWR and SPT is depicted in 
 \cref{fig:boxplot:BDR} and its main statistics are reported in 
 \cref{tbl:BDR:stats}. 
-This simple swap between SDRs does outperform the SPT, yet 
+This simple swap between SDRs does outperform the SPT heuristic, yet 
 doesn't manage to gain the performance edge of MWR. Using SPT downgrades the performance of MWR.
 
 A reason for this lack of performance of our proposed BDR is perhaps that by 
 starting out with SPT in the beginning, it sets up the schedules in such a way 
 that it's quite greedy and only takes into consideration jobs with shortest 
 immediate processing times. Now, even though it is possible to find optimal 
-schedules from this scenario, as \cref{fig:opt:SDR:xi} show, the inherent 
+schedules from this scenario, as \cref{fig:opt:SDR:xistar} shows, the inherent 
 structure that's already taking place, might make it hard to come across by 
 simple methods. Therefore it's by no means guaranteed that by simply swapping 
 over to MWR will handle that situation which applying SPT has already created. 
 \Cref{fig:boxplot:BDR} does however show, that by applying MWR instead of SPT 
 in the latter stages, does help the schedule to be more compact w.r.t. SPT. 
-However, in the case of \jrnd{10}{10}  and \jrndn{10}{10}  the fact remains 
-that the schedules have diverged too far from what MWR would have been able to 
-achieve on its own. 
+However, the fact remains that the schedules have diverged too far from what 
+MWR would have been able to achieve on its own. 
 
 \begin{figure}
   \centering
@@ -807,18 +810,18 @@ achieve on its own.
 \end{figure}
 \input{tables/stats.BDR.10x10.tex}
 
-In \cref{fig:opt:SDR:xi} we inspected the stepwise optimality, given that we 
-were on the optimal trajectory. Since we're bound to make mistakes at some 
+In \cref{fig:opt:SDR:xistar} we inspected the stepwise optimality, given that 
+we were on the optimal trajectory. Since we're bound to make mistakes at some 
 points, it's interesting to see how that stepwise optimality evolves for its 
 intended trajectory, thereby updating \cref{eq:tracc:opt} to
 \begin{equation} \label{eq:tracc:track}
-\hat{\xi}_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi \right\}
+\xi_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi \right\}
 \end{equation}
-\Cref{fig:opt:SDR:xihat} shows the log likelihood for $\hat{\xi}_{\langle 
+\Cref{fig:opt:SDR:xi} shows the log likelihood for $\xi_{\langle 
 \text{SDR} \rangle}$ using \jrnd{10}{10}.
-There we can see that even though $\hat{\xi}_{\text{SPT}}$ is generally more 
+There we can see that even though $\xi_{\text{SPT}}$ is generally more 
 likely to find optimal dispatches in the initial steps, then shortly after 
-$k=15$, $\hat{\xi}_{\text{MWR}}$ becomes a 
+$k=15$, $\xi_{\text{MWR}}$ becomes a 
 contender again. This could explain why our BDR switch at $k=40$ from 
 \cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k\leq20$
 is not statically significant from MWR (boost in mean $\rho$ 
@@ -830,11 +833,11 @@ gain with improved classification accuracy in that region.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xihat}.pdf}
+  \includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xi}.pdf}
   \caption{Log likelihood of SDR being optimal for \jrnd{10}{10}, when 
   following its corresponding SDR trajectory, i.e.,   
-  $\log\left(\hat{\xi}_{\langle\text{SDR}\rangle}\right)$}
-  \label{fig:opt:SDR:xihat}
+  $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
+  \label{fig:opt:SDR:xi}
 \end{figure}
 
 
@@ -991,8 +994,8 @@ will be, $l_{\max}=5 \cdot 10^5$, which is roughly the amount of features
 encountered from one pass of sampling a \mbox{$K$-stepped} trajectory using a 
 fixed policy $\pi$ for the default $N_{\text{train}}=300$.
 
-Note, as the following \lcnamecref{sec:il:passive} require repeated collection 
-of training data, and since it's labelling is a very time intensive task the 
+Note, as the following \lcnamecref{sec:il:passive}s require repeated collection 
+of training data, and since its labelling is a very time intensive task the 
 remainder of the paper will solely be focusing on \jrnd{10}{10}.
 
 \section{Passive Imitation Learning}\label{sec:il:passive}
@@ -1068,8 +1071,8 @@ to surpass MWR in performance.
 
 From \cite{InRu11a} we know that expert policy is a promising starting point.
 However, that was for $6\times5$ dimensionality (i.e. $K=30$), which is a much 
-simpler problem space. Notice that in \cref{fig:opt:SDR:xihat} there was 
-virtually no chance for $\hat{\xi}_\pi$ of choosing a job resulting in optimal 
+simpler problem space. Notice that in \cref{fig:opt:SDR:xi} there was 
+virtually no chance for $\xi_\pi$ of choosing a job resulting in optimal 
 makespan after step $k=28$.
 
 Since \jsp\ is a sequential prediction problem, all future observations are 
@@ -1077,7 +1080,7 @@ dependent on previous operations.
 Therefore, learning sampled states that correspond only to optimal or 
 near-optimal schedules isn't of much use when the preference model has 
 diverged too far. We know from \cref{sec:opt:bdr}, that good classification 
-accuracy based on $\xi_\pi$ doesn't necessarily mean a low mean \namerho.
+accuracy based on $\xi^\star_\pi$ doesn't necessarily mean a low mean \namerho.
 This is due to the learner's predictions affects future input observations 
 during its execution, which violates the crucial i.i.d. assumptions of the  
 learning approach, and ignoring this interaction leads to poor performance.
