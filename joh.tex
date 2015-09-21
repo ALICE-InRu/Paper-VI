@@ -54,24 +54,29 @@
 
 \begin{abstract}
 Instead of creating new \dr s in an ad-hoc manner,
-this study gives a framework on how to analyse heuristics for scheduling 
-problems.  Before starting to create new \cdr s, 
-meticulous research on optimal schedules can give an abundance of valuable 
-information that can be utilised for learning new models.  For instance, it's 
-possible to seek out when the scheduling process is most susceptible to 
-failure.  Furthermore, the stepwise optimality of individual features imply 
-their explanatory predictability. From which, a preference set is collected and 
-a preference based learning model is created based on what feature states are 
-preferable to others w.r.t. the end result, here minimising the final makespan.
-Moreover, the learned model should be created in an active  imitation learning 
-manner in order for learned state spaces to properly represent one that should 
-be eventually encountered.
-By doing so it's possible to learn new \cdr s that 
-outperform the models they are based on. 
+this study gives a framework on how to analyse heuristics performance for 
+scheduling problems.  
+By researching optimal schedules there is an abundance of valuable 
+information that can be utilised for learning new models.  
+For instance, it's possible to seek out when the scheduling process is most 
+susceptible to failure.
+Furthermore, generally stepwise optimality (or classification accuracy) implies 
+good end performance, here minimising the final makespan. 
+However, as the impact of suboptimal moves is not fully understood, then the 
+measure needs to be adjusted for its intended trajectory.
+
+Using an expert policy, a preference set of schedules is collected and a 
+preference based learning model is created based on what feature states are 
+preferable to others.
+Moreover, the learned model should be updated in an active  imitation learning 
+fashion, such that learned state spaces properly represent ones that the model 
+would eventually be encountered.
+With this in mind it's possible to learn new \cdr s that outperform the models 
+their features were based on. 
 Even though this study is based around the \jsp\ scheduling problem, it can be 
 generalised to any kind of sequential combinatorial problem.
-\keywords{Scheduling \and Composite \dr s \and Machine Learning 
-\and Feature Selection}
+\keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
+Machine Learning \and Preference Learning \and Imitation Learning \and DAgger}
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
