@@ -40,7 +40,8 @@ plot.BDR(input$dimension,input$problem,'SPT','MWR',c(10,15,20,40),NA,F)
 
 
 source('pref.imitationLearning.R')
-CDR.IL <- get.CDR.IL(input$problem,input$dimension)
+CDR.IL <- do.call(rbind, lapply(c('equal','adjdbl2nd'), function(bias) {
+  get.CDR.IL(input$problem,input$dimension,bias)}))
 CDR.IL <- subset(CDR.IL, (Supervision == 'Unsupervised' & Iter <=3) | Iter==0 )
 
 CDR.OPT <- subset(CDR.IL, Iter==0)
@@ -54,8 +55,8 @@ CDR.DA.EXT <- subset(CDR.IL, (Supervision == 'Unsupervised') | (Extended==0 & Tr
 CDR.DA.EXT$Type <- 'Active Imitation Learning'
 CDR.DA.EXT$Supervision='Fixed'
 levels(CDR.DA.EXT$Track)[1]='DA0'
-plot.imitationLearning.boxplot(CDR.DA.EXT)+guides(colour=FALSE)+facet_grid(Type~Set)+
-  scale_linetype('New problem instances')+xlab(expression('iteration,' *~T))
+plot.imitationLearning.boxplot(CDR.DA.EXT)+facet_grid(Type~Set)+
+  scale_linetype('New instances')+xlab(expression('iteration,' *~T))
 ggsave('../../JSP-Expert/figures/j_rnd/boxplot_active_10x10.pdf',
        width = Width, height = Height.half, units = units, dpi = dpi)
 
@@ -63,10 +64,9 @@ CDR.IL$Type = 'Imitation Learning'
 CDR.IL <- subset(CDR.IL, (Supervision=='Unsupervised' & Extended==T) |
                    (Supervision!='Unsupervised' & Extended==F))
 MWR <- subset(dataset.SDR,SDR=='MWR' & Problem == input$problem & Dimension==input$dimension);
-MWR$Supervision='Unsupervised'; MWR$Iter=0; MWR$Track='MWR'; MWR$CDR=MWR$SDR; MWR$NrFeat=1; MWR$Model=1; MWR$Extended=F; MWR$Bias=NA; MWR$Rank=NA; MWR$SDR=NULL; MWR$Type='SDR'
-p=plot.imitationLearning.boxplot(rbind(CDR.IL,MWR))
-p=p+ggplotColor('IL',2,values=c('Fixed','Unsupervised'),labels=c('Passive','Active'))
-p=p + facet_grid(Set~Type, scales='free',space = 'free')
+CDR.IL$Supervision <- factor(CDR.IL$Supervision,levels=c('Fixed','Unsupervised'),labels=c('Passive Imitation Learning','Active Imitation Learning'))
+
+p=plot.imitationLearning.boxplot(CDR.IL,MWR)
 ggsave('../../JSP-Expert/figures/j_rnd/boxplot_summary_10x10.png',
        width = Width, height = Height.half, units = units, dpi = dpi)
 # to get epsilon right: gm convert boxplot_summary_10x10.png boxplot_summary_10x10.pdf
