@@ -63,6 +63,11 @@ ggsave('../../JSP-Expert/figures/j_rnd/boxplot_active_10x10.pdf',
 CDR.IL$Type = 'Imitation Learning'
 CDR.IL <- subset(CDR.IL, (Supervision=='Unsupervised' & Extended==T) |
                    (Supervision!='Unsupervised' & Extended==F))
+
+stats.imitationLearning(CDR.IL)
+
+print(xtable(ddply(CDR.IL,~Track+Extended+Iter+Bias+Set,function(x) c(nrow(x),summary(x$Rho)))),include.rownames=F)
+
 MWR <- subset(dataset.SDR,SDR=='MWR' & Problem == input$problem & Dimension==input$dimension);
 CDR.IL$Supervision <- factor(CDR.IL$Supervision,levels=c('Fixed','Unsupervised'),labels=c('Passive Imitation Learning','Active Imitation Learning'))
 
@@ -71,5 +76,5 @@ ggsave('../../JSP-Expert/figures/j_rnd/boxplot_summary_10x10.png',
        width = Width, height = Height.half, units = units, dpi = dpi)
 # to get epsilon right: gm convert boxplot_summary_10x10.png boxplot_summary_10x10.pdf
 
-stats.imitationLearning(CDR.IL)
+
 plot.imitationLearning.weights(input$problem,input$dimension)

@@ -187,7 +187,7 @@ proper representative for real-world long-term \jsp\ applications, e.g., by the
 narrow choice of release times, yielding schedules that are overloading in the 
 beginning phases.
 
-A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
+A novel iterative \dr s that were evolvemanod with GP for \JSP, \cite{Nguyen13} 
 learned from completed schedules in order to iteratively improve new ones. 
 At each dispatching step, the method can utilise the current feature space to 
 \emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
@@ -686,8 +686,7 @@ many different dispatches may yield an optimal solution to the problem instance.
 Let's formalise the probability of optimality (or stepwise 
 classification accuracy) for a given policy $\pi$, is defined as, 
 \begin{equation} \label{eq:tracc:opt}
-\xi^\star_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi_{\star} 
-\right\}
+\xi^\star_{\pi} := \mathbb{E}_{\pi_\star}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
 that is to say the mean likelihood of our policy $\pi$ being equivalent to the 
 expert policy $\pi_\star$.
@@ -723,8 +722,18 @@ probability ($70\%$ and above) of choosing an optimal job at random.
 However, it is imperative to keep making optimal decisions, because once off 
 the optimal track the consequences are unknown. 
 To demonstrate this \cref{fig:case} depicts mean worst and best case scenario 
-of the resulting \namerho, once off the optimal track. Note, that 
-this is given that one makes \emph{one} non-optimal dispatch. 
+of the resulting \namerho, once off the optimal track, defined as follows:
+\begin{subequations}\label{eq:bwc:opt}
+  \begin{eqnarray} 
+  \zeta_{\min}^{\star}(k) &:=& \mathbb{E}_{\pi_\star}\left\{\min(\rho)\;:\;
+      \forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star} 
+      \wedge J_j\in\mathcal{L}^{(k)} \right\} \\
+  \zeta_{\max}^{\star}(k) &:=& \mathbb{E}_{\pi_\star}\left\{\max(\rho) \;:\;
+      \forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star}
+      \wedge J_j\in\mathcal{L}^{(k)} \right\}
+  \end{eqnarray}
+\end{subequations}
+Note, that this is given that one makes \emph{one} non-optimal dispatch. 
 Generally, there will be more, and then the compound effects of making 
 suboptimal decisions cumulate. 
 
@@ -738,9 +747,11 @@ immensely.
 \begin{figure}[p]
   \centering
   \includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
-  \caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
-    bound) and worst (upper bound) case scenario of choosing suboptimal 
-    dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
+  \caption{Mean deviation from optimality, $\rho$, (\%), for best and worst 
+  case scenario of making \emph{one} suboptimal dispatch (i.e. 
+  $\zeta^{\star}_{\min}$ and $\zeta^{\star}_{\max}$), depicted as lower and 
+  upper bound, respectively, for \jrnd{10}{10}, \jrndn{10}{10} and 
+  \frnd{10}{10}. Moreover, mean suboptimal move is given as a dashed line.}
   \label{fig:case}
 \end{figure}
 
@@ -787,7 +798,7 @@ we were on the optimal trajectory. Since we're bound to make mistakes at some
 points, it's interesting to see how that stepwise optimality evolves for its 
 intended trajectory, thereby updating \cref{eq:tracc:opt} to
 \begin{equation} \label{eq:tracc:track}
-\xi_{\pi} := \mathbb{E}\left\{\pi_{\star} = \pi \;\mid\; \pi \right\}
+\xi_{\pi} := \mathbb{E}_{\pi}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
 \Cref{fig:opt:SDR:xi} shows the log likelihood for $\xi_{\langle 
 \text{SDR} \rangle}$ using \jrnd{10}{10}.
@@ -1056,6 +1067,17 @@ It's preferable to use the default $N^{\text{OPT}}_{\text{train}}=300$ and
 allowing slightly perturbing the optimal trajectory, as done for  
 $\Phi^{\text{OPT}\epsilon}$. Unfortunately, all this overhead has not managed 
 to surpass MWR in performance. 
+The closest to MWR, is using \ref{bias:adjdbl2nd} instead of \ref{bias:equal}, 
+with a $\Delta\rho\approx-6.23\%$ boost in mean performance. 
+This is likely due to the fact that if equal probability is used for stepwise 
+sampling, then there are hardly any emphasis given to the final dispatches as 
+there a relatively few (compared to previous steps) preference pairs belonging 
+to those final stages.
+Revisiting \cref{fig:case}, then the band for 
+$\{\zeta^{\star}_{\min},\zeta^{\star}_{\max}\}$ is quite tight, as the problem 
+is immensely constricted and few operations to choose from. However, the 
+empirical evidence from using \ref{bias:adjdbl2nd} shows, is that it is 
+imperative to make right decisions at the very end.
 
 From \cite{InRu11a} we know that expert policy is a promising starting point.
 However, that was for $6\times5$ dimensionality (i.e. $K=30$), which is a much 
@@ -1220,11 +1242,32 @@ As a reference, the \sdr\ MWR is shown on the far right of
 At first we see that the perturbed leader ever so-slightly improves the mean 
 for $\rho$, rather than using the baseline expert policy. 
 However, active imitation learning is by far the best improvement. With each 
-iteration of DAgger, the models improve with each iteration, even outperforming 
-MWR after $T=2$ iterations (by $\approx5\%$).
+iteration of DAgger, the models improve upon the previous one with each 
+iteration
+\begin{enumerate*}  
+  \item for \ref{bias:equal} with \ref{expr:boost:newdata} then $i=1$ starts 
+  with increasing  $\Delta\rho\approx+1.39\%$. However, after that first 
+  iteration there is a performance boost of $\Delta\rho\approx-15.11\%$ after 
+  $i=2$ and $\Delta\rho\approx-0.19\%$ for the final iteration $i=3$
+  \item on the other hand when using \ref{bias:adjdbl2nd}, only one iteration 
+  is needed, as  $\Delta\rho\approx-11.68$ for $i=1$, and after that it 
+  stagnates with $\Delta\rho\approx+0.55\%$ for $i=2$ 
+  (therefore $i=3$ was not run)
+\end{enumerate*}
+In both cases, DAgger outperforms MWR
+\begin{enumerate*}
+  \item after $i=3$ iterations by $\Delta\rho\approx-5.31\%$ for 
+  \ref{bias:equal} with \ref{expr:boost:newdata}
+  \item after $i=1$ iteration by $\Delta\rho\approx-9.31\%$ for 
+  \ref{bias:adjdbl2nd}
+\end{enumerate*}
+Note, for \ref{bias:equal} without \ref{expr:boost:newdata}, then DAgger is 
+unsuccessful, and the aggregated data set downgrades the performance of the 
+previous iterations, making it best to learn solely on the initial expert 
+policy for that model configuration.
 
 Regarding \ref{expr:boost:newdata}, then it's not successful for the expert 
-policy, as $\rho$ increases approximately 10\%. This could most likely be 
+policy, as $\rho$ increased approximately 10\%. This could most likely be 
 counter-acted by increasing $l_{\max}$ to reflect the 700 additional examples.
 What is interesting though, is that \ref{expr:boost:newdata} is well suited for 
 active imitation learning, using the same $l_{\max}$ as before. 
