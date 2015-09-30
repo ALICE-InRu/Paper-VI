@@ -56,7 +56,7 @@ CDR.DA.EXT$Type <- 'Active Imitation Learning'
 CDR.DA.EXT$Supervision='Fixed'
 levels(CDR.DA.EXT$Track)[1]='DA0'
 plot.imitationLearning.boxplot(CDR.DA.EXT)+facet_grid(Type~Set)+
-  scale_linetype('New instances')+xlab(expression('iteration,' *~T))
+  scale_linetype('New instances')+xlab(expression('iteration,' *~i))
 ggsave('../../JSP-Expert/figures/j_rnd/boxplot_active_10x10.pdf',
        width = Width, height = Height.half, units = units, dpi = dpi)
 
