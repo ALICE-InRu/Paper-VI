@@ -60,7 +60,7 @@
   effectively. Defining training data as   
   $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
   \begin{enumerate*}
-    \item trajectories for samples $\vec{x}_i$ should represent the induced 
+    \item samples $\vec{x}_i$ should represent the induced 
     data distribution $\mathcal{D}$. This done by updating the learned model in 
     an active imitation learning fashion
     \item $y_i$ is labelled using a solver
@@ -98,16 +98,22 @@
 
 \section{Introduction}\label{sec:introduction}
 
-Hand crafting heuristics for scheduling is an ad-hoc approach to finding approximate solutions to the problems. The practice is time-consuming and its performance can even vary dramatically between different problem instances. The aim of this work is to increase our understanding of this process. In particular the learning of new problem specific priority \dr s will be addressed for
-a subclass of scheduling problems known as the \jsp\ scheduling problem (JSP). 
+Hand crafting heuristics for scheduling is an ad-hoc approach to finding 
+approximate solutions to the problems. The practice is time-consuming and its 
+performance can even vary dramatically between different problem instances. The 
+aim of this work is to increase our understanding of this process. In 
+particular the learning of new problem specific priority \dr s (DR) will be 
+addressed for a subclass of scheduling problems known as the \jsp\ scheduling 
+problem (\JSP). 
 
-A recent editorial of the state-of-the-art approaches \cite{Chen13} in advanced \dr s for 
-large-scale manufacturing systems reminds us that:
+A recent editorial of the state-of-the-art approaches \cite{Chen13} in advanced 
+\dr s for large-scale manufacturing systems reminds us that:
 \lq\lq ... most traditional \dr s are based on historical data. 
 With the emergence of data mining and on-line analytic processing, dispatching 
 rules can now take predictive information into account.\rq\rq~The importance of 
-automated discovery of DR was also emphasised by \cite{Monch13}. Data for learning
-can also be generated using a known heuristic on a set of problem instances,
+automated discovery of \dr s was also emphasised by \cite{Monch13}. 
+Data for learning can also be generated using a known heuristic on a set of 
+problem instances.
 Such an approach is taken in \cite{Siggi05} for single-machine where
 a decision tree is learned from the data to have similar logic to the \dr.  
 However, this method cannot outperform the original \dr\ for the data generation. 
@@ -119,7 +125,8 @@ Although, using optimal policies for creating training data gives vital
 information on how to learn good scheduling rules we will show that this is 
 not sufficient. Once these rules make a suboptimal dispatch the are in uncharted 
 territory and its effects are relatively unknown.  
-This work will illustrate the sensitivity of learned \dr\'s performance on the way 
+This work will illustrate the sensitivity of learned \dr's performance on the 
+way 
 the training data is sampled.
 For this purpose, \JSP\ is used as a case study to illustrate a methodology for 
 generating meaningful training data, which can be successfully 
@@ -164,13 +171,13 @@ learned using preference-based imitation learning.
 
 
 % automation for selecting DRs #4 - GA
-The competing alternative to learning dispatching rules from data would be to search the 
-dispatching rule space directly. The prevalent approach in this case would be using an 
-evolutionary algorithm, such as genetic programming.
+The competing alternative to learning dispatching rules from data would be to 
+search the \dr\ space directly. The prevalent approach in this case would be 
+using an evolutionary algorithm, such as genetic programming (GP).
 The main drawback, is that the rules from a GP framework can be quite complex, 
 and difficult to interpret.
 In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} for 
-dynamic \jsp and tested it against some \sdr s, and 
+dynamic \jsp\ and tested it against some \sdr s, and 
 found that it only slightly outperformed one rule, and was beat by another. 
 The reason behind this staggering change in performance, may be due to 
 the choice of objective function, and the underlying problem spaces that were 
@@ -703,7 +710,7 @@ dispatching performs better than SPT on problem instances \jrnd{10}{10} and
 \jrndn{10}{10}. 
 
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_xistar}.pdf}
   \caption{Probability of SDR being optimal, 
@@ -728,7 +735,7 @@ is due to the major structural differences between \JSP\ and \FSP, namely the
 latter having a homogeneous machine ordering, constricting the solution 
 immensely. 
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
   \caption{Mean deviation from optimality, $\rho$, (\%), for best (lower 
@@ -736,6 +743,8 @@ immensely.
     dispatch for \jrnd{10}{10}, \jrndn{10}{10} and \frnd{10}{10}}
   \label{fig:case}
 \end{figure}
+
+
 
 \subsection{Blended \dr s}\label{sec:opt:bdr}
 A naive approach to create a simple blended \dr~(BDR) would be to 
@@ -763,7 +772,7 @@ in the latter stages, does help the schedule to be more compact w.r.t. SPT.
 However, the fact remains that the schedules have diverged too far from what 
 MWR would have been able to achieve on its own. 
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \includegraphics[width=1\linewidth]{figures/j_rnd/{boxplotRho_BDR_10x10}.pdf}
   \caption{Box-plot for deviation from optimality, $\rho$, (\%) for BDR where 
@@ -794,17 +803,17 @@ But as pointed out for \cref{fig:case}, it's not so fatal to
 make bad moves in the very first dispatches for \jrnd{10}{10}, hence little 
 gain with improved classification accuracy in that region. 
 
-\begin{figure}
+\clearpage
+\begin{figure}[t]
   \centering
   \includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xi}.pdf}
   \caption{Log likelihood of SDR being optimal for \jrnd{10}{10}, when 
-  following its corresponding SDR trajectory, i.e.,   
-  $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
+    following its corresponding SDR trajectory, i.e.,   
+    $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
   \label{fig:opt:SDR:xi}
 \end{figure}
 
-
-\section{Learning Composite Dispatching Rules}\label{ch:expr:CDR}
+\section{Preference Learning}\label{ch:expr:CDR}
 \Cref{sec:opt:bdr} demonstrated there is definitely something to be gained by
 trying out different combinations of DRs, it's just non-trivial how to go about 
 it, and motivates how it's best to go about learning such interaction, which 
@@ -816,7 +825,6 @@ scheduling, learning which operations are preferred to others. Ordinal
 regression has been previously presented in \cite{Ru06:PPSN} and in 
 \cite{InRu11a} for \JSP, and given here for completeness. 
 
-\subsection{Preference Learning}
 The optimum makespan is known for each problem instance. At each time step $k$, 
 a number of feature pair are created. 
 Let $\vphi^{o}\in\R^d$ denote the post-decision state when dispatching 
@@ -913,8 +921,7 @@ Defining the size of the preference set as $l=\abs{\Psi}$, then if  $l$ is too
 large re-sampling may be needed to be done in order for the ordinal regression 
 to be computationally feasible. 
 
-\subsection{Collecting training data}
-
+%\subsection{Collecting training data}
 The training data from \cite{InRu11a} was created from optimal solutions of 
 randomly generated problem instances, i.e., traditional \emph{passive} 
 imitation learning (IL). 
@@ -943,7 +950,7 @@ Thereby, eliminating the ad-hoc nature of choosing trajectories to learn, by
 rather letting the model lead its own way in a self-perpetuating manner until 
 it converges.
 
-Furthermore, In order to boost training accuracy, two strategies were explored 
+Furthermore, in order to boost training accuracy, two strategies were explored 
 \begin{enumerate}[after={{}}, leftmargin=*,
   label={\textbf{Boost.\arabic*}}, ref={{Boost.\arabic*}}]
   \item \label{expr:boost:varylmax} increasing number of preferences used 
@@ -956,6 +963,24 @@ statistical significance in boost of performance. Hence, the default set-up
 will be, $l_{\max}=5 \cdot 10^5$, which is roughly the amount of features 
 encountered from one pass of sampling a \mbox{$K$-stepped} trajectory using a 
 fixed policy $\pi$ for the default $N_{\text{train}}=300$.
+
+Another way to adjust training accuracy is to give different weight to various 
+time steps. To address this problem, two different stepwise sampling biases (or 
+data balancing techniques) will be considered
+\begin{enumerate}[after={{}}, leftmargin=*,
+  label={\textbf{Bias.\arabic*}}, ref={{Bias.\arabic*}}]
+  \item \label{bias:equal} \textbf{(equal)} where each time step has equal 
+  probability, same baseline as was used in \cite{InRu14,InRu15a}.
+  \item \label{bias:adjdbl2nd} \textbf{(adjdbl2nd)} where each time step is 
+  adjusted to the number of preference pairs for that particular step (i.e. 
+  each step has equal probability irrespective of quantity of encountered 
+  features). This is done with re-sampling.
+  In addition, there is superimposed twice as much likelihood of 
+  choosing pairs from the latter half of the dispatching process. Then the 
+  final sampled data set is divided as follows:
+  $\abs{\{\Psi(k)\}_{k=0}^{\frac{K}{2}-1}} \approx \frac{1}{3}l_{\max}$ and 
+  $\abs{\{\Psi(k)\}_{k=\frac{K}{2}}^{K-1}} \approx \frac{2}{3}l_{\max}$.
+\end{enumerate}
 
 Note, as the following \lcnamecref{sec:il:passive}s require repeated collection 
 of training data, and since its labelling is a very time intensive task the 
