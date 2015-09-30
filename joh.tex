@@ -53,30 +53,39 @@
 \selectlanguage{english}
 
 \begin{abstract}
-Instead of creating new \dr s in an ad-hoc manner,
-this study gives a framework on how to analyse heuristics performance for 
-scheduling problems.  
-By researching optimal schedules there is an abundance of valuable 
-information that can be utilised for learning new models.  
-For instance, it's possible to seek out when the scheduling process is most 
-susceptible to failure.
-Furthermore, generally stepwise optimality (or classification accuracy) implies 
-good end performance, here minimising the final makespan. 
-However, as the impact of suboptimal moves is not fully understood, then the 
-measure needs to be adjusted for its intended trajectory.
-
-Using an expert policy, a preference set of schedules is collected and a 
-preference based learning model is created based on what feature states are 
-preferable to others.
-Moreover, the learned model should be updated in an active  imitation learning 
-fashion, such that learned state spaces properly represent ones that the model 
-would eventually be encountered.
-With this in mind it's possible to learn new \cdr s that outperform the models 
-their features were based on. 
-Even though this study is based around the \jsp\ scheduling problem, it can be 
-generalised to any kind of sequential combinatorial problem.
-\keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
-Machine Learning \and Preference Learning \and Imitation Learning \and DAgger}
+  Over the years there have been many approaches to create \dr s for scheduling.
+  Recent past has been focusing on direct search methods (e.g. genetic 
+  programming) or training on data (e.g. supervised learning).
+  This paper will examine the latter, and give a framework on how to do it 
+  effectively. Defining training data as   
+  $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
+  \begin{enumerate*}
+    \item trajectories for samples $\vec{x}_i$ should represent the induced 
+    data distribution $\mathcal{D}$. This done by updating the learned model in 
+    an active imitation learning fashion
+    \item $y_i$ is labelled using a solver
+    \item data needs to be balanced, as the set is unbalanced w.r.t. 
+    dispatching step $k$
+  \end{enumerate*}
+  
+  By querying an expert policy, there is an abundance of valuable 
+  information that can be utilised for learning new models.
+  For instance, it's possible to seek out when the scheduling process is most 
+  susceptible to failure.
+  Furthermore, generally stepwise optimality (or classification accuracy) 
+  implies good end performance, here minimising the final makespan. 
+  However, as the impact of suboptimal moves is not fully understood, then the 
+  measure needs to be adjusted for its intended trajectory.
+ 
+  Using these guidelines, it becomes easier to create custom \dr s for one's 
+  particular application. For this paper three different distributions of \jsp\ 
+  will be considered.
+  Moreover, the machine learning approach is based on preference learning 
+  which determines what feature states are preferable to others. However, 
+  that could easily be substituted for other methods.
+  
+  \keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
+  Machine Learning \and Imitation Learning \and DAgger \and Preference Learning}
 \end{abstract}
 
 %\JSP\ deals with the allocation of tasks of competing resources where its goal is to optimise a single or multiple objectives.  Its analogy is from manufacturing industry 
