@@ -66,7 +66,8 @@ CDR.IL <- subset(CDR.IL, (Supervision=='Unsupervised' & Extended==T) |
 
 stats.imitationLearning(CDR.IL)
 
-print(xtable(ddply(CDR.IL,~Track+Extended+Iter+Bias+Set,function(x) c(nrow(x),summary(x$Rho)))),include.rownames=F)
+stat=ddply(CDR.IL,~Track+Extended+Iter+Bias+Set,function(x) c(nrow(x),summary(x$Rho)))
+print(xtable(stat),include.rownames=F)
 
 MWR <- subset(dataset.SDR,SDR=='MWR' & Problem == input$problem & Dimension==input$dimension);
 CDR.IL$Supervision <- factor(CDR.IL$Supervision,levels=c('Fixed','Unsupervised'),labels=c('Passive Imitation Learning','Active Imitation Learning'))
