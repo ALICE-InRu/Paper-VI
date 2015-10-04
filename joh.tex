@@ -48,322 +48,325 @@
 \input{shorthand} % put your own shorthand declarations in this document
 
 \begin{document}
-	\maketitle
-	
-	\selectlanguage{english}
-	
-	\begin{abstract}
-		Over the years there have been many approaches to create \dr s for scheduling.
-		Recent past efforts have focused on direct search methods (e.g. genetic 
-		programming) or training on data (e.g. supervised learning).
-		This paper will examine the latter and give a framework on how to do it 
-		effectively. Defining training data as   
-		$\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
-		\begin{enumerate*}
-			\item samples $\vec{x}_i$ should represent the induced 
-			data distribution $\mathcal{D}$. This done by updating the learned model in 
-			an active imitation learning fashion
-			\item $y_i$ is labelled using a solver
-			\item data needs to be balanced, as the set is unbalanced w.r.t. 
-			dispatching step $k$
-		\end{enumerate*}
-		
-		When querying an expert policy, there is an abundance of valuable 
-		information that can be utilised for learning new models.
-		For instance, it's possible to seek out when the scheduling process is most 
-		susceptible to failure.
-		Furthermore, generally stepwise optimality (or classification accuracy) 
-		implies good end performance, here minimising the final makespan. 
-		However, as the impact of suboptimal moves is not fully understood, then the 
-		measure needs to be adjusted for its intended trajectory.
-		
-		Using these guidelines, it becomes easier to create custom \dr s for one's 
-		particular application. For this paper three different distributions of \jsp\ 
-		will be considered.
-		Moreover, the machine learning approach is based on preference learning 
-		which determines what feature states are preferable to others. However, 
-		that could easily be substituted for other methods.
-		
-		\keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
-			Machine Learning \and Imitation Learning \and DAgger \and Preference Learning}
-	\end{abstract}
-	
-	%\JSP\ deals with the allocation of tasks of competing resources where its goal is to optimise a single or multiple objectives.  Its analogy is from manufacturing industry 
-	%where a set of jobs are broken down into tasks that must be processed on 
-	%several machines in a workshop. Furthermore, its formulation can be applied on a wide variety of practical problems in real-life applications which involve decision making, therefore its
-	%problem-solving capabilities has a high impact on many manufacturing organisations.
-	
-	%\todo{story line:
-	%from heuristic design to supervised learning to data creating (data distributed as it is used). Understanding the critical points in the construction of solution ...}
-	
-	\section{Introduction}\label{sec:introduction}
-	
-	Hand crafting heuristics for scheduling is an ad-hoc approach to finding 
-	approximate solutions to the problems. The practice is time-consuming and its 
-	performance can even vary dramatically between different problem instances. The 
-	aim of this work is to increase our understanding of this process. In 
-	particular the learning of new problem specific priority \dr s (DR) will be 
-	addressed for a subclass of scheduling problems known as the \jsp\ scheduling 
-	problem (\JSP). 
-	
-	A recent editorial of the state-of-the-art approaches \cite{Chen13} in advanced 
-	\dr s for large-scale manufacturing systems reminds us that:
-	\lq\lq ... most traditional \dr s are based on historical data. 
-	With the emergence of data mining and on-line analytic processing, dispatching 
-	rules can now take predictive information into account.\rq\rq~The importance of 
-	automated discovery of \dr s was also emphasised by \cite{Monch13}. 
-	Data for learning can also be generated using a known heuristic on a set of 
-	problem instances.
-	Such an approach is taken in \cite{Siggi05} for single-machine where
-	a decision tree is learned from the data to have similar logic to the \dr.  
-	However, this method cannot outperform the original \dr\ for the data generation. 
-	This drawback is confronted in \cite{Malik08,Russell09,Siggi10} by using an 
-	optimal scheduler or policy, computed off-line, for data generation. The 
-	resulting \dr s, as decision trees, gave significantly better schedules than using popular 
-	heuristics in that field, and a lower worst-case factor from optimality. 
-	Although, using optimal policies for creating training data gives vital 
-	information on how to learn good scheduling rules we will show that this is 
-	not sufficient. Once these rules make a suboptimal dispatch the are in uncharted 
-	territory and its effects are relatively unknown.  
-	This work will illustrate the sensitivity of learned \dr's performance on the 
-	way 
-	the training data is sampled.
-	For this purpose, \JSP\ is used as a case study to illustrate a methodology for 
-	generating meaningful training data, which can be successfully 
-	learned using preference-based imitation learning.
-	
-	%For this reason, it is of 
-	%paramount importance to inspect the actual end-performance when choosing a 
-	%suitable model, not just staring blindly at the classification accuracy. 
-	
-	%The focus on this study is better understanding of \emph{how} and \emph{when} 
-	%\dr s work in general, in order to mediate the set-up for the 
-	%learning problem.
-	%For this reason, we propose a framework for learning the indicators of optimal 
-	%solutions, such as done by \cite{Siggi10}, as an in-depth analysis of a expert 
-	%policy gives a benchmark of what is theoretically possible to learn. 
-	%The study shows that during the scheduling process, it varies \emph{when} it's 
-	%most fruitful to make the `right' decision, and depending on the problem space 
-	%those pivotal moments can vary greatly. 
-	
-	%A prevalent approach to solving \JSP\ is to combine several relatively \sdr s 
-	%such that they may benefit each other for a given problem space. 
-	%% automation for selecting DRs #3 - GA
-	%The approach in \cite{InRu14}, was to automate that selection, by 
-	%translating dispatching rules into measurable features and optimising what 
-	%their contribution should be via evolutionary search. The framework is straight 
-	%forward and easy to implement and showed promising and robust results, 
-	%as models were trained on a lower dimension, and validated on higher dimension. 
-	%Moreover, \cite{InRu14} showed that the choice of objective 
-	%function  for evolutionary search is worth investigating. Since the 
-	%optimisation is based on minimising the expected mean of the fitness function 
-	%over a large set of problem instances, which can vary within. Then normalising 
-	%the objective function can stabilise the optimisation process away from local 
-	%minima. 
-	
-	%By applying GP on a terminal set of job-attributes for flexible \jsp,\footnote{
-	%    Flexible \jsp\ allows jobs to be processed on different machines, i.e., the 
-	%    problem has the additional complexity of making a routing decision of 
-	%    operations to machines.} 
-	%\cite{Tay08} optimised a multi-objective \jsp~(transformed into a single 
-	%objective by linearly combining their objectives) with promising results 
-	%compared to the benchmarks DRs from the literature.
-	
-	
-	% automation for selecting DRs #4 - GA
-	The competing alternative to learning dispatching rules from data would be to 
-	search the \dr\ space directly. The prevalent approach in this case would be 
-	using an evolutionary algorithm, such as genetic programming (GP).
-	The main drawback, is that the rules from a GP framework can be quite complex, 
-	and difficult to interpret.
-	In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} for 
-	dynamic \jsp\ and tested it against some \sdr s, and 
-	found that it only slightly outperformed one rule, and was beat by another. 
-	The reason behind this staggering change in performance, may be due to 
-	the choice of objective function, and the underlying problem spaces that were 
-	used in training.
-	It's argued that the randomly generated problem instances aren't a 
-	proper representative for real-world long-term \jsp\ applications, e.g., by the 
-	narrow choice of release times, yielding schedules that are overloading in the 
-	beginning phases.
-	
-	A novel iterative \dr s that were evolvemanod with GP for \JSP, \cite{Nguyen13} 
-	learned from completed schedules in order to iteratively improve new ones. 
-	At each dispatching step, the method can utilise the current feature space to 
-	\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
-	reverse lookahead). Their method is straightforward, and thus easy to 
-	implement and more importantly computationally inexpensive, although the 
-	authors do stress that there is still remains room for improvement.
-	
-	Adopting a two-stage hyper-heuristic approach to generate a set of 
-	machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
-	\cdr s (CDR) from basic attributes, along with evolutionary algorithm to assign 
-	a CDR to a specific machine. 
-	The problem space consists of \jsp s in semiconductor manufacturing, with 
-	additional shop constraints, as machines are grouped to similar work centres, 
-	which can have different set-up time, workload, etc. 
-	In fact, the GP emphasised on efficiently dispatching on the work 
-	centres with set-up requirements and batching capabilities, which are rules 
-	that are non-trivial to determine manually.
-	
-	
-	Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
-	processing by using reinforcement learning (RL), in particular, temporal 
-	difference learning. 
-	Starting with a relaxed problem, each job was scheduled as early as its 
-	temporal partial order would permit, there by initially ignoring any resource 
-	constraints on the machines, yielding the schedule's critical path. Then the 
-	schedule would be repaired so the resource constraints were satisfied in the 
-	minimum amount of iterations.
-	
-	\todo{It these case based reasoning for scheduling?}
-	Using case based reasoning for timetable scheduling, training data in 
-	\cite{Burke06} is guided by the two best heuristics in the literature.
-	They point out that in order for their framework to be successful, problem 
-	features need to be sufficiently explanatory and training data need to be 
-	selected carefully so they can suggest the appropriate solution for a specific 
-	range of new cases. Stressing the importance of meaningful feature selection. 
-	
-	
-	% automation for selecting DRs #1 - Portfolio
-	With meta heuristics one can use existing DRs, and use for example 
-	portfolio-based algorithm selection \cite{Rice76,Gomes01}, either based on a 
-	single instance or class of instances \cite{Xu07} to determine which DR to 
-	choose from. 
-	% automation for selecting DRs #2 - ACO
-	Implementing ant colony optimisation to select the best DR 
-	from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13} 
-	showed that the choice of DR do affect the results and that for all performance 
-	measures considered. They showed that it was better to have a all the DRs to 
-	choose from rather than just a single DR at a time.
-	
-	Meta learning can be very fruitful in RL, as experiments from 
-	\cite{Kalyanakrishnan11} discovered some key discriminants between 
-	competing algorithms for their particular problem instances, which provided 
-	them with a hybrid algorithm which combines the strengths of the algorithms.
-	
-	
-	the most predominant approach in hyper-heuristics is a framework of creating 
-	\emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
-	\cite{Burke10}. 
-	
-	
-	The outline of the paper is the following, \cref{sec:problemdef} gives the 
-	mathematical formalities of the scheduling problem, and  
-	\cref{sec:DR} describes the main attributes for \jsp, 
-	and goes into how to create schedules with \dr s. 
-	\Cref{sec:learnOPT} sets up the framework for learning from optimal schedules. 
-	In particular, the probability of choosing optimal decisions and the effects of 
-	making a suboptimal decision. Furthermore, the optimality of common \sdr s is 
-	investigated.
-	With those guidelines, \cref{ch:expr:CDR} goes into detail how to create 
-	meaningful \cdr s using preference learning, focusing on how to 
-	compare operations and collect training data with the importance of good state 
-	sampling. 
-	\Cref{sec:il:active,sec:il:passive} explain the trajectories for 
-	sampling meaningful schedule state-spaces used in preference learning, either 
-	using passive or active imitation learning. 
-	Experimental results are jointly presented in \cref{sec:il:expr} with 
-	comparison for a single randomly generated problem space. Furthermore, some 
-	general adjustments for performance boost is also considered.
-	The paper finally concludes in \cref{sec:con} with discussion and conclusions.
-	
-	%\setcounter{tocdepth}{2} \tableofcontents
-	
-	\section{\Jsp~Scheduling}\label{sec:problemdef}
-	The \jsp~problem (\JSP) involves the scheduling of jobs on a set of 
-	machines. Each job consists of a number of operations which are then processed 
-	on the machines in a predetermined order. An optimal solution to the problem 
-	will depend on the specific objective. 
-	% For example, the optimal schedule may be the time needed to complete
-	% all jobs, i.e., the minimum makespan.
-	
-	In this study we will consider the $n\times m$ \JSP, where $n$ jobs, 
-	$\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set, 
-	$\mathcal{M}=\{M_a\}_{a=1}^m$, of $m$ machines. The index $j$ refers to a job 
-	$J_j\in\mathcal{J}$ while the index  $a$ refers to a machine 
-	$M_a\in\mathcal{M}$. 
-	If a job requires a number of processing steps or operations, then the pair 
-	$(j,a)$ refers to the operation, i.e., processing the task of job $J_j$ on 
-	machine $M_a$. 
-	
-	Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
-	$p_{ja}$, which is assumed to be integral and finite. 
-	Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
-	end time is denoted $x_e(j,a)$ where: 
-	\begin{equation}  x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
-	Each job $J_j$ has a specified processing order through the machines, it is a 
-	permutation vector, $\vsigma_j$, of $\{1,..,m\}$, representing a job $J_j$ can 
-	be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
-	on $M_{\vsigma_j(a-1)}$, i.e.,
-	\begin{equation}\label{eq:permutation}
-	x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1)) 
-	\end{equation}
-	for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
-	Note, that each job can have its own distinctive flow pattern through the 
-	machines, which is independent of the other jobs. 
-	However, in the case that all jobs share the same \emph{fixed} permutation 
-	route, referred to as \fsp~(\FSP). 
-	A commonly used subclass of \FSP\ in the literature is permutation \fsp, which 
-	has the added constraint that the processing order of the jobs on the machines 
-	must be identical as well, i.e., no passing of jobs allowed \cite{Stafford88}.
-	
-	The disjunctive condition that each machine can handle at most one job at a 
-	time is the following: 
-	\begin{equation}\label{eq:oneJobPerMac}
-	x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
-	\end{equation}
-	for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
-	
-	The objective function is to minimise its maximum completion times for all 
-	tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
-	follows:
-	\begin{equation}
-	C_{\max} := 
-	\max\left\{x_e(j,\vsigma_j(m))\;\middle|\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
-	\end{equation} 
-	This family of scheduling problems is denoted by $J||C_{\max}$ 
-	\cite{Pinedo08}
-	Additional constraints commonly considered are job release-dates and due-dates 
-	or sequence dependent set-up times, however, these will not be considered here. 
-	
-	In order to find an optimal (or near optimal) solution for scheduling problems 
-	one could either use exact methods or heuristics methods. Exact methods 
-	guarantee an optimal solution. However, \jsp\ scheduling is strongly NP-hard 
-	\cite{Garey76:NPhard}. Any exact algorithm generally suffers from the curse of 
-	dimensionality, which impedes the application in finding the global optimum in 
-	a reasonable amount of time. 
-	Using state-of-the-art software for solving scheduling problems, such as 
-	LiSA %\footnote{LiSA is distributed under the GNU General Public License, and 
-	%is available at \url{http://www.math.ovgu.de/Lisa.html}.} 
-	(A Library of Scheduling Algorithms) \cite{LiSA}, which includes a specialised 
-	version of branch and bound that manages to find optimums for \jsp\ problems of 
-	up to $14\times14$ \cite{Ru12}. However, problems that are of greater size, 
-	become intractable. 
-	Heuristics are generally more time efficient but 
-	do not necessarily attain the global optimum. Therefore, \jsp\ has the 
-	reputation of being notoriously difficult to solve. 
-	As a result, it's been widely studied in deterministic scheduling theory and 
-	its class of problems has been tested on a plethora of different solution 
-	methodologies from various research fields \cite{Meeran12}, all from simple and 
-	straight forward \dr s to highly sophisticated frameworks.
-	
-	
-	\section{Priority Dispatching Rules} \label{sec:DR}
-	
-	Priority \dr s determine, from a list of incomplete jobs, 
-	$\mathcal{L}$, which job should be dispatched next. This process, where an example of 
-	a temporal partial schedule of six-jobs scheduled on five-machines, is illustrated in  \Cref{fig:jssp:example}.
-	The numbers in the boxes represent the job identification $j$. 
-	The width of the box illustrates the processing times for a given job for a 
-	particular machine $M_a$ (on the vertical axis). 
-	The dashed boxes represent the resulting partial schedule for when a particular 
-	job is scheduled next. 
-	Moreover, the current $C_{\max}$ is denoted by a dotted vertical line. 
-	The object is to keep this value as small as possible once all operations are 
-	complete. As shown in the example, there are $15$ operations already scheduled. 
-	The \textit{sequence} of dispatches used to create this partial schedule is:
-	\begin{equation}
+\maketitle
+
+\selectlanguage{english}
+
+\begin{abstract}
+  Over the years there have been many approaches to create \dr s for scheduling.
+  Recent past efforts have focused on direct search methods (e.g. genetic 
+  programming) or training on data (e.g. supervised learning).
+  This paper will examine the latter and give a framework on how to do it 
+  effectively. Defining training data as   
+  $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
+  \begin{enumerate*}
+    \item samples $\vec{x}_i$ should represent the induced 
+    data distribution $\mathcal{D}$. This done by updating the learned model in 
+    an active imitation learning fashion
+    \item $y_i$ is labelled using a solver
+    \item data needs to be balanced, as the set is unbalanced w.r.t. 
+    dispatching step $k$
+  \end{enumerate*}
+  
+  When querying an expert policy, there is an abundance of valuable 
+  information that can be utilised for learning new models.
+  For instance, it's possible to seek out when the scheduling process is most 
+  susceptible to failure.
+  Furthermore, generally stepwise optimality (or classification accuracy) 
+  implies good end performance, here minimising the final makespan. 
+  However, as the impact of suboptimal moves is not fully understood, then the 
+  measure needs to be adjusted for its intended trajectory.
+ 
+  Using these guidelines, it becomes easier to create custom \dr s for one's 
+  particular application. For this paper three different distributions of \jsp\ 
+  will be considered.
+  Moreover, the machine learning approach is based on preference learning 
+  which determines what feature states are preferable to others. However, 
+  that could easily be substituted for other methods.
+  
+  \keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
+  Machine Learning \and Imitation Learning \and DAgger \and Preference Learning}
+\end{abstract}
+
+%\JSP\ deals with the allocation of tasks of competing resources where its goal is to optimise a single or multiple objectives.  Its analogy is from manufacturing industry 
+%where a set of jobs are broken down into tasks that must be processed on 
+%several machines in a workshop. Furthermore, its formulation can be applied on a wide variety of practical problems in real-life applications which involve decision making, therefore its
+%problem-solving capabilities has a high impact on many manufacturing organisations.
+
+%\todo{story line:
+%from heuristic design to supervised learning to data creating (data distributed as it is used). Understanding the critical points in the construction of solution ...}
+
+\section{Introduction}\label{sec:introduction}
+
+Hand crafting heuristics for scheduling is an ad-hoc approach to finding 
+approximate solutions to the problems. The practice is time-consuming and its 
+performance can even vary dramatically between different problem instances. The 
+aim of this work is to increase our understanding of this process. In 
+particular the learning of new problem specific priority \dr s (DR) will be 
+addressed for a subclass of scheduling problems known as the \jsp\ scheduling 
+problem (\JSP). 
+
+A recent editorial of the state-of-the-art approaches \cite{Chen13} in advanced 
+\dr s for large-scale manufacturing systems reminds us that:
+\lq\lq ... most traditional \dr s are based on historical data. 
+With the emergence of data mining and on-line analytic processing, dispatching 
+rules can now take predictive information into account.\rq\rq~The importance of 
+automated discovery of \dr s was also emphasised by \cite{Monch13}. 
+Data for learning can also be generated using a known heuristic on a set of 
+problem instances.
+Such an approach is taken in \cite{Siggi05} for single-machine where
+a decision tree is learned from the data to have similar logic to the \dr.  
+However, this method cannot outperform the original \dr\ for the data generation. 
+This drawback is confronted in \cite{Malik08,Russell09,Siggi10} by using an 
+optimal scheduler or policy, computed off-line, for data generation. The 
+resulting \dr s, as decision trees, gave significantly better schedules than using popular 
+heuristics in that field, and a lower worst-case factor from optimality. 
+Although, using optimal policies for creating training data gives vital 
+information on how to learn good scheduling rules we will show that this is 
+not sufficient. Once these rules make a suboptimal dispatch the are in uncharted 
+territory and its effects are relatively unknown.  
+This work will illustrate the sensitivity of learned \dr's performance on the 
+way 
+the training data is sampled.
+For this purpose, \JSP\ is used as a case study to illustrate a methodology for 
+generating meaningful training data, which can be successfully 
+learned using preference-based imitation learning.
+
+%For this reason, it is of 
+%paramount importance to inspect the actual end-performance when choosing a 
+%suitable model, not just staring blindly at the classification accuracy. 
+
+%The focus on this study is better understanding of \emph{how} and \emph{when} 
+%\dr s work in general, in order to mediate the set-up for the 
+%learning problem.
+%For this reason, we propose a framework for learning the indicators of optimal 
+%solutions, such as done by \cite{Siggi10}, as an in-depth analysis of a expert 
+%policy gives a benchmark of what is theoretically possible to learn. 
+%The study shows that during the scheduling process, it varies \emph{when} it's 
+%most fruitful to make the `right' decision, and depending on the problem space 
+%those pivotal moments can vary greatly. 
+
+%A prevalent approach to solving \JSP\ is to combine several relatively \sdr s 
+%such that they may benefit each other for a given problem space. 
+%% automation for selecting DRs #3 - GA
+%The approach in \cite{InRu14}, was to automate that selection, by 
+%translating dispatching rules into measurable features and optimising what 
+%their contribution should be via evolutionary search. The framework is straight 
+%forward and easy to implement and showed promising and robust results, 
+%as models were trained on a lower dimension, and validated on higher dimension. 
+%Moreover, \cite{InRu14} showed that the choice of objective 
+%function  for evolutionary search is worth investigating. Since the 
+%optimisation is based on minimising the expected mean of the fitness function 
+%over a large set of problem instances, which can vary within. Then normalising 
+%the objective function can stabilise the optimisation process away from local 
+%minima. 
+
+%By applying GP on a terminal set of job-attributes for flexible \jsp,\footnote{
+%    Flexible \jsp\ allows jobs to be processed on different machines, i.e., the 
+%    problem has the additional complexity of making a routing decision of 
+%    operations to machines.} 
+%\cite{Tay08} optimised a multi-objective \jsp~(transformed into a single 
+%objective by linearly combining their objectives) with promising results 
+%compared to the benchmarks DRs from the literature.
+
+
+% automation for selecting DRs #4 - GA
+The competing alternative to learning dispatching rules from data would be to 
+search the \dr\ space directly. The prevalent approach in this case would be 
+using an evolutionary algorithm, such as genetic programming (GP).
+The main drawback, is that the rules from a GP framework can be quite complex, 
+and difficult to interpret.
+In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} for 
+dynamic \jsp\ and tested it against some \sdr s, and 
+found that it only slightly outperformed one rule, and was beat by another. 
+The reason behind this staggering change in performance, may be due to 
+the choice of objective function, and the underlying problem spaces that were 
+used in training.
+It's argued that the randomly generated problem instances aren't a 
+proper representative for real-world long-term \jsp\ applications, e.g., by the 
+narrow choice of release times, yielding schedules that are overloading in the 
+beginning phases.
+
+A novel iterative \dr s that were evolvemanod with GP for \JSP, \cite{Nguyen13} 
+learned from completed schedules in order to iteratively improve new ones. 
+At each dispatching step, the method can utilise the current feature space to 
+\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
+reverse lookahead). Their method is straightforward, and thus easy to 
+implement and more importantly computationally inexpensive, although the 
+authors do stress that there is still remains room for improvement.
+
+Adopting a two-stage hyper-heuristic approach to generate a set of 
+machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
+\cdr s (CDR) from basic attributes, along with evolutionary algorithm to assign 
+a CDR to a specific machine. 
+The problem space consists of \jsp s in semiconductor manufacturing, with 
+additional shop constraints, as machines are grouped to similar work centres, 
+which can have different set-up time, workload, etc. 
+In fact, the GP emphasised on efficiently dispatching on the work 
+centres with set-up requirements and batching capabilities, which are rules 
+that are non-trivial to determine manually.
+
+
+Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
+processing by using reinforcement learning (RL), in particular, temporal 
+difference learning. 
+Starting with a relaxed problem, each job was scheduled as early as its 
+temporal partial order would permit, there by initially ignoring any resource 
+constraints on the machines, yielding the schedule's critical path. Then the 
+schedule would be repaired so the resource constraints were satisfied in the 
+minimum amount of iterations.
+
+\todo{It these case based reasoning for scheduling?}
+Using case based reasoning for timetable scheduling, training data in 
+\cite{Burke06} is guided by the two best heuristics in the literature.
+They point out that in order for their framework to be successful, problem 
+features need to be sufficiently explanatory and training data need to be 
+selected carefully so they can suggest the appropriate solution for a specific 
+range of new cases. Stressing the importance of meaningful feature selection. 
+
+
+% automation for selecting DRs #1 - Portfolio
+With meta heuristics one can use existing DRs, and use for example 
+portfolio-based algorithm selection \cite{Rice76,Gomes01}, either based on a 
+single instance or class of instances \cite{Xu07} to determine which DR to 
+choose from. 
+% automation for selecting DRs #2 - ACO
+Implementing ant colony optimisation to select the best DR 
+from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13} 
+showed that the choice of DR do affect the results and that for all performance 
+measures considered. They showed that it was better to have a all the DRs to 
+choose from rather than just a single DR at a time.
+
+Meta learning can be very fruitful in RL, as experiments from 
+\cite{Kalyanakrishnan11} discovered some key discriminants between 
+competing algorithms for their particular problem instances, which provided 
+them with a hybrid algorithm which combines the strengths of the algorithms.
+
+
+the most predominant approach in hyper-heuristics is a framework of creating 
+\emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
+\cite{Burke10}. 
+
+
+The outline of the paper is the following, \cref{sec:problemdef} gives the 
+mathematical formalities of the scheduling problem, and  
+\cref{sec:DR} describes the main attributes for \jsp, 
+and goes into how to create schedules with \dr s. 
+\Cref{sec:learnOPT} sets up the framework for learning from optimal schedules. 
+In particular, the probability of choosing optimal decisions and the effects of 
+making a suboptimal decision. Furthermore, the optimality of common \sdr s is 
+investigated.
+With those guidelines, \cref{ch:expr:CDR} goes into detail how to create 
+meaningful \cdr s using preference learning, focusing on how to 
+compare operations and collect training data with the importance of good state 
+sampling. 
+\Cref{sec:il:active,sec:il:passive} explain the trajectories for 
+sampling meaningful schedule state-spaces used in preference learning, either 
+using passive or active imitation learning. 
+Experimental results are jointly presented in \cref{sec:il:expr} with 
+comparison for a single randomly generated problem space. Furthermore, some 
+general adjustments for performance boost is also considered.
+The paper finally concludes in \cref{sec:con} with discussion and conclusions.
+
+%\setcounter{tocdepth}{2} \tableofcontents
+
+\section{\Jsp~Scheduling}\label{sec:problemdef}
+The \jsp~problem (\JSP) involves the scheduling of jobs on a set of 
+machines. Each job consists of a number of operations which are then processed 
+on the machines in a predetermined order. An optimal solution to the problem 
+will depend on the specific objective. 
+% For example, the optimal schedule may be the time needed to complete
+% all jobs, i.e., the minimum makespan.
+
+In this study we will consider the $n\times m$ \JSP, where $n$ jobs, 
+$\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set, 
+$\mathcal{M}=\{M_a\}_{a=1}^m$, of $m$ machines. The index $j$ refers to a job 
+$J_j\in\mathcal{J}$ while the index  $a$ refers to a machine 
+$M_a\in\mathcal{M}$. 
+If a job requires a number of processing steps or operations, then the pair 
+$(j,a)$ refers to the operation, i.e., processing the task of job $J_j$ on 
+machine $M_a$. 
+
+Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
+$p_{ja}$, which is assumed to be integral and finite. 
+Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
+end time is denoted $x_e(j,a)$ where, 
+\begin{equation}  x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
+Each job $J_j$ has a specified processing order through the machines, it is a 
+permutation vector, $\vsigma_j$, of $\{1,..,m\}$, representing a job $J_j$ can 
+be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
+on $M_{\vsigma_j(a-1)}$, i.e.,
+\begin{equation}\label{eq:permutation}
+x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1)) 
+\end{equation}
+for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
+Note, that each job can have its own distinctive flow pattern through the 
+machines, which is independent of the other jobs. 
+However, in the case that all jobs share the same \emph{fixed} permutation 
+route, referred to as \fsp~(\FSP). 
+A commonly used subclass of \FSP\ in the literature is permutation \fsp, which 
+has the added constraint that the processing order of the jobs on the machines 
+must be identical as well, i.e., no passing of jobs allowed \cite{Stafford88}.
+
+The disjunctive condition that each machine can handle at most one job at a 
+time is the following,
+\begin{equation}\label{eq:oneJobPerMac}
+x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
+\end{equation}
+for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
+
+The objective function is to minimise its maximum completion times for all 
+tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
+follows,
+\begin{equation}
+C_{\max} := 
+\max\left\{x_e(j,\vsigma_j(m))\;\middle|\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
+\end{equation} 
+This family of scheduling problems is denoted by $J||C_{\max}$ 
+\cite{Pinedo08}.
+Additional constraints commonly considered are job release-dates and due-dates 
+or sequence dependent set-up times, however, these will not be considered here. 
+
+In order to find an optimal (or near optimal) solution for scheduling problems 
+one could either use exact methods or heuristics methods. Exact methods 
+guarantee an optimal solution. However, \jsp\ scheduling is strongly NP-hard 
+\cite{Garey76:NPhard}. Any exact algorithm generally suffers from the curse of 
+dimensionality, which impedes the application in finding the global optimum in 
+a reasonable amount of time. 
+Using state-of-the-art software for solving scheduling problems, such as 
+LiSA %\footnote{LiSA is distributed under the GNU General Public License, and 
+%is available at \url{http://www.math.ovgu.de/Lisa.html}.} 
+(A Library of Scheduling Algorithms) \cite{LiSA}, which includes a specialised 
+version of branch and bound that manages to find optimums for \jsp\ problems of 
+up to $14\times14$ \cite{Ru12}. However, problems that are of greater size, 
+become intractable. 
+Heuristics are generally more time efficient but 
+do not necessarily attain the global optimum. Therefore, \jsp\ has the 
+reputation of being notoriously difficult to solve. 
+As a result, it's been widely studied in deterministic scheduling theory and 
+its class of problems has been tested on a plethora of different solution 
+methodologies from various research fields \cite{Meeran12}, all from simple and 
+straight forward \dr s to highly sophisticated frameworks.
+
+
+\section{Priority Dispatching Rules} \label{sec:DR}
+
+Priority \dr s determine, from a list of incomplete jobs, 
+$\mathcal{L}$, which job should be dispatched next. This process, where an example of 
+a temporal partial schedule of six-jobs scheduled on five-machines, is illustrated in  \Cref{fig:jssp:example}.
+The numbers in the boxes represent the job identification $j$. 
+The width of the box illustrates the processing times for a given job for a 
+particular machine $M_a$ (on the vertical axis). 
+The dashed boxes represent the resulting partial schedule for when a particular 
+job is scheduled next. 
+Moreover, the current $C_{\max}$ is denoted by a dotted vertical line. 
+The object is to keep this value as small as possible once all operations are 
+complete. As shown in the example there are $15$ operations already scheduled. 
+The \textit{sequence} of dispatches used to create this partial schedule is,
+\begin{equation}
+
+>>>>>>> bc045891204b847eeaf5b3000aed24e4435b978c
+
 	\vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
 	\end{equation}
 	This refers to the sequential ordering of job dispatches to machines, i.e., $(j,a)$; 
