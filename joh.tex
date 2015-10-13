@@ -200,7 +200,7 @@ proper representative for real-world long-term \jsp\ applications, e.g., by the
 narrow choice of release times, yielding schedules that are overloading in the 
 beginning phases.
 
-A novel iterative \dr s that were evolvemanod with GP for \JSP, \cite{Nguyen13} 
+A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
 learned from completed schedules in order to iteratively improve new ones. 
 At each dispatching step, the method can utilise the current feature space to 
 \emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
@@ -208,6 +208,10 @@ reverse lookahead). Their method is straightforward, and thus easy to
 implement and more importantly computationally inexpensive, although the 
 authors do stress that there is still remains room for improvement.
 
+
+The most predominant approach in hyper-heuristics is a framework of creating 
+\emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
+\cite{Burke10}. 
 Adopting a two-stage hyper-heuristic approach to generate a set of 
 machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
 \cdr s (CDR) from basic attributes, along with evolutionary algorithm to assign 
@@ -254,10 +258,6 @@ Meta learning can be very fruitful in RL, as experiments from
 competing algorithms for their particular problem instances, which provided 
 them with a hybrid algorithm which combines the strengths of the algorithms.
 
-
-the most predominant approach in hyper-heuristics is a framework of creating 
-\emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
-\cite{Burke10}. 
 
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
@@ -1111,7 +1111,7 @@ imperative to make right decisions at the very end.
 From \cite{InRu11a} we know that expert policy is a promising starting point.
 However, that was for $6\times5$ dimensionality (i.e. $K=30$), which is a much 
 simpler problem space. Notice that in \cref{fig:opt:SDR:xi} there was 
-virtually no chance for $\xi_\pi$ of choosing a job resulting in optimal 
+virtually no chance for $\xi_\pi(k)$ of choosing a job resulting in optimal 
 makespan after step $k=28$.
 
 Since \jsp\ is a sequential prediction problem, all future observations are 
@@ -1265,7 +1265,7 @@ w.r.t. \namerho, from
 \item imitation learning, trained on $\Phi^{\text{DA}i}_{\text{EXT}}$ for 
 iterations $i=\{1,..,3\}$ using extended training set
 \end{enumerate*}
-As a reference, the \sdr\ MWR is shown on the far right of 
+As a reference, the \sdr\ MWR is shown on at the edges of 
 \cref{fig:all:boxplot}.
 
 At first we see that the perturbed leader ever so-slightly improves the mean 
@@ -1312,7 +1312,7 @@ improves with each iterations.
 \includegraphics[width=\textwidth]{figures/{j_rnd}/{boxplot_summary_10x10}.pdf}
 \caption{Box plot for \jrnd{10}{10} \namerho, using either expert policy, 
 DAgger or following perturbed leader strategies. 
-MWR shown on far right for reference.}\label{fig:all:boxplot} 
+MWR shown for reference.}\label{fig:all:boxplot} 
 \end{figure}
 
 \input{tables/stats.IL.10x10.tex}
@@ -1375,15 +1375,20 @@ especially taken care off. \Cref{fig:case} showed how making suboptimal
 decisions were more of a factor during the later stages, whereas for flow-shop 
 the case was exact opposite. 
 Experiments in \cref{sec:pil:expr} clearly showed that following the expert 
-policy is not without its faults. There are many obstacles to consider to 
-improve the model. 
-For instance, their experiments $\Psi$ to size $l$ with equal 
-probability. But inspecting the effects of making suboptimal choices varies as 
-a function of times steps, perhaps its stepwise bias should rather be done 
-proportional to the mean cumulative loss to a particular time step? 
-However, it's non-trivial to go about that. Preliminary experiments on sampling 
-measures based on \cref{fig:boxplot:SDR} and \cref{fig:case} didn't show any 
-performance boost in doing so.
+policy is not without its faults. There are many obstacles to consider in order 
+to improve model configurations. 
+For instance, the before training the learned model, the preference set $\Psi$ 
+needs to be re-sampled to size $l_{\max}$. 
+As the effects of making suboptimal choices varies as a function of times 
+steps, the stepwise bias should rather be done proportional to the mean 
+cumulative loss to a particular time step. 
+As the experimental studies in \cref{sec:pil:expr,sec:ail:expr,sec:il:expr} 
+showed, instead of equal probability (i.e. \ref{bias:equal}) it was much more 
+fruitful to adjust the set to its number of preference and doubling the 
+emphasis on the second half (i.e. \ref{bias:adjdbl2nd}).
+However, there are many other stepwise sampling strategies based on our 
+analysis that could have been chosen instead, as here only a 
+simplification of the trend from \cref{fig:case} was chosen. 
 
 Despite the abundance of information gathered by following an optimal 
 trajectory, the knowledge obtained is not enough by itself. Since the learning 
