@@ -12,23 +12,20 @@
 
 \RequirePackage{fix-cm} 
 
-\documentclass[smallextended]{svjour3} 
-\smartqed  % flush right qed marks, e.g., at end of proof
+\documentclass[twocolumn]{svjour3} 
 
 \makeatletter
-%\def\cl@chapter{\cl@chapter \@elt {theorem}}%bug in class
 \def\cl@chapter{\@elt {theorem}}
 \makeatother
 
 \usepackage{mathptmx} % use Times fonts if available on your TeX system
 
-\journalname{Journal of Heuristics}
+\journalname{Journal of Scheduling}
 
 \title{Discovering dispatching rules from data and imitation learning}
 \subtitle{Case study for the job-shop problem}
 
-\author{Helga Ingimundardottir \and Thomas Philip Runarsson }
-%\authorrunning{Short form of author list} % if too long for running head
+\author{Helga Ingimundardottir \and Thomas Philip Runarsson}
 
 \institute{H. Ingimundardottir \at
 Dunhaga 5, IS-107 Reykjavik, Iceland \\
@@ -48,6 +45,7 @@ Fax: +354-525-4632\\
 \input{shorthand} % put your own shorthand declarations in this document
 
 \begin{document}
+\sloppy % fixes many bad boxes
 \maketitle
 
 \selectlanguage{english}
@@ -57,7 +55,8 @@ Fax: +354-525-4632\\
   Recent past efforts have focused on direct search methods (e.g. genetic 
   programming) or training on data (e.g. supervised learning).
   This paper will examine the latter and give a framework on how to do it 
-  effectively. Defining training data as   
+  effectively. 
+  Defining training data as   
   $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
   \begin{enumerate*}
     \item samples $\vec{x}_i$ should represent the induced 
@@ -303,12 +302,12 @@ Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$,
 $p_{ja}$, which is assumed to be integral and finite. 
 Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
 end time is denoted $x_e(j,a)$ where, 
-\begin{equation}  x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
+\begin{equation}\quad x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
 Each job $J_j$ has a specified processing order through the machines, it is a 
 permutation vector, $\vsigma_j$, of $\{1,..,m\}$, representing a job $J_j$ can 
 be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
 on $M_{\vsigma_j(a-1)}$, i.e.,
-\begin{equation}\label{eq:permutation}
+\begin{equation}\quad\label{eq:permutation}
 x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1)) 
 \end{equation}
 for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
@@ -322,7 +321,7 @@ must be identical as well, i.e., no passing of jobs allowed \cite{Stafford88}.
 
 The disjunctive condition that each machine can handle at most one job at a 
 time is the following,
-\begin{equation}\label{eq:oneJobPerMac}
+\begin{equation}\quad\label{eq:oneJobPerMac}
 x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)  
 \end{equation}
 for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
@@ -330,9 +329,9 @@ for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$.
 The objective function is to minimise its maximum completion times for all 
 tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
 follows,
-\begin{equation}
+\begin{equation}\quad
 C_{\max} := 
-\max\left\{x_e(j,\vsigma_j(m))\;\middle|\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
+\max\left\{x_e(j,\vsigma_j(m))\;:\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
 \end{equation} 
 This family of scheduling problems is denoted by $J||C_{\max}$ 
 \cite{Pinedo08}.
@@ -377,7 +376,7 @@ Moreover, the current $C_{\max}$ is denoted by a dotted vertical line.
 The object is to keep this value as small as possible once all operations are 
 complete. As shown in the example there are $15$ operations already scheduled. 
 The \textit{sequence} of dispatches used to create this partial schedule is,
-\begin{equation}
+\begin{equation}\quad
 \vchi=\left(J_3,J_3,J_3,J_3,J_4,J_4,J_5,J_1,J_1,J_2,J_4,J_6,J_4,J_5,J_3\right)
 \end{equation}
 This refers to the sequential ordering of job dispatches to machines, i.e., 
@@ -402,7 +401,7 @@ If $J_6$ had been placed earlier, a slot would have been created between it and
 $J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$. 
 The time in which machine $M_a$ is idle between consecutive jobs $J_j$ and 
 $J_{j'}$ is called idle time, or slack, 
-\begin{equation} 
+\begin{equation}\quad 
 s(a,j):=x_s(j,a)-x_e(j',a) \label{eq:slack}
 \end{equation}
 where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$. 
@@ -420,7 +419,7 @@ idle times $M_a$ are inspected as they create flow time  which $J_j$ can
 occupy. Bearing in mind that $J_j$ release time is $x_e(j,\vsigma_j(a-1))$ one 
 cannot implement \cref{eq:slack} directly, instead it has to be updated as 
 follows:
-\begin{equation}
+\begin{equation}\quad
 \tilde{s}(a,j'):= x_s(j'',a)-\max\{x_e(j',a),x_e(j,\vsigma_j(a-1))\} % 
 %\textrm{ if } x_e(j,\vsigma_j(a-1)\geq x_e(j',a) 
 \end{equation}
@@ -428,7 +427,7 @@ As all, already dispatched jobs, $J_{j'},J_{j''}\in \mathcal{J}_a$ where
 $J_{j''}$ is $J_{j'}$ successor on $M_a$. Since preemption is not allowed, the 
 only applicable slots are whose idle time can process the entire operation, 
 i.e.
-\begin{equation}
+\begin{equation}\quad
 \tilde{S}_{ja} := \condset{J_{j'}\in \mathcal{J}_a}{\tilde{s}(a,j')\geq p_{ja} 
 }\label{eq:slots}.
 \end{equation} 
@@ -447,7 +446,7 @@ possible, which is beneficial for subsequent dispatches for $J_j$.
 For this reason, it will be the placement rule applied here.
 
 \begin{figure}[t!]\centering
-\includegraphics[width=0.8\textwidth]{figures/jssp_example}
+\includegraphics[width=\columnwidth]{figures/jssp_example}
 \caption[Gantt chart of a partial \JSP\ schedule]{Gantt chart of a
 partial \JSP\ schedule after 15 dispatches: Solid and dashed boxes
 represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
@@ -523,7 +522,7 @@ constructed from the schedules attributes. In short, a CDR is a combination of
 several DRs. 
 For instance let $\pi$ be a CDR comprised of $d$ DRs, then the index $I$ for 
 $J_j\in\mathcal{L}^{(k)}$ using $\pi$ is, 
-\begin{equation}I_j^{\pi} = \sum_{i=1}^d w_i \pi_i(\vchi^j) 
+\begin{equation}\quad I_j^{\pi} = \sum_{i=1}^d w_i \pi_i(\vchi^j) 
 \label{eq:CDR}
 \end{equation}
 where $w_i>0$ and $\sum_{i=0}^d w_i = 1$ with $w_i$ giving the weight of the 
@@ -555,13 +554,13 @@ ad-hoc solutions and there is no guarantee the optimal combination of
 
 The \cdr\ presented in \cref{eq:CDR} can be considered as a special case of a 
 the following general linear value function:
-\begin{equation}\label{eq:jssp:linweights}
+\begin{equation}\quad\label{eq:jssp:linweights}
 \pi(\vchi^j)=\sum_{i=1}^d w_i \phi_i(\vchi^j).
 \end{equation}
 when $\pi_i(\cdot)=\phi_i(\cdot)$, i.e., a composite function of the features 
 from \cref{tbl:jssp:feat}. Finally, the job to be dispatched, $J_{j^*}$, 
 corresponds to the one with the highest value, i.e.,
-\begin{equation}\label{eq:jstar}
+\begin{equation}\quad\label{eq:jstar}
 J_{j^*}=\argmax_{J_j\in \mathcal{L}}\; \pi(\vchi^j)
 \end{equation}
 Similarly, \sdr s may be described by this linear model. For instance, let all 
@@ -630,7 +629,7 @@ $\pi_\star$), and the makespan obtained from the
 scheduling policy $\pi$ under inspection by $C_{\max}^{\pi}$. Since the optimal 
 makespan varies between problem instances the performance measure is the 
 following,
-\begin{equation}\label{eq:rho}
+\begin{equation}\quad\label{eq:rho}
 \rho=\frac{C_{\max}^{\pi}-C_{\max}^{\pi_\star}}{C_{\max}^{\pi_\star}}\cdot
 100\%
 \end{equation}
@@ -657,7 +656,7 @@ are synthetic and each problem space is i.i.d.
 
 \begin{figure}
 \centering
-\includegraphics[width=1\linewidth]{figures/{boxplotRho_SDR_10x10}.pdf}
+\includegraphics[width=\columnwidth]{figures/{boxplotRho_SDR_10x10}.pdf}
 \caption{Box-plot for deviation from optimality, $\rho$, (\%) for SDRs}
 \label{fig:boxplot:SDR}
 \end{figure}
@@ -678,7 +677,7 @@ the half-finished schedule, $\vchi$.
 For each possible post-decision state the temporal features are collected (cf. 
 \cref{pseudo:constructJSP:phi}) forming the feature set, $\Phi$, based on all 
 $N_{\text{train}}$ problem instances available, namely, 
-\begin{equation} \label{eq:Phi}
+\begin{equation}\quad \label{eq:Phi}
 \Phi := \bigcup_{\{\vec{x}_i\}_{i=1}^{N_{\text{train}}}} 
 \condset{\vphi^j}{J_j\in\mathcal{L}^{(k)}}_{k=1}^K
 \subset\mathcal{F}
@@ -711,7 +710,7 @@ The redundancy in building optimal solutions using dispatching rules means that
 many different dispatches may yield an optimal solution to the problem instance.
 Let's formalise the probability of optimality (or stepwise 
 classification accuracy) for a given policy $\pi$, is defined as, 
-\begin{equation} \label{eq:tracc:opt}
+\begin{equation}\quad \label{eq:tracc:opt}
 \xi^\star_{\pi} := \mathbb{E}_{\pi_\star}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
 that is to say the mean likelihood of our policy $\pi$ being equivalent to the 
@@ -735,9 +734,9 @@ dispatching performs better than SPT on problem instances \jrnd{10}{10} and
 \jrndn{10}{10}. 
 
 
-\begin{figure}[p]
+\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_xistar}.pdf}
+\includegraphics[width=\columnwidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_xistar}.pdf}
 \caption{Probability of SDR being optimal, 
 $\xi^\star_{\langle\text{SDR}\rangle}$}
 \label{fig:opt:SDR:xistar}
@@ -751,12 +750,12 @@ To demonstrate this \cref{fig:case} depicts mean worst and best case scenario
 of the resulting \namerho, once off the optimal track, defined as follows:
 \begin{subequations}\label{eq:bwc:opt}
 \begin{eqnarray} 
-\zeta_{\min}^{\star}(k) &:=& \mathbb{E}_{\pi_\star}\left\{\min(\rho)\;:\;
-\forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star} 
-\wedge J_j\in\mathcal{L}^{(k)} \right\} \\
-\zeta_{\max}^{\star}(k) &:=& \mathbb{E}_{\pi_\star}\left\{\max(\rho) \;:\;
-\forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star}
-\wedge J_j\in\mathcal{L}^{(k)} \right\}
+\quad \zeta_{\min}^{\star}(k) &:=& \mathbb{E}_{\pi_\star}\left\{
+\min_{J_j\in\mathcal{L}^{(k)}}(\rho) \;:\;
+\forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star}  \right\} \\
+\quad \zeta_{\max}^{\star}(k) &:=& \mathbb{E}_{\pi_\star}\left\{
+\max_{J_j\in\mathcal{L}^{(k)}}(\rho) \;:\;
+\forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star} \right\}
 \end{eqnarray}
 \end{subequations}
 Note, that this is given that one makes \emph{one} non-optimal dispatch. 
@@ -772,9 +771,9 @@ is due to the major structural differences between \JSP\ and \FSP, namely the
 latter having a homogeneous machine ordering, constricting the solution 
 immensely. 
 
-\begin{figure}[p]
+\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
+\includegraphics[width=\columnwidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
 \caption{Mean deviation from optimality, $\rho$, (\%), for best and worst 
 case scenario of making \emph{one} suboptimal dispatch (i.e. 
 $\zeta^{\star}_{\min}$ and $\zeta^{\star}_{\max}$), depicted as lower and 
@@ -812,9 +811,9 @@ in the latter stages, does help the schedule to be more compact w.r.t. SPT.
 However, the fact remains that the schedules have diverged too far from what 
 MWR would have been able to achieve on its own. 
 
-\begin{figure}[p]
+\begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/j_rnd/{boxplotRho_BDR_10x10}.pdf}
+\includegraphics[width=\columnwidth]{figures/j_rnd/{boxplotRho_BDR_10x10}.pdf}
 \caption{Box-plot for deviation from optimality, $\rho$, (\%) for BDR where 
 SPT is applied for the first 10\%, 15\%, 20\%, 30\% or 40\% of the 
 dispatches, followed by MWR}
@@ -826,7 +825,7 @@ In \cref{fig:opt:SDR:xistar} we inspected the stepwise optimality, given that
 we were on the optimal trajectory. Since we're bound to make mistakes at some 
 points, it's interesting to see how that stepwise optimality evolves for its 
 intended trajectory, thereby updating \cref{eq:tracc:opt} to
-\begin{equation} \label{eq:tracc:track}
+\begin{equation}\quad \label{eq:tracc:track}
 \xi_{\pi} := \mathbb{E}_{\pi}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
 \Cref{fig:opt:SDR:xi} shows the log likelihood for $\xi_{\langle 
@@ -843,10 +842,9 @@ But as pointed out for \cref{fig:case}, it's not so fatal to
 make bad moves in the very first dispatches for \jrnd{10}{10}, hence little 
 gain with improved classification accuracy in that region. 
 
-\clearpage
 \begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xi}.pdf}
+\includegraphics[width=\columnwidth]{figures/j_rnd/{trdat_prob_moveIsOptimal_10x10_SDR_xi}.pdf}
 \caption{Log likelihood of SDR being optimal for \jrnd{10}{10}, when 
 following its corresponding SDR trajectory, i.e.,   
 $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
@@ -892,12 +890,14 @@ Let's label features from \cref{eq:Phi} that were considered optimal,
 \mbox{$\vpsi^{o}=\vphi^{o}-\vphi^{s}$}, and suboptimal, 
 \mbox{$\vpsi^{s}=\vphi^{s}-\vphi^{o}$} by $y_o=+1$ and $y_s=-1$ respectively.  
 Then, the preference learning problem is specified by a set of preference pairs,
-\begin{equation}
-\Psi = 
+\begin{eqnarray}
+\quad \Psi &=& 
 \left\{\left(\vpsi^o,+1\right),\left(\vpsi^s,-1\right)
-\;\middle|\;\forall \left(J_o,J_s\right) \in \mathcal{O}^{(k)} \times 
-\mathcal{S}^{(k)}\right\}_{k=1}^{K} \subset \Phi\times Y \label{eq:prefset}
-\end{equation}
+\;:\;
+\forall \left(J_o,J_s\right) \in \mathcal{O}^{(k)} \times 
+\mathcal{S}^{(k)}\right\}_{k=1}^{K} \nonumber
+\\ &\subset& \Phi\times Y \label{eq:prefset}
+\end{eqnarray}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d=\NrFeatLocal$ 
 features (cf. \cref{tbl:jssp:feat}), $Y=\{+1,-1\}$ is the outcome space from 
 job pairs, $J_o\in\mathcal{O}^{(k)}$ and $J_s\in\mathcal{S}^{(k)}$, for all 
@@ -915,13 +915,13 @@ Now let's consider the model space $\mathcal{H} = \{\pi(\cdot) : X \mapsto Y\}$
 of mappings from solutions to ranks. Each such 
 function $\pi$ induces an ordering $\succ$ on the solutions  by the following 
 rule,
-\begin{equation}\label{eq:linear}
+\begin{equation}\quad\label{eq:linear}
 \vchi^i \succ \vchi^j \quad \Leftrightarrow \quad \pi(\vchi^i) > 
 \pi(\vchi^j)
 \end{equation}
 where the symbol $\succ$ denotes ``is preferred to.''  The function used to 
 induce the preference is defined by a linear function in the feature space,
-\begin{equation} 
+\begin{equation}\quad 
 \pi(\vchi^j)=\sum_{i=1}^d w_i\phi_i(\vchi^j)=\inner{\vec{w}}{\vphi(\vchi^j)}.
 \end{equation}
 
@@ -1048,13 +1048,13 @@ introduced in \cite{InRu11a}.
 
 By querying the expert policy, $\pi_\star$, the ranking of the job-list, 
 $\mathcal{L}$, is determined such that,
-\begin{equation}
+\begin{equation}\quad
 r_1 \succ r_2 \succ \cdots \succ r_{n'} \quad (n' \leq n)
 \end{equation}
 implies $r_1$  is preferable to $r_2$, and $r_2$ is preferable to $r_3$, etc. 
 In  our study, we know $r \propto C_{\max}^{\pi_\star}$, hence the optimal 
 job-list is the following, 
-\begin{equation}
+\begin{equation}\quad
 \mathcal{O}=\condset{r_i}{r_i \propto \min_{J_j \in \mathcal{L}} 
 C_{\max}^{\pi_\star(\vchi^j)}}
 \end{equation}
@@ -1080,7 +1080,7 @@ probability.
 \subsection{Results}\label{sec:pil:expr}
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/{j_rnd}/{boxplot_passive_10x10}.pdf}
+\includegraphics[width=\columnwidth]{figures/{j_rnd}/{boxplot_passive_10x10}.pdf}
 \caption{Box plot for \jrnd{10}{10} \namerho, using either expert policy and  
 following perturbed leader.}\label{fig:passive:boxplot} 
 \end{figure}
@@ -1170,7 +1170,7 @@ aerial vehicles \cite{Ross13}
 \subsection{DAgger}
 The policy of imitation learning at iteration $i>0$ is a mixed strategy given 
 as follows, 
-\begin{equation}\label{eq:il}
+\begin{equation}\quad\label{eq:il}
 \pi_i = \beta_i\pi_\star + (1-\beta_i)\hat{\pi}_{i-1}
 % i: ith iteration of imitation learning
 % pi_star is expert policy (i.e. optimal)
@@ -1195,7 +1195,7 @@ partial training set, $\Phi^{\text{IL}i}$ for $i$-th iteration of active
 imitation learning.
 Subsequently, the resulting preference model, $\hat{\pi}_i$, learns on the 
 aggregated datasets from all previous iterations, namely,  
-\begin{equation}\label{eq:DAgger}
+\begin{equation}\quad\label{eq:DAgger}
 \Phi^{\text{DA}i}=\bigcup_{i'=0}^{i}\Phi^{\text{IL}i'}
 \end{equation}
 and its update procedure is detailed in \cref{pseudo:DAgger}.
@@ -1220,7 +1220,7 @@ iteration of DAgger).
 Hence, for active IL, the extended set is now consisted of each iteration 
 encountering $N_{\text{train}}$ \emph{new} problem instances. For a grand total 
 of 
-\begin{equation}
+\begin{equation}\quad
 N^{\text{DA}i}_{\text{train, EXT}}=N_{\text{train}}\cdot (i+1) 
 \end{equation}
 problem instances explored for the aggregated extended training set used for 
@@ -1247,7 +1247,7 @@ becomes varied enough that situations arise that can be learned to achieve a
 better represented classification problem which yields a lower mean \namerho.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/{j_rnd}/{boxplot_active_10x10}.pdf}
+\includegraphics[width=\columnwidth]{figures/{j_rnd}/{boxplot_active_10x10}.pdf}
 \caption{Box plot for \jrnd{10}{10} \namerho, using DAgger for \JSP}
 \label{fig:active:boxplot} 
 \end{figure}
@@ -1309,7 +1309,7 @@ does the active imitation learning converge faster, it also consistently
 improves with each iterations.
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/{j_rnd}/{boxplot_summary_10x10}.pdf}
+\includegraphics[width=\columnwidth]{figures/{j_rnd}/{boxplot_summary_10x10}.pdf}
 \caption{Box plot for \jrnd{10}{10} \namerho, using either expert policy, 
 DAgger or following perturbed leader strategies. 
 MWR shown for reference.}\label{fig:all:boxplot} 
