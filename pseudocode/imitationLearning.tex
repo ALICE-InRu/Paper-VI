@@ -14,23 +14,22 @@
     \begin{algorithmic}[1]
         \Require $i\geq0$ 
         \Require Ranking $r_1 \succ r_2 \succ \cdots > r_{n'} ~ (n' \leq n)$ of 
-                the job-list, $\mathcal{L}$ \Comment{query $\pi_\star$}
+                $\mathcal{L}$ \Comment{query $\pi_\star$}
         \Procedure{ActiveIL}{$i,\hat{\pi}_{i-1},\pi_\star$}
         \State $p \gets \mathcal{U}(0,1)\in [0,1]$
         \Comment{uniform probability}
         \If{$i>0$} ~ (unsupervised)
         \State $\beta_i \gets 0$ 
-        \Comment{always apply imitiation}
+        \Comment{always apply imitation}
         \Else ~ (fixed supervision)  \State $\beta_i \gets 1$ 
         \Comment{always follow expert policy (i.e. optimal)}
         \EndIf
         \If {$p > \beta_i$} 
         \State \Return $j^* \gets \argmax_{j\in 
         \mathcal{L}}\{I_j^{\hat{\pi}_{i-1}}\}$
-        \Comment{best job based on $\hat{\pi}_{i-1}$, 
-        cf.~\cref{pseudo:constructJSP}}
+        \Comment{best job based on $\hat{\pi}_{i-1}$}
         \Else 
-        \State $\mathcal{O} \gets \condset{j\in\mathcal{L}}{r_j=r_1}$ 
+        \State $\mathcal{O} \gets \left\{j\in\mathcal{L}\;:\;r_j=r_1\right\}$ 
         \Comment{optimal job-list}
         \State \Return $j^* \in\mathcal{O}$ \Comment{any optimal job}
         \EndIf
