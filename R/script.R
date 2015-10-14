@@ -40,11 +40,7 @@ plot.BDR(input$dimension,input$problem,'SPT','MWR',c(10,15,20,40),NA,F)
 
 
 source('pref.imitationLearning.R')
-<<<<<<< HEAD
 CDR.IL <- do.call(rbind, lapply(c('equal','adjdbl2nd'), function(bias){
-=======
-CDR.IL <- do.call(rbind, lapply(c('equal','adjdbl2nd'), function(bias) {
->>>>>>> d47c17024d7a0e32973adea7c4e220b50badc686
   get.CDR.IL(input$problem,input$dimension,bias)}))
 CDR.IL <- subset(CDR.IL, (Supervision == 'Unsupervised' & Iter <=3) | Iter==0 )
 CDR.IL$Set=interaction(CDR.IL$Problem,CDR.IL$Dimension,CDR.IL$Set,sep=', ')
@@ -69,6 +65,7 @@ CDR.IL$Type = 'Imitation Learning'
 CDR.IL <- subset(CDR.IL, (Supervision=='Unsupervised' & Extended==T) |
                    (Supervision!='Unsupervised' & Extended==F))
 MWR <- subset(dataset.SDR,SDR=='MWR' & Problem == input$problem & Dimension==input$dimension)
+MWR$Set <- interaction(MWR$Problem, MWR$Dimension, MWR$Set, sep = ', ')
 levels(CDR.IL$Supervision)=c('Passive IL','NA','Active IL')
 p=plot.imitationLearning.boxplot(CDR.IL,MWR)
 ggsave('../../Paper-VI/figures/j_rnd/boxplot_summary_10x10.png',
@@ -92,4 +89,3 @@ ggsave('../../JSP-Expert/figures/j_rnd/boxplot_summary_10x10.png',
 
 
 plot.imitationLearning.weights(input$problem,input$dimension)
->>>>>>> d47c17024d7a0e32973adea7c4e220b50badc686
