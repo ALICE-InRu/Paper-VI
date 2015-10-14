@@ -1093,9 +1093,8 @@ dissuades the preference models to achieving a good performance w.r.t. $\rho$.
 It's preferable to use the default $N^{\text{OPT}}_{\text{train}}=300$ and 
 allowing slight perturbations of the optimal trajectory, as done for  
 $\Phi^{\text{OPT}\epsilon}$. Unfortunately, all this overhead has not managed 
-to surpass MWR in performance. 
-The closest to MWR, is using \ref{bias:adjdbl2nd} instead of \ref{bias:equal}, 
-with a $\Delta\rho\approx-6.23\%$ boost in mean performance. 
+to surpass MWR in performance, except for $\Phi^{\text{OPT}\epsilon}$ using  \ref{bias:adjdbl2nd} 
+with a $\Delta\rho\approx-4.24\%$ boost in mean performance. Otherwise, for \ref{bias:equal} instead, there is a loss of $\Delta\rho\approx+6.23\%$ in mean performance. 
 This is likely due to the fact that if equal probability is used for stepwise 
 sampling, then there are hardly any emphasis given to the final dispatches as 
 there a relatively few (compared to previous steps) preference pairs belonging 
@@ -1272,9 +1271,8 @@ with increasing  $\Delta\rho\approx+1.39\%$. However, after that first
 iteration there is a performance boost of $\Delta\rho\approx-15.11\%$ after 
 $i=2$ and $\Delta\rho\approx-0.19\%$ for the final iteration $i=3$
 \item on the other hand when using \ref{bias:adjdbl2nd}, only one iteration 
-is needed, as  $\Delta\rho\approx-11.68$ for $i=1$, and after that it 
-stagnates with $\Delta\rho\approx+0.55\%$ for $i=2$ 
-(therefore $i=3$ was not run)
+is needed, as  $\Delta\rho\approx-11.68$ for $i=1$, and after that it stagnates with $\Delta\rho\approx+0.55\%$ for $i=2$ and for $i=3$ it significantly worse
+than the previous iteration by $\Delta\rho\approx+0.75\%$
 \end{enumerate*}
 In both cases, DAgger outperforms MWR
 \begin{enumerate*}
@@ -1291,10 +1289,8 @@ policy for that model configuration.
 Regarding \ref{expr:boost:newdata}, then it's not successful for the expert 
 policy, as $\rho$ increased approximately 10\%. This could most likely be 
 counter-acted by increasing $l_{\max}$ to reflect the 700 additional examples.
-What is interesting though, is that \ref{expr:boost:newdata} is well suited for 
-active imitation learning, using the same $l_{\max}$ as before. 
-Note, the amount of problems used for $N^{\text{OPT}}_{\text{train, EXT}}$ is 
-equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger.
+What is interesting though, is that \ref{expr:boost:newdata} is well suited for active imitation learning, using the same $l_{\max}$ as before. 
+Note, the amount of problems used for $N^{\text{OPT}}_{\text{train, EXT}}$ is equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger.
 The \emph{new} varied data gives the aggregated feature set more information 
 of what is important to learn in subsequent iterations, as those new states are 
 more likely to be encountered `in practice' rather than `in theory.' Not only 
