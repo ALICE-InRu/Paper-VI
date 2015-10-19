@@ -117,8 +117,8 @@ generation.
 This drawback is confronted in \cite{Malik08,Russell09,Siggi10} by using an 
 optimal scheduler or policy, computed off-line, for data generation. The 
 resulting \dr s, as decision trees, gave significantly better schedules than 
-using popular 
-heuristics in that field, and a lower worst-case factor from optimality. 
+using popular heuristics in that field, and a lower worst-case factor from 
+optimality. 
 Although, using optimal policies for creating training data gives vital 
 information on how to learn good scheduling rules we will show that this is 
 not sufficient. Once these rules make a suboptimal dispatch then they are in 
@@ -133,15 +133,6 @@ learned using preference-based imitation learning.
 %paramount importance to inspect the actual end-performance when choosing a 
 %suitable model, not just staring blindly at the classification accuracy. 
 
-%The focus on this study is better understanding of \emph{how} and \emph{when} 
-%\dr s work in general, in order to mediate the set-up for the 
-%learning problem.
-%For this reason, we propose a framework for learning the indicators of optimal 
-%solutions, such as done by \cite{Siggi10}, as an in-depth analysis of a expert 
-%policy gives a benchmark of what is theoretically possible to learn. 
-%The study shows that during the scheduling process, it varies \emph{when} it's 
-%most fruitful to make the `right' decision, and depending on the problem space 
-%those pivotal moments can vary greatly. 
 
 %A prevalent approach to solving \JSP\ is to combine several relatively \sdr s 
 %such that they may benefit each other for a given problem space. 
@@ -228,7 +219,7 @@ Using case based reasoning for timetable scheduling, training data in
 They point out that in order for their framework to be successful, problem 
 features need to be sufficiently explanatory and training data needs to be 
 selected carefully so they can suggest the appropriate solution for a specific 
-range of new cases. Stressing the importance of meaningful feature selection. 
+range of new cases. 
 
 % automation for selecting DRs #1 - Portfolio
 With meta heuristics one can use existing DRs, and use for example 
@@ -240,6 +231,23 @@ from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13}
 showed that the choice of DR do affect the results and that for all performance 
 measures considered. They showed that it was better to have a all the DRs to 
 choose from rather than just a single DR at a time.
+
+%Svo mætti koma ein málsgrein sem er samantekt á því sem aðrir hafa lært af 
+%þessu öllu:
+%1.) Features matter       2.) Training data matters
+%3.) Problem specific      4.) Annað? Time depedendance
+To summarise, when dealing with learning new \dr s there are several important 
+factors to consider. First and foremost the meaningfulness of training data 
+will influence the quality of the learned \dr. 
+Since the training data consists of collection of features, the quality of 
+training data is interchangeable to the predictability of features. 
+Stressing the importance of consequential feature selection. 
+Furthermore, the training data should be problem specific and as closely 
+related to the final benchmark instances for relevant results. 
+In addition to addressing these chosen aspects, the paper will show that during 
+the scheduling process, it varies \emph{when} it's most fruitful to make the 
+`right' decision, and depending on the distribution of problem instances those 
+pivotal moments can vary greatly. 
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and  
