@@ -870,7 +870,7 @@ Note, \mbox{$\mathcal{O}^{(k)}\cup\mathcal{S}^{(k)}=\mathcal{L}^{(k)}$}, and
 \mbox{$\mathcal{O}^{(k)}\cap\mathcal{S}^{(k)}=\emptyset$}.
 
 The approach taken here is to verify analytically, at each time step, by fixing 
-the current temporal schedule as an initial state, whether it can indeed 
+the current temporal schedule as an initial state, whether it is possible to 
 \emph{somehow} yield an optimal schedule by manipulating the remainder of the 
 sequence. This also takes care of the scenario that having dispatched a job 
 resulting in a different temporal makespan would have resulted in the same 
@@ -897,12 +897,13 @@ Then, the preference learning problem is specified by a set of preference pairs:
 \end{eqnarray}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d=\NrFeatLocal$ 
 features (cf. \cref{tbl:jssp:feat}), $Y=\{+1,-1\}$ is the outcome space from 
-job pairs, $J_o\in\mathcal{O}^{(k)}$ and $J_s\in\mathcal{S}^{(k)}$, for all 
+job pairs $J_o\in\mathcal{O}^{(k)}$ and $J_s\in\mathcal{S}^{(k)}$, for all 
 dispatch steps $k$.
 
 To summarise, each job is compared against another job of the job-list, 
-$\mathcal{L}^{(k)}$, and if the makespan differs, i.e., $C_{\max}^{(s)}\gneq 
-C_{\max}^{(o)}$, an optimal/suboptimal pair is created. 
+$\mathcal{L}^{(k)}$, and if the makespan differs (i.e 
+$C_{\max}^{\pi_\star(\vchi^s)} \gneq C_{\max}^{\pi_\star(\vchi^o)}$) an 
+optimal/suboptimal pair is created. 
 However, if the makespans are identical the pair is omitted since they give the 
 same optimal makespan. 
 This way, only features from a dispatch resulting in a suboptimal solution is 
@@ -910,8 +911,7 @@ labelled undesirable.
 
 Now let's consider the model space $\mathcal{H} = \{\pi(\cdot) : X \mapsto Y\}$ 
 of mappings from solutions to ranks. Each such 
-function $\pi$ induces an ordering $\succ$ on the solutions  by the following 
-rule:
+function $\pi$ induces an ordering on the solutions by the following rule:
 \begin{equation}\quad\label{eq:linear}
 \vchi^i \succ \vchi^j \quad \Leftrightarrow \quad \pi(\vchi^i) > 
 \pi(\vchi^j)
@@ -926,16 +926,15 @@ Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$.
 For this study, L2-regularised logistic regression from the \textsc{liblinear} 
 package \cite{liblinear} without bias is used to learn the preference set 
 $\Psi$, defined by \cref{eq:prefset}.
-Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let 
-$\vphi^j:=\vphi(\vchi^j)$ denote its corresponding  post-decision state. 
-Then the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to 
-the highest preference estimate, i.e., \cref{eq:jstar} where $\pi(\cdot)$ is the 
-classification model obtained by the preference set.
+%For each job on the job-list, $J_j\in\mathcal{L}$, the post-decision state is 
+%$\vphi^j:=\vphi(\vchi^j)$. 
+Hence the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to 
+the highest preference estimate, i.e., \cref{eq:jstar} where $\pi(\cdot)$ is 
+the classification model obtained by the preference set.
 
 Preliminary experiments for creating step-by-step model was done in 
-\cite{InRu11a} where an optimal trajectory was explored, i.e., at each dispatch 
-some (random) optimal task is dispatched, resulting in local linear model for 
-each dispatch; a total of $K$ linear models for solving $n\times m$ JSP. 
+\cite{InRu11a} resulting in local linear model for each dispatch; a total of 
+$K$ linear models for solving $n\times m$ JSP. 
 However, the experiments there showed that by fixing the weights to its mean 
 value throughout the dispatching sequence results remained satisfactory.
 A more sophisticated way would be to create a \emph{new} linear model, where 
@@ -948,12 +947,12 @@ that it's sufficient to use partial subsequent rankings, namely, combinations
 of $r_i$ and $r_{i+1}$ for $i\in\{1,\ldots,n'\}$, are added to the preference 
 set, where $r_1>r_2>\ldots>r_{n'}$ ($n'\leq n$) are the rankings of the 
 job-list, in such a manner that in the cases that there are more than one 
-operation with the same ranking, only one of that rank is needed to be compared 
-to the subsequent rank. 
-Moreover, for this study, which deals with $10\times 10$ problem instances, 
+operation with the same ranking, only one from that rank is needed to be 
+compared to the subsequent rank. 
+Moreover, for this study, which deals with $10\times 10$ problem instances 
+instead of $6\times5$, 
 the partial subsequent ranking becomes necessary, as full ranking is 
 computationally infeasible due to its size. 
-
 Defining the size of the preference set as $l=\abs{\Psi}$, then if  $l$ is too 
 large re-sampling to size $l_{\max}$ may be needed to be done in order for the 
 ordinal regression to be computationally feasible. 
@@ -966,7 +965,6 @@ As \JSP\ is a sequential decision making process, errors are bound to emerge.
 Due to compound effect of making suboptimal dispatches, the model leads the 
 schedule astray from learned state-spaces, resulting in the new input being 
 foreign to the learned model. 
-
 Alternatively, training data could be generated using suboptimal solution 
 trajectories as well, as was done in \cite{InRu15a}, where the training data 
 also incorporated following the trajectories obtained by applying successful 
@@ -974,9 +972,8 @@ SDRs from the literature.
 The reasoning behind it was that  they would be beneficial for learning, 
 as they might help the model to escape from local minima once off the coveted 
 optimal path. 
-By simply adding training data obtained by following the trajectories of 
-well-known SDRs, their aggregated training set yielded better models with lower 
-\fullnamerho. 
+Simply aggregating training data obtained by following the trajectories of 
+well-known SDRs yielded better models with lower \namerho. 
 
 Inspired by the work of \cite{RossB10,RossGB11}, the methodology of generating 
 training data will now be such that it will iteratively improve upon the model, 
@@ -995,11 +992,13 @@ in training (i.e. varying \mbox{$l_{\max} \leq \abs{\Psi}$}),
 \item \label{expr:boost:newdata} introducing more problem instances (denoted 
 EXT in experimental setting).
 \end{enumerate}
-Note, that in preliminary experiments for \ref{expr:boost:varylmax} showed no 
-statistical significance in boost of performance. Hence, the default set-up 
-will be, $l_{\max}=5 \cdot 10^5$, which is roughly the amount of features 
-encountered from one pass of sampling a \mbox{$K$-stepped} trajectory using a 
-fixed policy $\pi$ for the default $N_{\text{train}}=300$.
+Note, the following experimental studies will address 
+\ref{expr:boost:newdata}, whereas preliminary experiments for 
+\ref{expr:boost:varylmax} showed no statistical significance in boost of 
+performance. Hence, the default set-up will be $l_{\max}=5 \cdot 10^5$ which is 
+roughly the amount of features encountered from one pass of sampling a 
+\mbox{$K$-stepped} trajectory using a fixed policy $\pi$ for the default 
+$N_{\text{train}}=300$. 
 
 Another way to adjust training accuracy is to give different weight to various 
 time steps. To address this problem, two different stepwise sampling biases (or 
@@ -1007,10 +1006,10 @@ data balancing techniques) will be considered
 \begin{enumerate}[after={{}}, leftmargin=*,
 label={\textbf{Bias.\arabic*}}, ref={{Bias.\arabic*}}]
 \item \label{bias:equal} \textbf{(equal)} where each time step has equal 
-probability, same baseline as was used in \cite{InRu14,InRu15a}.
+probability, this was used in \cite{InRu14,InRu15a} and serves as a baseline.
 \item \label{bias:adjdbl2nd} \textbf{(adjdbl2nd)} where each time step is 
 adjusted to the number of preference pairs for that particular step (i.e. 
-each step has equal probability irrespective of quantity of encountered 
+each step now has equal probability irrespective of quantity of encountered 
 features). This is done with re-sampling.
 In addition, there is superimposed twice as much likelihood of 
 choosing pairs from the latter half of the dispatching process. Then the 
@@ -1040,9 +1039,9 @@ post-decision states and $\hat{\pi}$ with preference learning via our collected
 feature set, denoted $\Phi^\text{OPT}$, i.e., we collect the features set 
 corresponding following optimal tasks $J_{j^*}$ from $\pi^\star$ in 
 \cref{pseudo:constructJSP}.
-This baseline trajectory sampling for adding features to the feature set 
-is a pure strategy where at each dispatch, an optimal task was originally 
-introduced in \cite{InRu11a}.
+This baseline sampling trajectory originally introduced in \cite{InRu11a} for 
+adding features to the feature set is a pure strategy where at each dispatch an 
+optimal task is dispatched.
 
 By querying the expert policy, $\pi_\star$, the ranking of the job-list, 
 $\mathcal{L}$, is determined such that:
@@ -1056,8 +1055,7 @@ job-list is the following:
 \mathcal{O}=\left\{r_i \;:\; r_i \propto \min_{J_j \in \mathcal{L}} 
 C_{\max}^{\pi_\star(\vchi^j)}\right\}
 \end{equation}
-found by solving the current partial schedule to optimality using a 
-commercial software package such as \cite{gurobi}. 
+found by solving the current partial schedule to optimality using a MIP solver.
 
 When $\abs{\mathcal{O}^{(k)}}>1$, there can be several trajectories worth 
 exploring. However, only one is chosen at random. This is deemed sufficient as 
@@ -1065,7 +1063,7 @@ the number of problem instances, $N_{\text{train}}$, is relatively large.
 
 \subsection{Follow the Perturbed Leader}\label{sec:perturbedLeader}
 By allowing a predictor to randomise it's possible to achieve improved 
-performance \cite{CesaBianchi06,Hannan57}, which is the inspiration for our next 
+performance \cite{CesaBianchi06,Hannan57}. This is the inspiration for our next 
 strategy called Follow the Perturbed Leader, denoted OPT$\epsilon$. 
 Its pseudo code is given in \cref{pseudo:perturbedLeader} and describes how the 
 expert policy (i.e. optimal trajectory) from \cref{sec:expertPolicy} is subtly
@@ -1094,7 +1092,9 @@ It's preferable to use the default $N^{\text{OPT}}_{\text{train}}=300$ and
 allowing slight perturbations of the optimal trajectory, as done for  
 $\Phi^{\text{OPT}\epsilon}$. Unfortunately, all this overhead has not managed 
 to surpass MWR in performance, except for $\Phi^{\text{OPT}\epsilon}$ using  \ref{bias:adjdbl2nd} 
-with a $\Delta\rho\approx-4.24\%$ boost in mean performance. Otherwise, for \ref{bias:equal} instead, there is a loss of $\Delta\rho\approx+6.23\%$ in mean performance. 
+with a $\Delta\rho\approx-4.24\%$ boost in mean performance. Otherwise, for 
+\ref{bias:equal}, there is a loss of $\Delta\rho\approx+6.23\%$ in mean 
+performance. 
 This is likely due to the fact that if equal probability is used for stepwise 
 sampling, then there are hardly any emphasis given to the final dispatches as 
 there a relatively few (compared to previous steps) preference pairs belonging 
@@ -1102,7 +1102,7 @@ to those final stages.
 Revisiting \cref{fig:case}, then the band for 
 $\{\zeta^{\star}_{\min},\zeta^{\star}_{\max}\}$ is quite tight, as the problem 
 is immensely constricted and few operations to choose from. However, the 
-empirical evidence from using \ref{bias:adjdbl2nd} shows, is that it is 
+empirical evidence from using \ref{bias:adjdbl2nd} shows that it is 
 imperative to make right decisions at the very end.
 
 From \cite{InRu11a} we know that expert policy is a promising starting point.
@@ -1110,7 +1110,6 @@ However, that was for $6\times5$ dimensionality (i.e. $K=30$), which is a much
 simpler problem space. Notice that in \cref{fig:opt:SDR:xi} there was 
 virtually no chance for $\xi_\pi(k)$ of choosing a job resulting in optimal 
 makespan after step $k=28$.
-
 Since \jsp\ is a sequential prediction problem, all future observations are 
 dependent on previous operations. 
 Therefore, learning sampled states that correspond only to optimal or 
@@ -1143,7 +1142,7 @@ setting.
 The novel meta-algorithm for IL learns a deterministic policy guaranteed to 
 perform well under its induced distribution of states. 
 The method is closely related to Follow-the-leader (cf. 
-\cref{sec:perturbedLeader}), however, with a more sophisticated leverage to the 
+\cref{sec:il:passive}), however, with a more sophisticated leverage to the 
 expert policy. 
 In short, it entails the model $\pi_i$ that queries an expert policy (same as 
 in \cref{sec:expertPolicy}), $\pi_\star$, it's trying to mimic, 
@@ -1152,8 +1151,8 @@ until it converges.
 The benefit of this approach is that the states that are likely to occur in 
 practice are also investigated and as such used to dissuade the model from 
 making poor choices. In fact, the method queries the expert about the desired 
-action at individual post-decision states which are both based on past queries, 
-and the learner's interaction with the \emph{current} environment.
+action at individual post-decision states which are both based on \emph{past} 
+queries, and the learner's interaction with the \emph{current} environment.
 
 DAgger has been proven successful on a variety of benchmarks 
 \cite{RossGB11,Ross13}, such as the video games Super Tux Kart and Super 
@@ -1176,7 +1175,7 @@ Note, for the initial iteration, $i=0$, a pure strategy of $\pi_\star$ is
 followed. Hence, $\hat{\pi}_0$ corresponds to the preference model from 
 \cref{sec:expertPolicy} (i.e. $\Phi^{\text{IL}0}=\Phi^{\text{OPT}}$). 
 
-\Cref{eq:il} shows that $\beta$ controls the probability distribution of 
+\Cref{eq:il} shows that $\beta_i$ controls the probability distribution of 
 querying the expert policy $\pi_\star$ instead of the previous imitation model, 
 $\hat{\pi}_{i-1}$.  
 The only requirement for $\{\beta_i\}_i^\infty$ according to \cite{RossGB11} is 
@@ -1209,7 +1208,7 @@ Regarding \ref{expr:boost:newdata} strategy, we know from
 \cref{sec:il:passive}, that adding new problem instances didn't boost 
 performance for the expert policy (which is equivalent for the initial 
 iteration of DAgger). 
-Hence, for active IL, the extended set is now consisted of each iteration 
+Hence, for active IL, the extended set is now consists of each iteration 
 encountering $N_{\text{train}}$ \emph{new} problem instances. For a grand total 
 of: 
 \begin{equation}\quad
@@ -1221,18 +1220,18 @@ This way, we use the extended training data sparingly, as labelling for each
 problem instances is computationally intensive. As a result, the computational 
 budget for DAgger is same regardless whether there are new problem instances 
 used or not, i.e., 
-$\abs{\Phi^{\text{DA}2}}\approx\abs{\Phi^{\text{DA}i}_{\text{EXT}}}$.
+$\abs{\Phi^{\text{DA}i}}\approx\abs{\Phi^{\text{DA}i}_{\text{EXT}}}$.
 
 Results for \jrnd{10}{10} box-plot of \namerho, is given in 
-\cref{fig:active:boxplot} and main statistics is reported in 
-\cref{tbl:IL:stats}. As we can see DAgger is not fruitful when the same problem 
-instances are continually used. This is due to the fact that there is not 
-enough variance between $\Phi^{\text{IL}i}$ and $\Phi^{\text{IL}(i-1)}$, hence the aggregated feature set 
-$\Phi^{\text{DA}i}$ is only slightly perturbed with each iterations. Which from 
-\cref{sec:pil:expr} we saw wasn't a very successful modification for the expert 
-policy. Although, it's noted that by introducing sub-optimal state spaces 
-the preference model is not as drastically bad as the extended optimal policy, 
-even though 
+\cref{fig:active:boxplot} and main statistics are reported in 
+\cref{tbl:IL:stats}. As we can see, DAgger is not fruitful when the same 
+problem instances are continually used. This is due to the fact that there is 
+not enough variance between $\Phi^{\text{IL}i}$ and $\Phi^{\text{IL}(i-1)}$, 
+hence the aggregated feature set $\Phi^{\text{DA}i}$ is only slightly perturbed 
+with each iterations. Which from \cref{sec:pil:expr} we already saw wasn't a 
+very successful modification for the expert policy. Although, it's noted that 
+by introducing suboptimal state spaces the preference model is not as 
+drastically bad as the extended optimal policy, even though 
 $\abs{\Phi^{\text{DA}i}}\approx\abs{\Phi^{\text{OPT}}_{\text{EXT}}}$.
 However, when using new problem instances at each iterations, the feature set 
 becomes varied enough that situations arise that can be learned to achieve a 
@@ -1250,36 +1249,37 @@ A summary of \jrnd{10}{10} best passive and active imitation learning models
 w.r.t. \namerho, from 
 \cref{sec:pil:expr,sec:ail:expr}, respectively, are illustrated in 
 \cref{fig:all:boxplot}, and main statistics are given in 
-\cref{tbl:IL:stats}. To summarise, the following trajectories are used
+\cref{tbl:IL:stats}. To summarise, the following trajectories were used
 \begin{enumerate*}
 \item expert policy, trained on $\Phi^{\text{OPT}}$
 \item perturbed leader, trained on $\Phi^{\text{OPT}\epsilon}$
 \item imitation learning, trained on $\Phi^{\text{DA}i}_{\text{EXT}}$ for 
-iterations $i=\{1,..,3\}$ using extended training set
+iterations $i=\{1,\ldots,3\}$ using extended training set
 \end{enumerate*}
-As a reference, the \sdr\ MWR is shown on at the edges of 
+As a reference, the \sdr\ MWR is shown at the edges of 
 \cref{fig:all:boxplot}.
 
 At first we see that the perturbed leader ever so-slightly improves the mean 
 for $\rho$, rather than using the baseline expert policy. 
 However, active imitation learning is by far the best improvement. With each 
-iteration of DAgger, the models improve upon the previous one with each 
-iteration
+iteration of DAgger, the models improve upon the previous iteration
 \begin{enumerate*}  
 \item for \ref{bias:equal} with \ref{expr:boost:newdata} then $i=1$ starts 
 with increasing  $\Delta\rho\approx+1.39\%$. However, after that first 
 iteration there is a performance boost of $\Delta\rho\approx-15.11\%$ after 
 $i=2$ and $\Delta\rho\approx-0.19\%$ for the final iteration $i=3$
-\item on the other hand when using \ref{bias:adjdbl2nd}, only one iteration 
-is needed, as  $\Delta\rho\approx-11.68$ for $i=1$, and after that it stagnates with $\Delta\rho\approx+0.55\%$ for $i=2$ and for $i=3$ it significantly worse
-than the previous iteration by $\Delta\rho\approx+0.75\%$
+\item on the other hand when using \ref{bias:adjdbl2nd} with 
+\ref{expr:boost:newdata}, only one iteration 
+is needed, as  $\Delta\rho\approx-11.68$ for $i=1$, and after that it stagnates 
+with $\Delta\rho\approx+0.55\%$ for $i=2$ and for $i=3$ it is significantly 
+worse than the previous iteration by $\Delta\rho\approx+0.75\%$
 \end{enumerate*}
 In both cases, DAgger outperforms MWR
 \begin{enumerate*}
 \item after $i=3$ iterations by $\Delta\rho\approx-5.31\%$ for 
 \ref{bias:equal} with \ref{expr:boost:newdata}
 \item after $i=1$ iteration by $\Delta\rho\approx-9.31\%$ for 
-\ref{bias:adjdbl2nd}
+\ref{bias:adjdbl2nd} with \ref{expr:boost:newdata}
 \end{enumerate*}
 Note, for \ref{bias:equal} without \ref{expr:boost:newdata}, then DAgger is 
 unsuccessful, and the aggregated data set downgrades the performance of the 
@@ -1322,10 +1322,9 @@ these SDRs vary w.r.t. the problem space at hand.
 Once these simple rules are understood, then it's feasible to extrapolate the 
 knowledge gained and create new \cdr s that are likely to be 
 successful. 
-
-Creating new \dr s is by no means trivial. For \jsp\ there is 
-the hidden interaction between processing times and machine ordering that's 
-hard to measure.
+However, for \jsp\ there is hidden interaction between processing times and 
+machine ordering that's hard to measure, therefore creating new \dr s is by no 
+means trivial. 
 %Due to this artefact, feature selection is of paramount importance, and then it 
 %becomes the case of not having too many features, as they are likely to hinder 
 %generalisation due to over-fitting in training. However, the features need to 
@@ -1342,10 +1341,26 @@ hard to measure.
 %gained, resulting in a \cdr\ that outperformed all of the 
 %SDR baseline. 
 
+
+Experiments in \cref{sec:pil:expr} clearly showed that following the expert 
+policy is not without its faults. There are many obstacles to consider in order 
+to improve model configurations. 
 When training the learning model, it's not sufficient to only optimise w.r.t. 
 highest mean validation accuracy. As there is a trade-off between making the 
 over-all best decisions versus making the right decision on crucial time points 
 in the scheduling process, as \cref{fig:case} clearly illustrated. 
+Moreover, before training the learned model, the preference set $\Psi$ 
+needs to be re-sampled to size $l_{\max}$. 
+As the effects of making suboptimal choices varies as a function of time, the 
+stepwise bias should rather be done proportional to the mean 
+cumulative loss to a particular time step. 
+As the experimental studies in \cref{sec:pil:expr,sec:ail:expr,sec:il:expr} 
+showed, instead of equal probability (i.e. \ref{bias:equal}) it was much more 
+fruitful to adjust the set to its number of preference and doubling the 
+emphasis on the second half (i.e. \ref{bias:adjdbl2nd}).
+However, there are many other stepwise sampling strategies based on our 
+analysis that could have been chosen instead, as here only a 
+simplification of the trend from \cref{fig:case} was chosen. 
 %It is for this reason, traditional feature selection such 
 %as add1 and drop1 were unsuccessful in preliminary experiments, and thus 
 %resorting to having to exhaustively search all feature combinations.
@@ -1363,26 +1378,11 @@ During the dispatching process, there are some pivotal times which need to be
 especially taken care off. \Cref{fig:case} showed how making suboptimal 
 decisions were more of a factor during the later stages, whereas for flow-shop 
 the case was exact opposite. 
-Experiments in \cref{sec:pil:expr} clearly showed that following the expert 
-policy is not without its faults. There are many obstacles to consider in order 
-to improve model configurations. 
-For instance, the before training the learned model, the preference set $\Psi$ 
-needs to be re-sampled to size $l_{\max}$. 
-As the effects of making suboptimal choices varies as a function of times 
-steps, the stepwise bias should rather be done proportional to the mean 
-cumulative loss to a particular time step. 
-As the experimental studies in \cref{sec:pil:expr,sec:ail:expr,sec:il:expr} 
-showed, instead of equal probability (i.e. \ref{bias:equal}) it was much more 
-fruitful to adjust the set to its number of preference and doubling the 
-emphasis on the second half (i.e. \ref{bias:adjdbl2nd}).
-However, there are many other stepwise sampling strategies based on our 
-analysis that could have been chosen instead, as here only a 
-simplification of the trend from \cref{fig:case} was chosen. 
 
 Despite the abundance of information gathered by following an optimal 
 trajectory, the knowledge obtained is not enough by itself. Since the learning 
 model isn't perfect, it is bound to make a mistake eventually. When it does, 
-the model is in uncharted  territory as there is no certainty the samples 
+the model is in uncharted territory as there is no certainty the samples 
 already collected are able to explain the current situation. For this we 
 propose investigating features from suboptimal trajectories as well, since the 
 future observations depend on previous predictions. 
@@ -1390,13 +1390,13 @@ A straight forward approach would be to inspect the trajectories of promising
 SDRs or CDRs. However, more information is gained when applying active 
 imitation learning inspired by work of \cite{RossB10,RossGB11}, such that the 
 learned policy following an optimal trajectory is used to collect training 
-data, and the learned model is updated. 
+data, and the learned model is iteratively updated. 
 This can be done over several iterations, with the benefit being, that the 
 states that are likely to occur in practice are investigated, and as such used 
-to dissuade the model from making poor choices. Alas, this comes at great 
-computational cost due to the substantial amounts of states that need to be 
-optimised for their correct labelling. Making it only practical for \jsp\ of 
-a considerably small size, or only few iterations.
+to dissuade the model from making poor choices in the future. 
+Alas, this comes at great computational cost due to the substantial amounts of 
+states that need to be optimised for their correct labelling. Making it only 
+practical for \jsp\ of a considerably small size, or only few iterations.
 To counteract this drawback, the Maximum Mean Discrepancy (MMD) imitation 
 learning by \cite{Kim13} is an iterative algorithm similar to DAgger where the 
 expert policy is only queried when needed in order to reduce computational cost. 
@@ -1406,7 +1406,7 @@ Moreover, in DAgger all data samples are equally important, irrespective of its
 iteration, which can require great number of iterations to learn how to recover 
 from the mistakes of earlier policies. To address the naivety of the data 
 aggregation, MMD suggests only aggregating a new data point 
-if it is sufficiently different to previously gathered states, \emph{and} if 
+if it is sufficiently different to previously gathered states, and if 
 the current policy has made a mistake. 
 Additionally, there are multiple policies, each specialising in a particular 
 region of the state space where previous policies made mistakes.
@@ -1416,18 +1416,20 @@ requires defining metrics, which in the case of \jsp\ is non-trivial (cf.
 straightforwardly implemented, parameter-free and obtains competitive results, 
 although with some computational overhead due to excess expert queries. 
 
-As mentioned before, the main drawback of DAgger is that it quite aggressively 
+As previously mentioned, the main drawback of DAgger is that it quite 
+aggressively 
 quires the expert, making it impractical for some problems, 
 especially if it involves human experts. 
-To confront that, \cite{Judah12} introduce Reduction-based Active Imitation 
+Another way to confront that, \cite{Judah12} introduce Reduction-based Active 
+Imitation 
 Learning (RAIL), which involves a dynamic approach similar to DAgger, but more 
 emphasis is used to minimise the expert's labelling effort.
 In fact, it's possible to circumvent querying the expert altogether and still 
-have reasonable performance. By applying Locally Optimal Learning to Search 
-(LOLS) \cite{ChangKADL15} it is possible to use imitation learning (similar to 
-DAgger framework) when the reference policy is poor (i.e. $\pi_\star$ in 
-\cref{eq:il} is suboptimal), 
-although it's noted that the quality (w.r.t near-optimality) of reference 
+have reasonable performance. For instance applying Locally Optimal Learning to 
+Search (LOLS) \cite{ChangKADL15} it is possible to use imitation learning 
+(similar to DAgger framework) when the reference policy is poor (i.e. 
+$\pi_\star$ in \cref{eq:il} is suboptimal). 
+Although it's noted that the quality (w.r.t near-optimality) of reference 
 policy is in accordance to its performance, as is to be expected. 
 
 Although this study has been structured around the \jsp\ scheduling problem, 
@@ -1437,7 +1439,7 @@ The framework presented here collects snap-shots of the state space by
 following an optimal trajectory, and verifying the resulting optimal solution 
 from each possible state. 
 From which the stepwise optimality of individual features can be inspected, 
-which could for instance justify omittance in feature selection. 
+and its inference could for instance justify omittance in feature selection. 
 Moreover, by looking at the best and worst case scenario of suboptimal 
 dispatches, it is possible to pinpoint vulnerable times in the scheduling 
 process. 
