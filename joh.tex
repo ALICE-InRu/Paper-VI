@@ -193,7 +193,7 @@ and was beat by another.
 The reason behind this staggering change in performance, may be due to 
 the choice of objective function or the underlying problem spaces that were 
 used in training.
-It's argued that the randomly generated problem instances aren't a 
+It's argued that  randomly generated problem instances aren't a 
 proper representative for real-world long-term \jsp\ applications, e.g., by the 
 narrow choice of release times, yielding schedules that are overloading in the 
 beginning phases.
@@ -217,8 +217,9 @@ a CDR to a specific machine.
 The problem space consists of \jsp s in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped to similar work centres, 
 which can have different set-up time, workload, etc. 
-centres with set-up requirements and batching capabilities, which are rules 
-that are non-trivial to determine manually.
+In fact, the GP emphasised on efficiently dispatching on the work centres with 
+set-up requirements and batching capabilities, which are rules that are 
+non-trivial to determine manually.
 
 
 Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
@@ -233,16 +234,15 @@ minimum amount of iterations.
 Using case based reasoning for timetable scheduling, training data in 
 \cite{Burke06} is guided by the two best heuristics in the literature.
 They point out that in order for their framework to be successful, problem 
-features need to be sufficiently explanatory and training data need to be 
+features need to be sufficiently explanatory and training data needs to be 
 selected carefully so they can suggest the appropriate solution for a specific 
 range of new cases. Stressing the importance of meaningful feature selection. 
 
 
 % automation for selecting DRs #1 - Portfolio
 With meta heuristics one can use existing DRs, and use for example 
-portfolio-based algorithm selection \cite{Rice76,Gomes01}, either based on a 
-single instance or class of instances \cite{Xu07} to determine which DR to 
-choose from. 
+portfolio-based algorithm selection \cite{Rice76,Gomes01,Xu07}, either based on 
+a single instance or class of instances to determine which DR to choose from. 
 % automation for selecting DRs #2 - ACO
 Implementing ant colony optimisation to select the best DR 
 from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13} 
@@ -292,17 +292,18 @@ $\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set,
 $\mathcal{M}=\{M_a\}_{a=1}^m$, of $m$ machines. The index $j$ refers to a job 
 $J_j\in\mathcal{J}$ while the index  $a$ refers to a machine 
 $M_a\in\mathcal{M}$. 
-If a job requires a number of processing steps or operations, then the pair 
+Each job requires a number of processing steps or operations, the pair 
 $(j,a)$ refers to the operation, i.e., processing the task of job $J_j$ on 
 machine $M_a$. 
 
 Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
 $p_{ja}$, which is assumed to be integral and finite. 
 Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
-end time is denoted $x_e(j,a)$ where, 
+end time is denoted $x_e(j,a)$ where:
 \begin{equation}\quad x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
-Each job $J_j$ has a specified processing order through the machines, it is a 
-permutation vector, $\vsigma_j$, of $\{1,..,m\}$, representing a job $J_j$ can 
+Each job $J_j$ has a specified processing order through the machines. It is a 
+permutation vector, $\vsigma_j$, of $\{1,\ldots,m\}$, representing a job $J_j$ 
+can 
 be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
 on $M_{\vsigma_j(a-1)}$, namely:
 \begin{equation}\quad\label{eq:permutation}
@@ -312,7 +313,7 @@ for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$.
 Note, that each job can have its own distinctive flow pattern through the 
 machines, which is independent of the other jobs. 
 However, in the case that all jobs share the same \emph{fixed} permutation 
-route, referred to as \fsp~(\FSP). 
+route, it is referred to as \fsp~(\FSP). 
 A commonly used subclass of \FSP\ in the literature is permutation \fsp, which 
 has the added constraint that the processing order of the jobs on the machines 
 must be identical as well, i.e., no passing of jobs allowed \cite{Stafford88}.
@@ -324,9 +325,9 @@ x_s(j,a) \geq x_e(j',a) \quad\textrm{or}\quad x_s(j',a) \geq x_e(j,a)
 \end{equation}
 for all $J_j,J_{j'}\in\mathcal{J},\; J_j\neq J_{j'}$ and $M_a\in\mathcal{M}$. 
 
-The objective function is to minimise its maximum completion times for all 
-tasks, commonly referred to as the makespan, $C_{\max}$, which is defined as 
-follows:
+The objective function is to minimise the schedule's maximum completion times 
+for all tasks, commonly referred to as the makespan, $C_{\max}$, which is 
+defined as follows:
 \begin{equation}\quad
 C_{\max} := 
 \max\left\{x_e(j,\vsigma_j(m))\;:\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
@@ -398,7 +399,7 @@ on this machine.
 If $J_6$ had been placed earlier, a slot would have been created between it and 
 $J_4$, thus creating a third alternative, namely scheduling $J_2$ after $J_6$. 
 The time in which machine $M_a$ is idle between consecutive jobs $J_j$ and 
-$J_{j'}$ is called idle time, or slack:
+$J_{j'}$ is called idle time or slack:
 \begin{equation}\quad 
 s(a,j):=x_s(j,a)-x_e(j',a) \label{eq:slack}
 \end{equation}
@@ -407,7 +408,7 @@ where $J_j$ is the immediate successor of $J_{j'}$ on $M_a$.
 Construction heuristics are designed in such a way that it limits the search 
 space in a logical manner respecting not to exclude the optimum. Here, the 
 construction heuristic, $\Upsilon$, is to schedule the dispatches as closely 
-together as possible, i.e., minimize the schedule's idle time. 
+together as possible, i.e., minimise the schedule's idle time. 
 More specifically, once an operation $(j,a)$ has been chosen from the job-list 
 $\mathcal{L}$ by some dispatching rule, it can then be placed immediately after 
 (but not prior) to $x_e(j,\vsigma_j(a-1))$ on machine $M_a$ due to constraint 
@@ -433,7 +434,7 @@ The placement rule applied will decide where to place the job and is intrinsic
 to the construction heuristic, which is chosen independently of the priority 
 dispatching rule that is applied. 
 Different placement rules could be considered for selecting a slot from 
-\cref{eq:slots}, e.g., if the main concern were to utilize the slot space, then 
+\cref{eq:slots}, e.g., if the main concern were to utilise the slot space, then 
 choosing the slot with the smallest idle time would yield a closer-fitted 
 schedule and leave greater idle times undiminished for subsequent dispatches 
 on $M_a$.
@@ -459,7 +460,7 @@ $C_{\max}$ denoted as dotted line.}
 
 Priority \dr s will use attributes of operations, such as processing time, 
 in order to determine the job with the highest priority. 
-Consider again \Cref{fig:jssp:example}, if the job with the shortest processing 
+Consider again \cref{fig:jssp:example}, if the job with the shortest processing 
 time (SPT) were to be scheduled next, then $J_2$ would be dispatched. 
 Similarly, for the longest processing time (LPT) heuristic, $J_5$ would have 
 the highest priority. 
@@ -481,17 +482,16 @@ resulting temporal schedule after operation $(j,a)$.
 {\setlength{\tabcolsep}{3pt} \input{tables/features-description}}
 \end{table}
 
-Designing priority \dr s requires recognizing the important 
+Designing priority \dr s requires recognising the important 
 attributes of the partial schedules needed to create a reasonable scheduling 
 rule. 
 These attributes attempt to grasp key features of the schedule being 
 constructed. Which attributes are most important will necessarily depend on the
 objectives of the scheduling problem. 
-Attributes used in this study applied for 
-each possible operation are given in \cref{tbl:jssp:feat}, where the set of 
-machines already dispatched for $J_j$ is $\mathcal{M}_j\subset\mathcal{M}$, 
-and similarly, $M_a$ has already had the jobs $\mathcal{J}_a\subset\mathcal{J}$ 
-previously dispatched.
+Attributes used in this study applied for each possible operation encountered 
+are given in \cref{tbl:jssp:feat}, where the set of machines already dispatched 
+for $J_j$ is $\mathcal{M}_j\subset\mathcal{M}$, and similarly, $M_a$ has 
+already had the jobs $\mathcal{J}_a\subset\mathcal{J}$ previously dispatched.
 The attributes of particular interest were obtained by inspecting the 
 aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are 
 job-related and machine-related, respectively.
@@ -538,7 +538,7 @@ While investigating 11 SDRs for JSP, \cite{Lu13} a pool of 33 CDRs was created.
 This pool strongly outperformed the original CDRs by using multi-contextual 
 functions based on either job waiting time or machine idle time (similar 
 to \phiwait\ and \phimacSlack\ in \cref{tbl:jssp:feat}), i.e., the CDRs are a 
-combination of those two key attributes and then the SDRs.
+combination of either one or both of these key attributes and then the SDRs.
 However, there are no combinations of the basic SDRs explored, only those two 
 attributes.  
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
@@ -615,12 +615,12 @@ The machine order is a random permutation of all of the machines in the
 \jrnd{n}{m} where $I=[1,99]$ and \jrndn{n}{m} where $I=[45,55]$. These 
 instances are referred to as random and random-narrow, respectively. In 
 addition we consider the case where the machine order is fixed and the same for 
-all jobs, i.e. $\vsigma=\{1,\ldots,m\}$ where 
+all jobs, i.e. $\sigma_j(a)=a$ for all $J_j\in\mathcal{J}$ and where 
 $\vec{p}\sim\mathcal{U}(1,99)$. 
 These jobs are denoted by \frnd{n}{m} and is analogous to \jrnd{n}{m}.
 The problem spaces are summarised in \cref{tbl:data:sim}.
 
-The goal is to minimize the makespan, $C_{\max}$. The optimum 
+The goal is to minimise the makespan, $C_{\max}$. The optimum 
 makespan is denoted $C_{\max}^{\pi_\star}$ (using the expert policy 
 $\pi_\star$), and the makespan obtained from the 
 scheduling policy $\pi$ under inspection by $C_{\max}^{\pi}$. Since the optimal 
@@ -637,10 +637,10 @@ minimise for policy $\pi$.
 
 \Cref{fig:boxplot:SDR} depicts the box-plot for \cref{eq:rho} when using the 
 SDRs from \cref{sec:DR} for all of the problem spaces from \cref{tbl:data:sim}.
-These box-plots show the difference in performance of the various SDRs. The MWR 
-performs on average the best on the \jrnd{n}{m} and \jrndn{n}{m} problems 
-instances, whereas for \frnd{n}{m} is is LWR that performs best. It is also 
-interesting to observe that all but the MWR perform statistically worse than 
+These box-plots show the difference in performance of the various SDRs. The 
+rule MWR performs on average the best on the \jrnd{n}{m} and \jrndn{n}{m} 
+problems instances, whereas for \frnd{n}{m} it is LWR that performs best. It is 
+also interesting to observe that all but MWR perform statistically worse than a 
 random job dispatching on the \jrnd{n}{m} and \jrndn{n}{m} problems instances.
 
 \begin{table}\centering
@@ -664,12 +664,12 @@ When building a complete schedule, $K=n\cdot m$ dispatches must be made
 sequentially.  A job is placed at the earliest available time slot for its next 
 machine, whilst still fulfilling that each machine can handle at most one job 
 at each time, and jobs need to have finished their previous machines according 
-to their machine order. Unfinished jobs, referred to as the job-list denoted 
-$\mathcal{L}$, are dispatched one at a time according to a deterministic 
-scheduling policy (or heuristic), and its pseudo-code is given  in 
-\cref{pseudo:constructJSP}. 
+to their machine order. Unfinished jobs from the job-list $\mathcal{L}$ are 
+dispatched one at a time according to a deterministic 
+scheduling policy (or heuristic). This process is given as a pseudo-code is 
+given  in \cref{pseudo:constructJSP}. 
 After each dispatch\footnote{Dispatch and time step are used interchangeably.} 
-the schedule's current features (cf. \cref{tbl:jssp:feat}) are updated based on 
+the schedule's current features are updated based on 
 the half-finished schedule, $\vchi$. 
 For each possible post-decision state the temporal features are collected (cf. 
 \cref{pseudo:constructJSP:phi}) forming the feature set, $\Phi$, based on all 
@@ -691,7 +691,7 @@ in \cref{fig:jssp:example}, then let's say $J_1$ would be dispatched next, and
 in the next iteration $J_2$. Now this sequence would yield the same schedule as 
 if $J_2$ would have been dispatched first and then $J_1$ in the next iteration, 
 i.e., these are jobs with non-conflicting machines.  
-In this particular instance, one cannot infer that choosing $J_1$ is better 
+In this particular scenario, one cannot infer that choosing $J_1$ is better 
 and $J_2$ is worse (or vice versa) since they can both yield the same solution.
 Furthermore, 
 there may be multiple optimal solutions to the same 
@@ -699,7 +699,7 @@ problem instance. Hence not only is the sequence representation `flawed' in the
 sense that slight permutations on the sequence are in fact equivalent w.r.t. 
 the end-result, but very varying permutations on the dispatching sequence 
 (although given the same partial initial sequence) can result in very different 
-complete schedules but can still achieve the same makespan. 
+complete schedules yet can still achieve the same makespan. 
 %Care must be taken in this case that neither resulting features are labelled 
 %as undesirable. Only the resulting features from a dispatch resulting in a 
 %suboptimal solution should be labelled undesirable.
@@ -717,8 +717,8 @@ The probability that a job chosen by a SDR yields an optimal makespan on a
 step-by-step basis, i.e., $\xi^\star_{\langle \text{SDR} \rangle}$, is depicted 
 in \cref{fig:opt:SDR:xistar}. These probabilities
 vary quite a bit between the different problem instances distributions studied. 
-From \cref{fig:opt:SDR:xistar} one observed that $\xi^\star_{\text{MWR}}$ has a 
-higher probability than random guessing, in choosing a dispatch which may 
+From \cref{fig:opt:SDR:xistar} it is observed that $\xi^\star_{\text{MWR}}$ has 
+a higher probability than random guessing, in choosing a dispatch which may 
 result in an optimal schedule. This is especially true towards the end of the 
 schedule building process. 
 Similarly, $\xi^\star_{\text{LWR}}$ chooses dispatches 
@@ -740,10 +740,10 @@ $\xi^\star_{\langle\text{SDR}\rangle}$}
 \label{fig:opt:SDR:xistar}
 \end{figure}
 
-Looking at \cref{fig:opt:SDR:xi}, then \jrnd{10}{10}  has a relatively high 
+Looking at \cref{fig:opt:SDR:xistar}, then \jrnd{10}{10}  has a relatively high 
 probability ($70\%$ and above) of choosing an optimal job at random. 
-However, it is imperative to keep making optimal decisions, because once off 
-the optimal track the consequences are unknown. 
+However, it is imperative to keep making optimal decisions, because the 
+consequences of making suboptimal dispatches are unknown. 
 To demonstrate this \cref{fig:case} depicts mean worst and best case scenario 
 of the resulting \namerho, once off the optimal track, defined as follows:
 \begin{subequations}\label{eq:bwc:opt}
@@ -834,10 +834,10 @@ contender again. This could explain why our BDR switch at $k=40$ from
 \cref{fig:boxplot:BDR} was unsuccessful. However, changing to MWR at $k\leq20$
 is not statistically significant from MWR (boost in mean $\rho$ 
 is at most -0.5\%). 
-However, after $k>20$ then the BDR starts diverging from MWR. 
 But as pointed out for \cref{fig:case}, it's not so fatal to 
 make bad moves in the very first dispatches for \jrnd{10}{10}, hence little 
 gain with improved classification accuracy in that region. 
+However, after $k>20$ then the BDR starts diverging from MWR. 
 
 \begin{figure}[t]
 \centering
@@ -851,7 +851,7 @@ $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
 \section{Preference Learning}\label{ch:expr:CDR}
 \Cref{sec:opt:bdr} demonstrated there is definitely something to be gained by
 trying out different combinations of DRs, it's just non-trivial how to go about 
-it, and motivates how it's best to go about learning such interaction, which 
+it, and motivates how it's best to learn such interaction, which 
 will be addressed in this \lcnamecref{ch:expr:CDR}.
 
 Learning models considered in this study are based on ordinal regression in 
@@ -861,11 +861,11 @@ regression has been previously presented in \cite{Ru06:PPSN} and in
 \cite{InRu11a} for \JSP, and given here for completeness. 
 
 The optimum makespan is known for each problem instance. At each time step $k$, 
-a number of feature pair are created. 
-Let $\vphi^{o}\in\R^d$ denote the post-decision state when dispatching 
+a number of feature pairs are created. 
+Let $\vphi^{o}\in\mathcal{F}$ denote the post-decision state when dispatching 
 $J_o\in\mathcal{O}^{(k)}$ corresponds to an optimal schedule being built. 
 All post-decisions states corresponding to suboptimal dispatches, 
-$J_s\in\mathcal{S}^{(k)}$, are denoted by $\vphi^{s}\in\R^d$.
+$J_s\in\mathcal{S}^{(k)}$, are denoted by $\vphi^{s}\in\mathcal{F}$.
 Note, \mbox{$\mathcal{O}^{(k)}\cup\mathcal{S}^{(k)}=\mathcal{L}^{(k)}$}, and 
 \mbox{$\mathcal{O}^{(k)}\cap\mathcal{S}^{(k)}=\emptyset$}.
 
@@ -923,7 +923,7 @@ induce the preference is defined by a linear function in the feature space:
 \end{equation}
 
 Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$. 
-For this study, L2-regularized logistic regression from the \textsc{liblinear} 
+For this study, L2-regularised logistic regression from the \textsc{liblinear} 
 package \cite{liblinear} without bias is used to learn the preference set 
 $\Psi$, defined by \cref{eq:prefset}.
 Hence, for each job on the job-list, $J_j\in\mathcal{L}$, let 
@@ -1408,7 +1408,7 @@ from the mistakes of earlier policies. To address the naivety of the data
 aggregation, MMD suggests only aggregating a new data point 
 if it is sufficiently different to previously gathered states, \emph{and} if 
 the current policy has made a mistake. 
-Additionally, there are multiple policies, each specializing in a particular 
+Additionally, there are multiple policies, each specialising in a particular 
 region of the state space where previous policies made mistakes.
 Although MMD has better empirical performance (based on robot applications), it 
 requires defining metrics, which in the case of \jsp\ is non-trivial (cf. 
