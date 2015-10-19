@@ -131,15 +131,6 @@ For this purpose, \JSP\ is used as a case study to illustrate a methodology for
 generating meaningful training data, which can be successfully 
 learned using preference-based imitation learning.
 
-%Other prevalent approach to solving \JSP\ is to combine several relatively 
-%\sdr s such that they may benefit each other for a given problem space. 
-%% automation for selecting DRs #3 - GA
-%To automate that selection, \cite{InRu14}, translated \dr s into measurable 
-%attributes (or features) and optimised what their contribution should be via 
-%evolutionary search. %The framework is straight forward and easy to implement 
-%and showed promising and robust results, as models were trained on a lower 
-%dimension, and validated on higher dimension. 
-
 %Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
 %processing by using reinforcement learning (RL), in particular, temporal 
 %difference learning. 
@@ -179,16 +170,21 @@ A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13}
 learned from completed schedules in order to iteratively improve new ones. 
 At each dispatching step, the method can utilise the current feature space to 
 \emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
-reverse lookahead). Their method is straightforward, and thus easy to 
-implement and more importantly computationally inexpensive, although the 
+reverse lookahead). Their method computationally inexpensive, although the 
 authors do stress that there is still remains room for improvement.
+A simpler and more straightforward way to automate selection of \cdr s (CDR), 
+\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
+optimise directly what their contribution should be via evolutionary search. 
+%The framework is straight forward and easy to implement and showed promising 
+%and robust results, as models were trained on a lower dimension, and validated 
+%on higher dimension. 
 
 The most predominant approach in hyper-heuristics is a framework of creating 
 \emph{new} heuristics from a set of predefined heuristics via GA optimisation 
 \cite{Burke10}. 
 Adopting a two-stage hyper-heuristic approach to generate a set of 
 machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
-\cdr s (CDR) from basic attributes, along with evolutionary algorithm to assign 
+CDRs from basic attributes, along with evolutionary algorithm to assign 
 a CDR to a specific machine. 
 The problem space consists of \jsp s in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped to similar work centres, 
