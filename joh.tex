@@ -131,19 +131,19 @@ For this purpose, \JSP\ is used as a case study to illustrate a methodology for
 generating meaningful training data, which can be successfully 
 learned using preference-based imitation learning.
 
-%Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
-%processing by using reinforcement learning (RL), in particular, temporal 
-%difference learning. 
-%Starting with a relaxed problem, each job was scheduled as early as its 
-%temporal partial order would permit, there by initially ignoring any resource 
-%constraints on the machines, yielding the schedule's critical path. Then the 
-%schedule would be repaired so the resource constraints were satisfied in the 
-%minimum amount of iterations.
-
-%Meta learning can be very fruitful in RL, as experiments from 
-%\cite{Kalyanakrishnan11} discovered some key discriminants between 
-%competing algorithms for their particular problem instances, which provided 
-%them with a hybrid algorithm which combines the strengths of the algorithms.
+Another learning approach is reinforcement learning (RL). In a similar field of 
+study, \cite{Zhang95} studied space shuttle payload processing by using 
+temporal difference learning. Using improvement heuristics they started with a 
+relaxed problem, such that each job was scheduled as early as its 
+temporal partial order would permit. There by initially ignoring any resource 
+constraints on the machines, yielding the schedule's critical path. Then the 
+schedule would be repaired so the resource constraints were satisfied in the 
+minimum amount of iterations.
+To excel the performance of RL, incorporating meta learning can be very 
+fruitful, as experiments from \cite{Kalyanakrishnan11} discovered some key 
+discriminants between competing algorithms for their particular problem 
+instances, which provided them with a hybrid algorithm which combines the 
+strengths of their algorithms.
 
 % automation for selecting DRs #4 - GA
 The competing alternative to learning dispatching rules from data would be to 
