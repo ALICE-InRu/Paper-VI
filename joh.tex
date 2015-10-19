@@ -87,16 +87,6 @@ Fax: +354-525-4632\\
   Machine Learning \and Imitation Learning \and DAgger \and Preference Learning}
 \end{abstract}
 
-%\JSP\ deals with the allocation of tasks of competing resources where its goal 
-%is to optimise a single or multiple objectives.  Its analogy is from 
-%manufacturing industry 
-%where a set of jobs are broken down into tasks that must be processed on 
-%several machines in a workshop. Furthermore, its formulation can be applied on 
-%a wide variety of practical problems in real-life applications which involve 
-%decision making, therefore its
-%problem-solving capabilities has a high impact on many manufacturing 
-%organisations.
-
 %\todo{story line:
 %from heuristic design to supervised learning to data creating (data 
 %distributed as it is used). Understanding the critical points in the 
@@ -179,6 +169,19 @@ learned using preference-based imitation learning.
 %objective by linearly combining their objectives) with promising results 
 %compared to the benchmarks DRs from the literature.
 
+%Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
+%processing by using reinforcement learning (RL), in particular, temporal 
+%difference learning. 
+%Starting with a relaxed problem, each job was scheduled as early as its 
+%temporal partial order would permit, there by initially ignoring any resource 
+%constraints on the machines, yielding the schedule's critical path. Then the 
+%schedule would be repaired so the resource constraints were satisfied in the 
+%minimum amount of iterations.
+
+%Meta learning can be very fruitful in RL, as experiments from 
+%\cite{Kalyanakrishnan11} discovered some key discriminants between 
+%competing algorithms for their particular problem instances, which provided 
+%them with a hybrid algorithm which combines the strengths of the algorithms.
 
 % automation for selecting DRs #4 - GA
 The competing alternative to learning dispatching rules from data would be to 
@@ -206,7 +209,6 @@ reverse lookahead). Their method is straightforward, and thus easy to
 implement and more importantly computationally inexpensive, although the 
 authors do stress that there is still remains room for improvement.
 
-
 The most predominant approach in hyper-heuristics is a framework of creating 
 \emph{new} heuristics from a set of  predefined heuristics via GA optimisation 
 \cite{Burke10}. 
@@ -221,22 +223,12 @@ In fact, the GP emphasised on efficiently dispatching on the work centres with
 set-up requirements and batching capabilities, which are rules that are 
 non-trivial to determine manually.
 
-%Using improvement heuristics, \cite{Zhang95} studied space shuttle payload 
-%processing by using reinforcement learning (RL), in particular, temporal 
-%difference learning. 
-%Starting with a relaxed problem, each job was scheduled as early as its 
-%temporal partial order would permit, there by initially ignoring any resource 
-%constraints on the machines, yielding the schedule's critical path. Then the 
-%schedule would be repaired so the resource constraints were satisfied in the 
-%minimum amount of iterations.
-
 Using case based reasoning for timetable scheduling, training data in 
 \cite{Burke06} is guided by the two best heuristics in the literature.
 They point out that in order for their framework to be successful, problem 
 features need to be sufficiently explanatory and training data needs to be 
 selected carefully so they can suggest the appropriate solution for a specific 
 range of new cases. Stressing the importance of meaningful feature selection. 
-
 
 % automation for selecting DRs #1 - Portfolio
 With meta heuristics one can use existing DRs, and use for example 
@@ -248,11 +240,6 @@ from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13}
 showed that the choice of DR do affect the results and that for all performance 
 measures considered. They showed that it was better to have a all the DRs to 
 choose from rather than just a single DR at a time.
-
-%Meta learning can be very fruitful in RL, as experiments from 
-%\cite{Kalyanakrishnan11} discovered some key discriminants between 
-%competing algorithms for their particular problem instances, which provided 
-%them with a hybrid algorithm which combines the strengths of the algorithms.
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and  
@@ -273,8 +260,6 @@ Experimental results are jointly presented in \cref{sec:il:expr} with
 comparison for a single randomly generated problem space. Furthermore, some 
 general adjustments for performance boost is also considered.
 The paper finally concludes in \cref{sec:con} with discussion and conclusions.
-
-%\setcounter{tocdepth}{2} \tableofcontents
 
 \section{\Jsp~Scheduling}\label{sec:problemdef}
 \JSP\ involves the scheduling of jobs on a set of 
@@ -300,9 +285,8 @@ end time is denoted $x_e(j,a)$ where:
 \begin{equation}\quad x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
 Each job $J_j$ has a specified processing order through the machines. It is a 
 permutation vector, $\vsigma_j$, of $\{1,\ldots,m\}$, representing a job $J_j$ 
-can 
-be processed on $M_{\vsigma_j(a)}$ only after it has been completely processed 
-on $M_{\vsigma_j(a-1)}$, namely:
+can be processed on $M_{\vsigma_j(a)}$ only after it has been completely 
+processed on $M_{\vsigma_j(a-1)}$, namely:
 \begin{equation}\quad\label{eq:permutation}
 x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1)) 
 \end{equation}
@@ -354,7 +338,6 @@ As a result, it's been widely studied in deterministic scheduling theory and
 its class of problems has been tested on a plethora of different solution 
 methodologies from various research fields \cite{Meeran12}, all from simple and 
 straight forward \dr s to highly sophisticated frameworks.
-
 
 \section{Priority Dispatching Rules} \label{sec:DR}
 
@@ -450,8 +433,6 @@ $C_{\max}$ denoted as dotted line.}
 \label{fig:jssp:example}
 \end{figure}
 
-%\subsection{Priority Dispatching Rules}\label{ch:dispatchrules}
-% \subsection{Simple priority \dr s}
 %Dispatching rules are of a construction heuristics, where one starts with an 
 %empty schedule and adds sequentially on %one operation (or tasks) at a time. 
 
@@ -479,9 +460,8 @@ resulting temporal schedule after operation $(j,a)$.
 {\setlength{\tabcolsep}{3pt} \input{tables/features-description}}
 \end{table}
 
-Designing priority \dr s requires recognising the important 
-attributes of the partial schedules needed to create a reasonable scheduling 
-rule. 
+Designing priority \dr s requires recognising the important attributes of the 
+partial schedules needed to create a reasonable scheduling rule. 
 These attributes attempt to grasp key features of the schedule being 
 constructed. Which attributes are most important will necessarily depend on the
 objectives of the scheduling problem. 
@@ -505,16 +485,14 @@ problem instance but varying for each $J_j$ and $M_a$, respectively.
 
 Priority \dr s are attractive since they are relatively easy to 
 implement, perform fast, and find reasonable schedules. In addition, they are 
-relatively 
-easy to interpret, which makes them desirable for the end-user.
+relatively easy to interpret, which makes them desirable for the end-user.
 However, they can also fail unpredictably. 
 A careful combination of \dr s has been shown to perform significantly better 
 \cite{Jayamohan04}. These are referred to as \emph{\cdr s} 
 (CDR), where the priority ranking is an expression of several \dr s. 
 CDRs deal with a greater number of more complicated functions (or features) and 
-are
-constructed from the schedules attributes. In short, a CDR is a combination of 
-several DRs. 
+are constructed from the schedules attributes. In short, a CDR is a combination 
+of several DRs. 
 For instance let $\pi$ be a CDR comprised of $d$ DRs, then the index $I$ for 
 $J_j\in\mathcal{L}^{(k)}$ using $\pi$ is:
 \begin{equation}\quad I_j^{\pi} = \sum_{i=1}^d w_i \pi_i(\vchi^j) 
@@ -577,7 +555,6 @@ it is to put our objective up as a machine learning problem.
 However, we must also take into consideration the end-goal, which is minimising 
 \namerho, because of its relationship to stepwise, optimality is not fully 
 understood.
-
 
 In this \lcnamecref{sec:learnOPT} we will describe concerns that must be 
 addressed when learning new priority \dr s. At the same time we will describe 
@@ -728,7 +705,6 @@ selecting a jobs that may lead to an optimal solution. Nevertheless, the random
 dispatching performs better than SPT on problem instances \jrnd{10}{10} and 
 \jrndn{10}{10}. 
 
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{figures/{trdat_prob_moveIsOptimal_10x10_SDR_xistar}.pdf}
@@ -776,8 +752,6 @@ upper bound, respectively, for \jrnd{10}{10}, \jrndn{10}{10} and
 \frnd{10}{10}. Moreover, mean suboptimal move is given as a dashed line.}
 \label{fig:case}
 \end{figure}
-
-
 
 \subsection{Blended \dr s}\label{sec:opt:bdr}
 A naive approach to create a simple blended \dr~(BDR) would be to 
@@ -947,9 +921,8 @@ job-list, in such a manner that in the cases that there are more than one
 operation with the same ranking, only one from that rank is needed to be 
 compared to the subsequent rank. 
 Moreover, for this study, which deals with $10\times 10$ problem instances 
-instead of $6\times5$, 
-the partial subsequent ranking becomes necessary, as full ranking is 
-computationally infeasible due to its size. 
+instead of $6\times5$, the partial subsequent ranking becomes necessary, as 
+full ranking is computationally infeasible due to its size. 
 Defining the size of the preference set as $l=\abs{\Psi}$, then if  $l$ is too 
 large re-sampling to size $l_{\max}$ may be needed to be done in order for the 
 ordinal regression to be computationally feasible. 
@@ -1088,10 +1061,10 @@ dissuades the preference models to achieving a good performance w.r.t. $\rho$.
 It's preferable to use the default $N^{\text{OPT}}_{\text{train}}=300$ and 
 allowing slight perturbations of the optimal trajectory, as done for  
 $\Phi^{\text{OPT}\epsilon}$. Unfortunately, all this overhead has not managed 
-to surpass MWR in performance, except for $\Phi^{\text{OPT}\epsilon}$ using  \ref{bias:adjdbl2nd} 
-with a $\Delta\rho\approx-4.24\%$ boost in mean performance. Otherwise, for 
-\ref{bias:equal}, there is a loss of $\Delta\rho\approx+6.23\%$ in mean 
-performance. 
+to surpass MWR in performance, except for $\Phi^{\text{OPT}\epsilon}$ using  
+\ref{bias:adjdbl2nd} with a $\Delta\rho\approx-4.24\%$ boost in mean 
+performance. Otherwise, for \ref{bias:equal}, there is a loss of 
+$\Delta\rho\approx+6.23\%$ in mean performance. 
 This is likely due to the fact that if equal probability is used for stepwise 
 sampling, then there are hardly any emphasis given to the final dispatches as 
 there a relatively few (compared to previous steps) preference pairs belonging 
@@ -1121,7 +1094,6 @@ training error of $\epsilon$, then the total compound error (for all $K$
 dispatches) the classifier induces itself grows quadratically, $\bigOh{\epsilon 
 K^2}$, for the entire schedule, rather than having linear loss, 
 $\bigOh{\epsilon K}$, if it were i.i.d.
-
 
 \section{Active Imitation Learning}\label{sec:il:active}
 
@@ -1322,22 +1294,6 @@ successful.
 However, for \jsp\ there is hidden interaction between processing times and 
 machine ordering that's hard to measure, therefore creating new \dr s is by no 
 means trivial. 
-%Due to this artefact, feature selection is of paramount importance, and then it 
-%becomes the case of not having too many features, as they are likely to hinder 
-%generalisation due to over-fitting in training. However, the features need to 
-%be explanatory enough to maintain predictive ability. 
-%For this reason \cref{ch:expr:CDR} was limited to up to three active features, 
-%as the full feature set was clearly suboptimal w.r.t. the SDRs used as a 
-%benchmark. 
-%By using features based on the SDRs, along with some additional local features 
-%describing the current schedule, it was possible to `discover' the SDRs when 
-%given only one active feature. %Although there is not much to be gained by 
-%these models, they at least are a sanity check the learning models are on the 
-%right track. 
-%Furthermore, by adding on additional features, a boost in performance was 
-%gained, resulting in a \cdr\ that outperformed all of the 
-%SDR baseline. 
-
 
 Experiments in \cref{sec:pil:expr} clearly showed that following the expert 
 policy is not without its faults. There are many obstacles to consider in order 
@@ -1358,9 +1314,6 @@ emphasis on the second half (i.e. \ref{bias:adjdbl2nd}).
 However, there are many other stepwise sampling strategies based on our 
 analysis that could have been chosen instead, as here only a 
 simplification of the trend from \cref{fig:case} was chosen. 
-%It is for this reason, traditional feature selection such 
-%as add1 and drop1 were unsuccessful in preliminary experiments, and thus 
-%resorting to having to exhaustively search all feature combinations.
 This also opens of the question of how should validation accuracy be measured? 
 Since the model is based on learning preferences, both based on optimal versus 
 suboptimal, and then varying degrees of sub-optimality. As we are only looking 
@@ -1369,8 +1322,7 @@ strictly greater to belong to a higher rank, then it can be argued that some
 ranks should be grouped together if their makespans are sufficiently close. 
 This would simplify the training set, making it (presumably) less of 
 contradictions and more appropriate for linear learning. Or simply the 
-validation accuracy could be weighted w.r.t. the  difference in 
-makespan.
+validation accuracy could be weighted w.r.t. the  difference in makespan.
 During the dispatching process, there are some pivotal times which need to be 
 especially taken care off. \Cref{fig:case} showed how making suboptimal 
 decisions were more of a factor during the later stages, whereas for flow-shop 
@@ -1414,13 +1366,11 @@ straightforwardly implemented, parameter-free and obtains competitive results,
 although with some computational overhead due to excess expert queries. 
 
 As previously mentioned, the main drawback of DAgger is that it quite 
-aggressively 
-quires the expert, making it impractical for some problems, 
+aggressively quires the expert, making it impractical for some problems, 
 especially if it involves human experts. 
 Another way to confront that, \cite{Judah12} introduce Reduction-based Active 
-Imitation 
-Learning (RAIL), which involves a dynamic approach similar to DAgger, but more 
-emphasis is used to minimise the expert's labelling effort.
+Imitation Learning (RAIL), which involves a dynamic approach similar to DAgger, 
+but more emphasis is used to minimise the expert's labelling effort.
 In fact, it's possible to circumvent querying the expert altogether and still 
 have reasonable performance. For instance applying Locally Optimal Learning to 
 Search (LOLS) \cite{ChangKADL15} it is possible to use imitation learning 
