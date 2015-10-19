@@ -22,7 +22,7 @@
 
 \journalname{Journal of Scheduling}
 
-\title{Discovering dispatching rules from data and imitation learning}
+\title{Discovering dispatching rules from data using imitation learning}
 \subtitle{Case study for the job-shop problem}
 
 \author{Helga Ingimundardottir \and Thomas Philip Runarsson}
@@ -59,29 +59,29 @@ Fax: +354-525-4632\\
   Defining training data as   
   $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
   \begin{enumerate*}
-    \item samples $\vec{x}_i$ should represent the induced 
-    data distribution $\mathcal{D}$. This is done by updating the learned model in 
+    \item features of partially constructed schedules $\vec{x}_i$ should necessarily  reflect the induced 
+    data distribution $\mathcal{D}$ for when the rule is applied. This is achieved by updating the learned model in 
     an active imitation learning fashion
-    \item $y_i$ is labelled using a solver
+    \item $y_i$ is labelled optimally using a MIP solver
     \item data needs to be balanced, as the set is unbalanced w.r.t. 
     dispatching step $k$
   \end{enumerate*}
   
-  When querying an expert policy, there is an abundance of valuable 
+  When querying an optimal policy, there is an abundance of valuable 
   information that can be utilised for learning new models.
   For instance, it's possible to seek out when the scheduling process is most 
   susceptible to failure.
-  Furthermore, generally stepwise optimality (or classification accuracy) 
-  implies good end performance, here minimising the final makespan. 
+  Generally stepwise optimality (or classification accuracy) 
+  will imply good end performance, here minimising the makespan. 
   However, as the impact of suboptimal moves is not fully understood, then the 
   measure needs to be adjusted for its intended trajectory.
  
-  Using these guidelines, it becomes easier to create custom \dr s for one's 
-  particular application. For this paper three different distributions of \jsp\ 
+  Using the guidelines set by the framework the design of custom \dr s, for one's 
+  particular scheduling application, will be more effective. In the study presented three different distributions of the \jsp\ 
   will be considered.
-  Moreover, the machine learning approach is based on preference learning 
-  which determines what feature states are preferable to others. However, 
-  that could easily be substituted for other methods.
+  The machine learning approach considered is based on preference learning, 
+  which learns what post decision state is preferable to another. However, 
+  alternative learning methods may be applied to the training data generated.
   
   \keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
   Machine Learning \and Imitation Learning \and DAgger \and Preference Learning}
