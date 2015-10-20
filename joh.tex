@@ -129,7 +129,7 @@ This work will illustrate the sensitivity of learned \dr's performance on the
 way the training data is sampled.
 For this purpose, \JSP\ is used as a case study to illustrate a methodology for 
 generating meaningful training data, which can be successfully 
-learned using preference-based imitation learning.
+learned using preference-based imitation learning (IL).
 
 %Another learning approach is reinforcement learning (RL). In a similar field 
 %of study, \cite{Zhang95} studied space shuttle payload processing by using 
@@ -169,15 +169,15 @@ learned using preference-based imitation learning.
 %A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
 %learned from completed schedules in order to iteratively improve new ones. 
 %At each dispatching step, the method can utilise the current feature space to 
-%\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
-%reverse lookahead). Their method computationally inexpensive, although the 
-%authors do stress that there is still remains room for improvement.
+%correctify some possibly bad dispatch made previously (sort of reverse 
+%lookahead). Their method computationally inexpensive, although the authors do 
+%stress that there is still remains room for improvement.
 %A simpler and more straightforward way to automate selection of \cdr s (CDR), 
 %\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
 %optimise directly what their contribution should be via evolutionary search. 
 
 The most predominant approach in hyper-heuristics is a framework of creating 
-\emph{new} heuristics from a set of predefined heuristics via genetic algorithm 
+new heuristics from a set of predefined heuristics via genetic algorithm 
 optimisation \cite{Burke10}. 
 Adopting a two-stage hyper-heuristic approach to generate a set of 
 machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used genetic 
@@ -281,7 +281,7 @@ x_s(j,\vsigma_j(a)) \geq x_e(j,\vsigma_j(a-1))
 for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$. 
 Note, that each job can have its own distinctive flow pattern through the 
 machines, which is independent of the other jobs. 
-However, in the case that all jobs share the same \emph{fixed} permutation 
+However, in the case that all jobs share the same fixed permutation 
 route, it is referred to as \fsp~(\FSP). 
 A commonly used subclass of \FSP\ in the literature is permutation \fsp, which 
 has the added constraint that the processing order of the jobs on the machines 
@@ -717,7 +717,7 @@ of the resulting \namerho, once off the optimal track, defined as follows:
 \forall C_{\max}^{\vchi^j} \gneq C_{\max}^{\pi_\star} \right\}
 \end{eqnarray}
 \end{subequations}
-Note, that this is given that there is only made \emph{one} non-optimal dispatch. 
+Note, that this is given that there is only made one non-optimal dispatch. 
 Generally, there will be more, and then the compound effects of making 
 suboptimal decisions cumulate. 
 
@@ -734,7 +734,7 @@ immensely.
 \centering
 \includegraphics[width=\columnwidth]{figures/{stepwise_10x10_OPT_casescenario}.pdf}
 \caption{Mean deviation from optimality, $\rho$, (\%), for best and worst 
-case scenario of making \emph{one} suboptimal dispatch (i.e. 
+case scenario of making one suboptimal dispatch (i.e. 
 $\zeta^{\star}_{\min}$ and $\zeta^{\star}_{\max}$), depicted as lower and 
 upper bound, respectively, for \jrnd{10}{10}, \jrndn{10}{10} and 
 \frnd{10}{10}. Moreover, mean suboptimal move is given as a dashed line.}
@@ -830,7 +830,7 @@ Note, \mbox{$\mathcal{O}^{(k)}\cup\mathcal{S}^{(k)}=\mathcal{L}^{(k)}$}, and
 
 The approach taken here is to verify analytically, at each time step, by fixing 
 the current temporal schedule as an initial state, whether it is possible to 
-\emph{somehow} yield an optimal schedule by manipulating the remainder of the 
+somehow yield an optimal schedule by manipulating the remainder of the 
 sequence. This also takes care of the scenario that having dispatched a job 
 resulting in a different temporal makespan would have resulted in the same 
 final makespan if another optimal dispatching sequence would have been chosen. 
@@ -896,7 +896,7 @@ Preliminary experiments for creating step-by-step model was done in
 $K$ linear models for solving $n\times m$ JSP. 
 However, the experiments there showed that by fixing the weights to its mean 
 value throughout the dispatching sequence results remained satisfactory.
-A more sophisticated way would be to create a \emph{new} linear model, where 
+A more sophisticated way would be to create a new linear model, where 
 the preference set, $\Psi$, is the union of the preference pairs across the 
 $K$ dispatches, such as described in \cref{eq:prefset}. 
 This would amount to a substantial preference set, and for $\Psi$ to be 
@@ -917,8 +917,8 @@ ordinal regression to be computationally feasible.
 
 %\subsection{Collecting training data}
 The training data from \cite{InRu11a} was created from optimal solutions of 
-randomly generated problem instances, i.e., traditional \emph{passive} 
-imitation learning (IL). 
+randomly generated problem instances, i.e., traditional \emph{passive
+imitation learning} (PIL). 
 As \JSP\ is a sequential decision making process, errors are bound to emerge. 
 Due to compound effect of making suboptimal dispatches, the model leads the 
 schedule astray from learned state-spaces, resulting in the new input being 
@@ -936,8 +936,8 @@ well-known SDRs yielded better models with lower \namerho.
 Inspired by the work of \cite{RossB10,RossGB11}, the methodology of generating 
 training data will now be such that it will iteratively improve upon the model, 
 such that the state-spaces learned will be representative of the state-spaces 
-the eventual model would likely encounter, known as DAgger for \emph{active} 
-imitation learning.
+the eventual model would likely encounter, known as DAgger for \emph{active 
+imitation learning} (AIL).
 Thereby, eliminating the ad-hoc nature of choosing trajectories to learn, by 
 rather letting the model lead its own way in a self-perpetuating manner until 
 it converges.
@@ -1092,10 +1092,9 @@ full execution of following the task chosen by the corresponding SDR.
 This required some trial-and-error as the experiments showed that features 
 obtained by SDR trajectories were not equally useful for learning.
 
-To automate this process, inspiration from \emph{active} imitation learning 
-presented in \cite{RossGB11} is sought, called \emph{Dataset Aggregation} 
-(DAgger) method, which addresses a no-regret algorithm in an on-line learning 
-setting. 
+To automate this process, inspiration from AIL presented in \cite{RossGB11} is 
+sought, called \emph{Dataset Aggregation} (DAgger) method, which addresses a 
+no-regret algorithm in an on-line learning setting. 
 The novel meta-algorithm for IL learns a deterministic policy guaranteed to 
 perform well under its induced distribution of states. 
 The method is closely related to Follow-the-leader (cf. 
@@ -1115,11 +1114,10 @@ DAgger has been proven successful on a variety of benchmarks
 \cite{RossGB11,Ross13}, such as the video games Super Tux Kart and Super 
 Mario Bros., handwriting recognition and autonomous navigation for large 
 unmanned aerial vehicles. In all cases greatly improving traditional supervised 
-imitation learning approaches.
+IL approaches.
 
 \subsection{DAgger}
-The policy of imitation learning at iteration $i>0$ is a mixed strategy given 
-as follows:
+The policy of AIL at iteration $i>0$ is a mixed strategy given as follows:
 \begin{equation}\quad\label{eq:il}
 \pi_i = \beta_i\pi_\star + (1-\beta_i)\hat{\pi}_{i-1}
 % i: ith iteration of imitation learning
@@ -1141,8 +1139,7 @@ finding a policy $\hat{\pi}_i$ that achieves $\epsilon$ surrogate loss under
 its own state distribution limit.
 
 \Cref{pseudo:activeIL} explains the pseudo code for how to collect 
-partial training set, $\Phi^{\text{IL}i}$ for $i$-th iteration of active 
-imitation learning.
+partial training set, $\Phi^{\text{IL}i}$ for $i$-th iteration of AIL.
 Subsequently, the resulting preference model, $\hat{\pi}_i$, learns on the 
 aggregated datasets from all previous iterations, namely:
 \begin{equation}\quad\label{eq:DAgger}
@@ -1157,7 +1154,7 @@ and its update procedure is detailed in \cref{pseudo:DAgger}.
 Due to time constraints, only $T=3$ iterations will be inspected.
 In addition, preliminary experiments using DAgger for \JSP\ favoured a 
 simple parameter-free version of $\beta_i$ in \cref{eq:il}. 
-Namely, the mixed strategy for $\{\beta_i\}_{i=0}^T$ is \emph{unsupervised} 
+Namely, the mixed strategy for $\{\beta_i\}_{i=0}^T$ is unsupervised 
 with $\beta_i=I(i=0)$, where $I$ is the indicator 
 function.\footnote{$\beta_0=1$ and $\beta_i=0,\forall i>0$.}
 
@@ -1166,8 +1163,7 @@ Regarding \ref{expr:boost:newdata} strategy, we know from
 performance for the expert policy (which is equivalent for the initial 
 iteration of DAgger). 
 Hence, for active IL, the extended set is now consists of each iteration 
-encountering $N_{\text{train}}$ \emph{new} problem instances. For a grand total 
-of: 
+encountering $N_{\text{train}}$ new problem instances. For a grand total of: 
 \begin{equation}\quad
 N^{\text{DA}i}_{\text{train, EXT}}=N_{\text{train}}\cdot (i+1) 
 \end{equation}
@@ -1202,8 +1198,7 @@ better represented classification problem which yields a lower mean \namerho.
 
 \section{Summary of Imitation Learning}\label{sec:il:expr}
 
-A summary of \jrnd{10}{10} best passive and active imitation learning models
-w.r.t. \namerho, from 
+A summary of \jrnd{10}{10} best PIL and AIL models w.r.t. \namerho, from 
 \cref{sec:pil:expr,sec:ail:expr}, respectively, are illustrated in 
 \cref{fig:all:boxplot}, and main statistics are given in 
 \cref{tbl:IL:stats}. To summarise, the following trajectories were used
@@ -1218,25 +1213,25 @@ As a reference, the \sdr\ MWR is shown at the edges of
 
 At first we see that the perturbed leader ever so-slightly improves the mean 
 for $\rho$, rather than using the baseline expert policy. 
-However, active imitation learning is by far the best improvement. With each 
-iteration of DAgger, the models improve upon the previous iteration
+However, AIL is by far the best improvement. With each iteration of DAgger, the 
+models improve upon the previous iteration
 \begin{enumerate*} 
-\item for \ref{bias:equal} with \ref{expr:boost:newdata} then $i=1$ starts 
-with increasing $\Delta\rho\approx+1.39\%$. However, after that first 
-iteration there is a performance boost of $\Delta\rho\approx-15.11\%$ after 
-$i=2$ and $\Delta\rho\approx-0.19\%$ for the final iteration $i=3$
-\item on the other hand when using \ref{bias:adjdbl2nd} with 
-\ref{expr:boost:newdata}, only one iteration 
-is needed, as $\Delta\rho\approx-11.68$ for $i=1$, and after that it stagnates 
-with $\Delta\rho\approx+0.55\%$ for $i=2$ and for $i=3$ it is significantly 
-worse than the previous iteration by $\Delta\rho\approx+0.75\%$
+    \item for \ref{bias:equal} with \ref{expr:boost:newdata} then $i=1$ starts 
+    with increasing $\Delta\rho\approx+1.39\%$. However, after that first  
+    iteration there is a performance boost of $\Delta\rho\approx-15.11\%$ after 
+    $i=2$ and $\Delta\rho\approx-0.19\%$ for the final iteration $i=3$
+    \item on the other hand when using \ref{bias:adjdbl2nd} with 
+    \ref{expr:boost:newdata}, only one iteration is needed, as 
+    $\Delta\rho\approx-11.68$ for $i=1$, and after that it stagnates with 
+    $\Delta\rho\approx+0.55\%$ for $i=2$ and for $i=3$ it is significantly 
+    worse than the previous iteration by $\Delta\rho\approx+0.75\%$
 \end{enumerate*}
 In both cases, DAgger outperforms MWR
 \begin{enumerate*}
-\item after $i=3$ iterations by $\Delta\rho\approx-5.31\%$ for 
-\ref{bias:equal} with \ref{expr:boost:newdata}
-\item after $i=1$ iteration by $\Delta\rho\approx-9.31\%$ for 
-\ref{bias:adjdbl2nd} with \ref{expr:boost:newdata}
+    \item after $i=3$ iterations by $\Delta\rho\approx-5.31\%$ for 
+    \ref{bias:equal} with \ref{expr:boost:newdata}
+    \item after $i=1$ iteration by $\Delta\rho\approx-9.31\%$ for 
+    \ref{bias:adjdbl2nd} with \ref{expr:boost:newdata}
 \end{enumerate*}
 Note, for \ref{bias:equal} without \ref{expr:boost:newdata}, then DAgger is 
 unsuccessful, and the aggregated data set downgrades the performance of the 
@@ -1246,12 +1241,13 @@ policy for that model configuration.
 Regarding \ref{expr:boost:newdata}, then it's not successful for the expert 
 policy, as $\rho$ increased approximately 10\%. This could most likely be 
 counter-acted by increasing $l_{\max}$ to reflect the 700 additional examples.
-What is interesting though, is that \ref{expr:boost:newdata} is well suited for active imitation learning, using the same $l_{\max}$ as before. 
+What is interesting though, is that \ref{expr:boost:newdata} is well suited for 
+AIL, using the same $l_{\max}$ as before. 
 Note, the amount of problems used for $N^{\text{OPT}}_{\text{train, EXT}}$ is equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger.
-The \emph{new} varied data gives the aggregated feature set more information 
+The new varied data gives the aggregated feature set more information 
 of what is important to learn in subsequent iterations, as those new states are 
 more likely to be encountered `in practice' rather than `in theory.' Not only 
-does the active imitation learning converge faster, it also consistently 
+does the AIL converge faster, it also consistently 
 improves with each iterations.
 
 \begin{figure}
@@ -1267,7 +1263,7 @@ MWR shown for reference.}\label{fig:all:boxplot}
 Current literature still hold \sdr s in high regard, 
 as they are simple to implement and quite efficient. 
 However, they are generally taken for granted as there is clear lack of 
-investigation of \emph{how} these \dr s actually work, and what 
+investigation of how these \dr s actually work, and what 
 makes them so successful (or in some cases unsuccessful)? 
 For instance, of the four SDRs this study focuses on, why does MWR outperform 
 so significantly for \jsp\, yet completely fail for \fsp? 
@@ -1324,48 +1320,56 @@ already collected are able to explain the current situation. For this we
 propose investigating features from suboptimal trajectories as well, since the 
 future observations depend on previous predictions. 
 A straight forward approach would be to inspect the trajectories of promising 
-SDRs or CDRs. However, more information is gained when applying active 
-imitation learning inspired by work of \cite{RossB10,RossGB11}, such that the 
+SDRs or CDRs. However, more information is gained when applying AIL inspired by 
+work of \cite{RossB10,RossGB11}, such that the 
 learned policy following an optimal trajectory is used to collect training 
 data, and the learned model is iteratively updated. 
 This can be done over several iterations, with the benefit being, that the 
 states that are likely to occur in practice are investigated, and as such used 
-to dissuade the model from making poor choices in the future. 
-Alas, this comes at great computational cost due to the substantial amounts of 
-states that need to be optimised for their correct labelling. Making it only 
-practical for \jsp\ of a considerably small size, or only few iterations.
-To counteract this drawback, the Maximum Mean Discrepancy (MMD) imitation 
-learning by \cite{Kim13} is an iterative algorithm similar to DAgger where the 
-expert policy is only queried when needed in order to reduce computational cost. 
-This occurs when a metric of a new state is sufficiently large enough from a 
-previously queried states (to ensure diversity of learned optimal states). 
-Moreover, in DAgger all data samples are equally important, irrespective of its 
-iteration, which can require great number of iterations to learn how to recover 
-from the mistakes of earlier policies. To address the naivety of the data 
-aggregation, MMD suggests only aggregating a new data point 
-if it is sufficiently different to previously gathered states, and if 
-the current policy has made a mistake. 
-Additionally, there are multiple policies, each specialising in a particular 
-region of the state space where previous policies made mistakes.
-Although MMD has better empirical performance (based on robot applications), it 
-requires defining metrics, which in the case of \jsp\ is non-trivial (cf. 
-\cite{InRu12}), and fine-tuning thresholds etc., whereas DAgger can be 
-straightforwardly implemented, parameter-free and obtains competitive results, 
-although with some computational overhead due to excess expert queries. 
+to dissuade the model from making poor choices in the future.
+%Alas, this comes at great computational cost due to the substantial amounts of 
+%states that need to be optimised for their correct labelling. Making it only 
+%practical for \jsp\ of a considerably small size, or only few iterations.
+%To counteract this drawback, the Maximum Mean Discrepancy (MMD) imitation 
+%learning by \cite{Kim13} is an iterative algorithm similar to DAgger where the 
+%expert policy is only queried when needed in order to reduce computational
+%cost. 
+%This occurs when a metric of a new state is sufficiently large enough from a 
+%previously queried states (to ensure diversity of learned optimal states). 
+%Moreover, in DAgger all data samples are equally important, irrespective of 
+%its iteration, which can require great number of iterations to learn how to 
+%recover from the mistakes of earlier policies. To address the naivety of the 
+%data aggregation, MMD suggests only aggregating a new data point if it is 
+%sufficiently different to previously gathered states, and if the current 
+%policy has made a mistake. 
+%Additionally, there are multiple policies, each specialising in a particular 
+%region of the state space where previous policies made mistakes.
+%Although MMD has better empirical performance (based on robot applications), 
+%it requires defining metrics, which in the case of \jsp\ is non-trivial (cf. 
+%\cite{InRu12}), and fine-tuning thresholds etc., whereas DAgger can be 
+%straightforwardly implemented, parameter-free and obtains competitive results, 
+%although with some computational overhead due to excess expert queries.
+ 
+%As previously mentioned, the main drawback of DAgger is that it quite 
+%aggressively quires the expert, making it impractical for some problems, 
+%especially if it involves human experts. 
+%Another way to confront that, \cite{Judah12} introduce Reduction-based Active 
+%Imitation Learning (RAIL), which involves a dynamic approach similar to 
+%DAgger, but more emphasis is used to minimise the expert's labelling effort. 
+%In fact, it's possible to circumvent querying the expert altogether and still 
+%have reasonable performance. For instance applying Locally Optimal Learning to 
+%Search (LOLS) \cite{ChangKADL15} it is possible to use imitation learning 
+%(similar to DAgger framework) when the reference policy is poor (i.e. 
+%$\pi_\star$ in \cref{eq:il} is suboptimal). 
+%Although it's noted that the quality (w.r.t near-optimality) of reference 
+%policy is in accordance to its performance, as is to be expected. 
 
-As previously mentioned, the main drawback of DAgger is that it quite 
-aggressively quires the expert, making it impractical for some problems, 
-especially if it involves human experts. 
-Another way to confront that, \cite{Judah12} introduce Reduction-based Active 
-Imitation Learning (RAIL), which involves a dynamic approach similar to DAgger, 
-but more emphasis is used to minimise the expert's labelling effort.
-In fact, it's possible to circumvent querying the expert altogether and still 
-have reasonable performance. For instance applying Locally Optimal Learning to 
-Search (LOLS) \cite{ChangKADL15} it is possible to use imitation learning 
-(similar to DAgger framework) when the reference policy is poor (i.e. 
-$\pi_\star$ in \cref{eq:il} is suboptimal). 
-Although it's noted that the quality (w.r.t near-optimality) of reference 
-policy is in accordance to its performance, as is to be expected. 
+The main drawback of DAgger is that it quite aggressively quires the expert, 
+making it impractical for some problems, especially if it involves human 
+experts. A way to confront that, \cite{Kim13,Judah12} propose frameworks to 
+minimise the expert's labelling effort.
+Or even circumvent the expert policy altogether by using a `poorer' reference 
+policy (i.e. $\pi_\star$ in \cref{eq:il} is suboptimal) \cite{ChangKADL15}.
 
 This study has been structured around the \jsp\ scheduling problem, however, 
 it can be easily extended to other types of deterministic optimisation problems 
