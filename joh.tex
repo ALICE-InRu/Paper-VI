@@ -131,61 +131,58 @@ For this purpose, \JSP\ is used as a case study to illustrate a methodology for
 generating meaningful training data, which can be successfully 
 learned using preference-based imitation learning.
 
-Another learning approach is reinforcement learning (RL). In a similar field of 
-study, \cite{Zhang95} studied space shuttle payload processing by using 
-temporal difference learning. Using improvement heuristics they started with a 
-relaxed problem, such that each job was scheduled as early as its 
-temporal partial order would permit. There by initially ignoring any resource 
-constraints on the machines, yielding the schedule's critical path. Then the 
-schedule would be repaired so the resource constraints were satisfied in the 
-minimum amount of iterations.
-To excel the performance of RL, incorporating meta learning can be very 
-fruitful, as experiments from \cite{Kalyanakrishnan11} discovered some key 
-discriminants between competing algorithms for their particular problem 
-instances, which provided them with a hybrid algorithm which combines the 
-strengths of their algorithms.
+%Another learning approach is reinforcement learning (RL). In a similar field 
+%of study, \cite{Zhang95} studied space shuttle payload processing by using 
+%temporal difference learning. Using improvement heuristics they started with a 
+%relaxed problem, such that each job was scheduled as early as its temporal 
+%partial order would permit. There by initially ignoring any resource 
+%constraints on the machines, yielding the schedule's critical path. Then the 
+%schedule would be repaired so the resource constraints were satisfied in the 
+%minimum amount of iterations.
+%To excel the performance of RL, incorporating meta learning can be very 
+%fruitful, as experiments from \cite{Kalyanakrishnan11} discovered some key 
+%discriminants between competing algorithms for their particular problem 
+%instances, which provided them with a hybrid algorithm which combines the 
+%strengths of their algorithms.
 
 % automation for selecting DRs #4 - GA
-The competing alternative to learning dispatching rules from data would be to 
-search the \dr\ space directly. The prevalent approach in this case would be 
-using an evolutionary algorithm, such as genetic programming (GP).
-The main drawback is that the rules from a GP framework can be quite complex, 
-and difficult to interpret.
-For instance \cite{Tay08} applied GP on a terminal set of job-attributes for 
-flexible \jsp\ with promising results compared to the benchmarks DRs from the 
-literature.
-In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} 
-that were reported to be successful for dynamic \jsp\ and tested it against 
-some \sdr s and found out it only slightly outperformed one rule, 
-and was beat by another. 
-The reason behind this staggering change in performance, may be due to 
-the choice of objective function or the underlying problem spaces that were 
-used in training.
-It's argued that randomly generated problem instances aren't a 
-proper representative for real-world long-term \jsp\ applications, e.g., by the 
-narrow choice of release times, yielding schedules that are overloading in the 
-beginning phases.
+%The competing alternative to learning dispatching rules from data would be to 
+%search the \dr\ space directly. The prevalent approach in this case would be 
+%using an evolutionary algorithm, such as genetic programming (GP). 
+%The main drawback is that the rules from a GP framework can be quite complex, 
+%and difficult to interpret.
+%For instance \cite{Tay08} applied GP on a terminal set of job-attributes for 
+%flexible \jsp\ with promising results compared to the benchmarks DRs from the 
+%literature.
+%In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} 
+%that were reported to be successful for dynamic \jsp\ and tested it against 
+%some \sdr s and found out it only slightly outperformed one rule, and was beat 
+%by another. 
+%The reason behind this staggering change in performance, may be due to the 
+%choice of objective function or the underlying problem spaces that were used 
+%in training.
+%It's argued that randomly generated problem instances aren't a proper 
+%representative for real-world long-term \jsp\ applications, e.g., by the 
+%narrow choice of release times, yielding schedules that are overloading in the 
+%beginning phases.
 
-A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
-learned from completed schedules in order to iteratively improve new ones. 
-At each dispatching step, the method can utilise the current feature space to 
-\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
-reverse lookahead). Their method computationally inexpensive, although the 
-authors do stress that there is still remains room for improvement.
-A simpler and more straightforward way to automate selection of \cdr s (CDR), 
-\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
-optimise directly what their contribution should be via evolutionary search. 
-%The framework is straight forward and easy to implement and showed promising 
-%and robust results, as models were trained on a lower dimension, and validated 
-%on higher dimension. 
+%A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
+%learned from completed schedules in order to iteratively improve new ones. 
+%At each dispatching step, the method can utilise the current feature space to 
+%\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
+%reverse lookahead). Their method computationally inexpensive, although the 
+%authors do stress that there is still remains room for improvement.
+%A simpler and more straightforward way to automate selection of \cdr s (CDR), 
+%\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
+%optimise directly what their contribution should be via evolutionary search. 
 
 The most predominant approach in hyper-heuristics is a framework of creating 
-\emph{new} heuristics from a set of predefined heuristics via GA optimisation 
-\cite{Burke10}. 
+\emph{new} heuristics from a set of predefined heuristics via genetic algorithm 
+optimisation \cite{Burke10}. 
 Adopting a two-stage hyper-heuristic approach to generate a set of 
-machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used GP to evolve 
-CDRs from basic attributes, along with evolutionary algorithm to assign 
-a CDR to a specific machine. 
+machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used genetic 
+programming (GP) to evolve CDRs from basic attributes, along with evolutionary 
+algorithm to assign a CDR to a specific machine. 
 The problem space consists of \jsp s in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped to similar work centres, 
 which can have different set-up time, workload, etc. 
@@ -193,12 +190,12 @@ In fact, the GP emphasised on efficiently dispatching on the work centres with
 set-up requirements and batching capabilities, which are rules that are 
 non-trivial to determine manually.
 
-Using case based reasoning for timetable scheduling, training data in 
-\cite{Burke06} is guided by the two best heuristics in the literature.
-They point out that in order for their framework to be successful, problem 
-features need to be sufficiently explanatory and training data needs to be 
-selected carefully so they can suggest the appropriate solution for a specific 
-range of new cases. 
+%Using case based reasoning for timetable scheduling, training data in 
+%\cite{Burke06} is guided by the two best heuristics in the literature.
+%They point out that in order for their framework to be successful, problem 
+%features need to be sufficiently explanatory and training data needs to be 
+%selected carefully so they can suggest the appropriate solution for a specific 
+%range of new cases. 
 
 % automation for selecting DRs #1 - Portfolio
 With meta heuristics one can use existing DRs, and use for example 
@@ -217,7 +214,7 @@ choose from rather than just a single DR at a time.
 %3.) Problem specific      4.) Annað? Time depedendance
 To summarise, when dealing with learning new \dr s there are several important 
 factors to consider. First and foremost the meaningfulness of training data 
-will influence the quality of the learned \dr. 
+will influence the quality of the learned \dr\ \cite{Burke06}. 
 Since the training data consists of collection of features, the quality of 
 training data is interchangeable to the predictability of features. 
 Stressing the importance of consequential feature selection. 
