@@ -85,7 +85,7 @@ Fax: +354-525-4632\\
   alternative learning methods may be applied to the training data generated.
   
   \keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
-  Machine Learning \and Imitation Learning \and DAgger \and Preference Learning}
+   Imitation Learning \and DAgger \and Preference Learning}
 \end{abstract}
 
 %\todo{story line:
@@ -146,9 +146,9 @@ learned using preference-based imitation learning.
 %strengths of their algorithms.
 
 % automation for selecting DRs #4 - GA
-%The competing alternative to learning dispatching rules from data would be to 
-%search the \dr\ space directly. The prevalent approach in this case would be 
-%using an evolutionary algorithm, such as genetic programming (GP). 
+The competing alternative to learning dispatching rules from data would be to 
+search the \dr\ space directly. The prevalent approach in this case would be 
+using an evolutionary algorithm, such as genetic programming (GP). 
 %The main drawback is that the rules from a GP framework can be quite complex, 
 %and difficult to interpret.
 %For instance \cite{Tay08} applied GP on a terminal set of job-attributes for 
@@ -165,17 +165,14 @@ learned using preference-based imitation learning.
 %representative for real-world long-term \jsp\ applications, e.g., by the 
 %narrow choice of release times, yielding schedules that are overloading in the 
 %beginning phases.
-
+%
 %A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
 %learned from completed schedules in order to iteratively improve new ones. 
 %At each dispatching step, the method can utilise the current feature space to 
 %\emph{correctify} some possible \emph{bad} dispatch made previously (sort of 
 %reverse lookahead). Their method computationally inexpensive, although the 
 %authors do stress that there is still remains room for improvement.
-%A simpler and more straightforward way to automate selection of \cdr s (CDR), 
-%\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
-%optimise directly what their contribution should be via evolutionary search. 
-
+%
 The most predominant approach in hyper-heuristics is a framework of creating 
 \emph{new} heuristics from a set of predefined heuristics via genetic algorithm 
 optimisation \cite{Burke10}. 
@@ -190,12 +187,6 @@ In fact, the GP emphasised on efficiently dispatching on the work centres with
 set-up requirements and batching capabilities, which are rules that are 
 non-trivial to determine manually.
 
-%Using case based reasoning for timetable scheduling, training data in 
-%\cite{Burke06} is guided by the two best heuristics in the literature.
-%They point out that in order for their framework to be successful, problem 
-%features need to be sufficiently explanatory and training data needs to be 
-%selected carefully so they can suggest the appropriate solution for a specific 
-%range of new cases. 
 
 % automation for selecting DRs #1 - Portfolio
 With meta heuristics one can use existing DRs, and use for example 
@@ -207,27 +198,36 @@ from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13}
 showed that the choice of DR do affect the results and that for all performance 
 measures considered. They showed that it was better to have a all the DRs to 
 choose from rather than just a single DR at a time.
+%
+A simpler and more straightforward way to automate selection of \cdr s (CDR), 
+\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
+optimise directly what their contribution should be via evolutionary search. 
 
+Using case based reasoning for timetable scheduling, training data in 
+\cite{Burke06} is guided by the two best heuristics in the literature.
+They point out that in order for their framework to be successful, problem 
+features need to be sufficiently explanatory and training data needs to be 
+selected carefully so they can suggest the appropriate solution for a specific 
+range of new cases. 
+%
+%
 %Svo mætti koma ein málsgrein sem er samantekt á því sem aðrir hafa lært af 
 %þessu öllu:
 %1.) Features matter       2.) Training data matters
 %3.) Problem specific      4.) Annað? Time depedendance
-To summarise, when dealing with learning new \dr s there are several important 
-factors to consider. First and foremost the meaningfulness of training data 
+When learning new \dr s there are several important 
+factors to consider. First and foremost the context in which the training data is constructed 
 will influence the quality of the learned \dr\ \cite{Burke06}. 
 Since the training data consists of collection of features, the quality of 
 training data is interchangeable to the predictability of features. 
-Stressing the importance of consequential feature selection. 
-Furthermore, the training data should be problem specific and as closely 
-related to the final benchmark instances for relevant results. 
-In addition to addressing these chosen aspects, the paper will show that during 
-the scheduling process, it varies \emph{when} it's most fruitful to make the 
-`right' decision, and depending on the distribution of problem instances those 
+%Stressing the importance of consequential feature selection. 
+The training data is necessarily also problem instance specific. %and must reflect 
+%related to the final benchmark instances for relevant results. 
+In addition to addressing these aspects, the paper will show that during 
+the scheduling process, it will vary \emph{when} it is most critical to make the 
+`right' decision. Furthermore, depending on the distribution of problem instances those 
 pivotal moments can vary greatly. 
-Moreover, due to the nature of machine learning algorithm it's important to 
-consider the actual end-performance when choosing a suitable model 
-configuration, not just staring blindly at the classification accuracy as the 
-relation between the two is elusive. 
+Moreover, a supervised learning algorithm will optimize classification accuracy, while it is the actual end-performance of the heuristic rule learned that will determine the success of the learning method. 
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and 
