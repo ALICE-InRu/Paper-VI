@@ -114,9 +114,10 @@ resulting \dr s, as decision trees, gave significantly better schedules than
 using popular heuristics in that field, and a lower worst-case factor from 
 optimality. 
 Although, using optimal policies for creating training data gives vital 
-information on how to learn good scheduling rules we will show that this is 
-not sufficient. Once these rules make a suboptimal dispatch then they are in 
-uncharted territory and its effects are relatively unknown. 
+information on how to learn good scheduling rules an experimental study will 
+show that this is not sufficient. 
+Once these rules make a suboptimal dispatch then they are in uncharted 
+territory and its effects are relatively unknown. 
 This work will illustrate the sensitivity of learned \dr's performance on the 
 way the training data is sampled.
 For this purpose, \JSP\ is used as a case study to illustrate a methodology for 
@@ -246,7 +247,7 @@ will depend on the specific objective.
 % For example, the optimal schedule may be the time needed to complete
 % all jobs, i.e., the minimum makespan.
 
-In this study we will consider the $n\times m$ \JSP, where $n$ jobs, 
+This study will consider the $n\times m$ \JSP, where $n$ jobs, 
 $\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set, 
 $\mathcal{M}=\{M_a\}_{a=1}^m$, of $m$ machines. The index $j$ refers to a job 
 $J_j\in\mathcal{J}$ while the index $a$ refers to a machine 
@@ -452,9 +453,9 @@ job-related and machine-related, respectively.
 In fact, \cite{Pickardt2013} note that in the current literature, there is a 
 lack of global perspective in the attribute space, as omitting them won't 
 address the possible negative impact an operation $(j,a)$ might have on other 
-machines at a later time, it is for that reason we consider attributes such as 
-\phiSlackRelated, that are slack related and are a means of indicating the 
-current quality of the schedule.
+machines at a later time, it is for that reason attributes such as 
+\phiSlackRelated\ are considered, since they are slack related and are a means 
+of indicating the current quality of the schedule.
 All of the attributes, $\vphi$, vary throughout the scheduling process, 
 w.r.t. operation belonging to the same time step $k$, with the exception of 
 \phijobTotProcTime\ and \phimacTotProcTime\ which are static for a given 
@@ -518,24 +519,25 @@ $w_i=0$, but with following exceptions: $w_1=-1$ for SPT, $w_1=+1$ for LPT,
 $w_7=-1$ for LWR and $w_7=+1$ for MWR. Generally, the weights $\vec{w}$ are 
 chosen by the designer or the 
 rule apriori. A more attractive approach would be to learn these weights from 
-problem examples directly. We will now investigate how this may be accomplished.
+problem examples directly. The following \lcnamecref{sec:learnOPT} will  
+investigate how this may be accomplished.
 
 \section{Performance Analysis of Priority Dispatching Rules}\label{sec:learnOPT}
 
 In order to create successful \dr s, a good starting point is to 
 investigate the properties of optimal solutions and hopefully be able to learn 
-how to mimic the construction of such solutions. For this, we follow optimal 
-solutions, 
-obtained by using a commercial software package \cite{gurobi} and inspect 
-the probability of SDRs being optimal. This serves as an indicator of how hard 
-it is to put our objective up as a machine learning problem. 
-However, we must also take into consideration the end-goal, which is minimising 
-\namerho, because of its relationship to stepwise, optimality is not fully 
+how to mimic the construction of such solutions. For this, optimal 
+solutions (obtained by using a commercial software package \cite{gurobi}) are 
+followed and the probability of SDRs being optimal is inspected. 
+This serves as an indicator of how hard it is to put our objective up as a 
+machine learning problem. 
+However, the end-goal, which is minimising \namerho, must also take into 
+consideration because of its relationship to stepwise optimality is not fully 
 understood.
 
-In this \lcnamecref{sec:learnOPT} we will describe concerns that must be 
-addressed when learning new priority \dr s. At the same time we will describe 
-the experimental set-up used in our study. 
+In this \lcnamecref{sec:learnOPT} the concerns of learning new priority \dr s 
+will be addressed. At the same time experimental set-up used in the study are 
+described. 
 %The matters that must be addressed are as follows
 %\begin{enumerate*}[itemjoin*={{, and finally }}]
 %\item the problem instances used for learning and their optimal solutions
@@ -564,11 +566,11 @@ $\vec{p}\sim \mathcal{U}(u_1,u_2)$.
 The machine order is a random permutation of all of the machines in the 
 \jsp. Two different processing times distributions were explored, namely 
 \jrnd{n}{m} where $I=[1,99]$ and \jrndn{n}{m} where $I=[45,55]$. These 
-instances are referred to as random and random-narrow, respectively. In 
-addition we consider the case where the machine order is fixed and the same for 
+instances are referred to as random and random-narrow, respectively. 
+In addition, the case where the machine order is fixed and the same for 
 all jobs, i.e. $\sigma_j(a)=a$ for all $J_j\in\mathcal{J}$ and where 
-$\vec{p}\sim\mathcal{U}(1,99)$. 
-These jobs are denoted by \frnd{n}{m} and is analogous to \jrnd{n}{m}.
+$\vec{p}\sim\mathcal{U}(1,99)$, is also considered. 
+These jobs are denoted by \frnd{n}{m} and are analogous to \jrnd{n}{m}.
 The problem spaces are summarised in \cref{tbl:data:sim}.
 
 The goal is to minimise the makespan, $C_{\max}$. The optimum 
@@ -583,8 +585,8 @@ following:
 \end{equation}
 which indicates the percentage relative deviation from optimality. 
 Note: \cref{eq:rho} measures the discrepancy between predicted value and true 
-outcome, and is commonly referred to as a loss function, which we would like to 
-minimise for policy $\pi$.
+outcome, and is commonly referred to as a loss function, which should be 
+minimised for policy $\pi$.
 
 \Cref{fig:boxplot:SDR} depicts the box-plot for \cref{eq:rho} when using the 
 SDRs from \cref{sec:DR} for all of the problem spaces from \cref{tbl:data:sim}.
@@ -766,16 +768,17 @@ dispatches, followed by MWR}
 \end{figure}
 \input{tables/stats.BDR.10x10.tex}
 
-In \cref{fig:opt:SDR:xistar} we inspected the stepwise optimality, given that 
-we were on the optimal trajectory. As mistakes are bound to made at some 
-points, it is interesting to see how the stepwise optimality evolves for its 
-intended trajectory, thereby updating \cref{eq:tracc:opt} to:
+In \cref{fig:opt:SDR:xistar} the stepwise optimality was inspected, given that 
+all committed dispatches were based on the optimal trajectory. 
+As mistakes are bound to made at some points, it is interesting to see how the 
+stepwise optimality evolves for its intended trajectory, thereby updating 
+\cref{eq:tracc:opt} to:
 \begin{equation}\quad \label{eq:tracc:track}
 \xi_{\pi} := \mathbb{E}_{\pi}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
 \Cref{fig:opt:SDR:xi} shows the log likelihood for $\xi_{\langle 
 \text{SDR} \rangle}$ using \jrnd{10}{10}.
-There we can see that even though $\xi_{\text{SPT}}$ is generally more 
+There one can see that even though $\xi_{\text{SPT}}$ is generally more 
 likely to find optimal dispatches in the initial steps, then shortly after 
 $k=15$, $\xi_{\text{MWR}}$ becomes a 
 contender again. This could explain why our BDR switch at $k=40$ from 
@@ -976,11 +979,11 @@ $k$-th job of the sequence is revealed, the predictor guesses its value
 $\chi_k$ on the basis of the previous $k-1$ observations. 
 
 \subsection{Prediction with Expert Advice}\label{sec:expertPolicy}
-Let us assume one knows the expert policy $\pi^\star$, which we can query what 
+Let us assume one knows the expert policy $\pi^\star$, which can query what 
 is the optimal choice of $\chi_k={j^*}$ at any given time step $k$. 
-Now we can use \cref{eq:jstar} to back-propagate the relationship between 
+Now let's use \cref{eq:jstar} to back-propagate the relationship between 
 post-decision states and $\hat{\pi}$ with preference learning via our collected 
-feature set, denoted $\Phi^\text{OPT}$, i.e., we collect the features set 
+feature set, denoted $\Phi^\text{OPT}$, i.e., collecting the features set 
 corresponding following optimal tasks $J_{j^*}$ from $\pi^\star$ in 
 \cref{pseudo:constructJSP}.
 This baseline sampling trajectory originally introduced in \cite{InRu11a} for 
@@ -993,8 +996,8 @@ $\mathcal{L}$, is determined such that:
 r_1 \succ r_2 \succ \cdots \succ r_{n'} \quad (n' \leq n)
 \end{equation}
 implies $r_1$ is preferable to $r_2$, and $r_2$ is preferable to $r_3$, etc. 
-In our study, we know $r \propto C_{\max}^{\pi_\star}$, hence the optimal 
-job-list is the following:
+In this study, then it's known that $r \propto C_{\max}^{\pi_\star}$, hence the 
+optimal job-list is the following:
 \begin{equation}\quad
 \mathcal{O}=\left\{r_i \;:\; r_i \propto \min_{J_j \in \mathcal{L}} 
 C_{\max}^{\pi_\star(\vchi^j)}\right\}
@@ -1030,7 +1033,7 @@ box-plot of \namerho, is given in \cref{fig:passive:boxplot} and main
 statistics are reported in \cref{tbl:IL:stats}. 
 To address \ref{expr:boost:newdata}, the extended training set was simply 
 obtained by iterating over more examples, namely $N^{\text{OPT}}_{\text{train, 
-EXT}}=1000$. However, we see that the increased number of varied features 
+EXT}}=1000$. However, one can see that the increased number of varied features 
 dissuades the preference models to achieving a good performance w.r.t. $\rho$. 
 It's preferable to use the default $N^{\text{OPT}}_{\text{train}}=300$ and 
 allowing slight perturbations of the optimal trajectory, as done for 
@@ -1049,7 +1052,8 @@ is immensely constricted and few operations to choose from. However, the
 empirical evidence from using \ref{bias:adjdbl2nd} shows that it is 
 imperative to make right decisions at the very end.
 
-From \cite{InRu11a} we know that expert policy is a promising starting point.
+Based on the results from \cite{InRu11a} the expert policy is a promising 
+starting point.
 However, that was for $6\times5$ dimensionality (i.e. $K=30$), which is a much 
 simpler problem space. Notice that in \cref{fig:opt:SDR:xi} there was 
 virtually no chance for $\xi_\pi(k)$ of choosing a job resulting in optimal 
@@ -1058,8 +1062,8 @@ Since \jsp\ is a sequential prediction problem, all future observations are
 dependent on previous operations. 
 Therefore, learning sampled states that correspond only to optimal or 
 near-optimal schedules isn't of much use when the preference model has 
-diverged too far. We know from \cref{sec:opt:bdr}, that good classification 
-accuracy based on $\xi^\star_\pi$ doesn't necessarily mean a low mean \namerho.
+diverged too far. \Cref{sec:opt:bdr} showed that good classification 
+accuracy based on $\xi^\star_\pi$ does not necessarily mean a low mean \namerho.
 This is due to the learner's predictions affects future input observations 
 during its execution, which violates the crucial i.i.d. assumptions of the 
 learning approach, and ignoring this interaction leads to poor performance.
@@ -1144,10 +1148,9 @@ Namely, the mixed strategy for $\{\beta_i\}_{i=0}^T$ is unsupervised
 with $\beta_i=I(i=0)$, where $I$ is the indicator 
 function.\footnote{$\beta_0=1$ and $\beta_i=0,\forall i>0$.}
 
-Regarding \ref{expr:boost:newdata} strategy, we know from 
-\cref{sec:il:passive}, that adding new problem instances didn't boost 
-performance for the expert policy (which is equivalent for the initial 
-iteration of DAgger). 
+Regarding \ref{expr:boost:newdata} strategy, \cref{sec:il:passive} showed that 
+adding new problem instances did not boost performance for the expert policy 
+(which is equivalent for the initial iteration of DAgger). 
 Hence, for active IL, the extended set is now consists of each iteration 
 encountering $N_{\text{train}}$ new problem instances. For a grand total of: 
 \begin{equation}\quad
@@ -1155,7 +1158,7 @@ N^{\text{DA}i}_{\text{train, EXT}}=N_{\text{train}}\cdot (i+1)
 \end{equation}
 problem instances explored for the aggregated extended training set used for 
 the learning model at iteration $i$.
-This way, we use the extended training data sparingly, as labelling for each 
+This way, the extended training data is used sparingly, as labelling for each 
 problem instances is computationally intensive. As a result, the computational 
 budget for DAgger is same regardless whether there are new problem instances 
 used or not, i.e., 
@@ -1163,11 +1166,11 @@ $\abs{\Phi^{\text{DA}i}}\approx\abs{\Phi^{\text{DA}i}_{\text{EXT}}}$.
 
 Results for \jrnd{10}{10} box-plot of \namerho, is given in 
 \cref{fig:active:boxplot} and main statistics are reported in 
-\cref{tbl:IL:stats}. As we can see, DAgger is not fruitful when the same 
+\cref{tbl:IL:stats}. As one can see, DAgger is not fruitful when the same 
 problem instances are continually used. This is due to the fact that there is 
 not enough variance between $\Phi^{\text{IL}i}$ and $\Phi^{\text{IL}(i-1)}$, 
 hence the aggregated feature set $\Phi^{\text{DA}i}$ is only slightly perturbed 
-with each iterations. Which from \cref{sec:pil:expr} we already saw wasn't a 
+with each iterations. Which from \cref{sec:pil:expr} showed it was not a 
 very successful modification for the expert policy. Although, it's noted that 
 by introducing suboptimal state spaces the preference model is not as 
 drastically bad as the extended optimal policy, even though 
@@ -1197,8 +1200,8 @@ iterations $i=\{1,\ldots,3\}$ using extended training set
 As a reference, the \sdr\ MWR is shown at the edges of 
 \cref{fig:all:boxplot}.
 
-At first we see that the perturbed leader ever so-slightly improves the mean 
-for $\rho$, rather than using the baseline expert policy. 
+At first one can see that the perturbed leader ever so-slightly improves the 
+mean for $\rho$, rather than using the baseline expert policy. 
 However, AIL is by far the best improvement. With each iteration of DAgger, the 
 models improve upon the previous iteration
 \begin{enumerate*} 
@@ -1286,8 +1289,8 @@ analysis that could have been chosen instead, as here only a
 simplification of the trend from \cref{fig:case} was chosen. 
 This also opens of the question of how should validation accuracy be measured? 
 Since the model is based on learning preferences, both based on optimal versus 
-suboptimal, and then varying degrees of sub-optimality. As we are only looking 
-at the ranks in a black and white fashion, such that the makespans need to be 
+suboptimal, and then varying degrees of sub-optimality. Since ranks are only 
+looked at in a black and white fashion, such that the makespans need to be 
 strictly greater to belong to a higher rank, then it can be argued that some 
 ranks should be grouped together if their makespans are sufficiently close. 
 This would simplify the training set, making it (presumably) less of 
