@@ -51,16 +51,12 @@ Fax: +354-525-4632\\
 \selectlanguage{english}
 
 \begin{abstract}
-  Over the years there have been many approaches to create \dr s for scheduling.
-  Recent past efforts have focused on direct search methods (e.g. genetic 
-  programming) or training on data (e.g. supervised learning).
-  This paper will examine the latter and give a framework on how to do it 
-  effectively. 
-  Defining training data as  
-  $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$ then
+  Recent efforts to creating \dr s have focused on direct search methods and learning from scheduling data.
+  This paper will examine the latter approach and present a     systematic approach for doing so effectively. 
+  The key to learning an effective dispatching rule is through the careful construction of the training data,  
+  $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$, where
   \begin{enumerate*}
-    \item features of partially constructed schedules $\vec{x}_i$ should 
-    necessarily reflect the induced 
+    \item features of partially constructed schedules $\vec{x}_i$ should necessarily reflect the induced 
     data distribution $\mathcal{D}$ for when the rule is applied. This is achieved by updating the learned model in 
     an active imitation learning fashion
     \item $y_i$ is labelled optimally using a MIP solver
@@ -69,18 +65,14 @@ Fax: +354-525-4632\\
   \end{enumerate*}
   
   When querying an optimal policy, there is an abundance of valuable 
-  information that can be utilised for learning new models.
+  information that can be utilised for learning new dispatching rules.
   For instance, it's possible to seek out when the scheduling process is most 
   susceptible to failure.
-  Generally stepwise optimality (or classification accuracy) 
+  Generally stepwise optimality (or training accuracy) 
   will imply good end performance, here minimising the makespan. 
-  However, as the impact of suboptimal moves is not fully understood, then the 
-  measure needs to be adjusted for its intended trajectory.
+  However, as the impact of suboptimal moves is not fully understood, the labelling must be adjusted for its intended trajectory.
  
-  Using the guidelines set by the framework the design of custom \dr s, for 
-  one's particular scheduling application, will be more effective. In the study 
-  presented three different distributions of the \jsp\ will be considered.
-  The machine learning approach considered is based on preference learning, 
+  Using the guidelines set by the framework the design of custom \dr s, for  one's particular scheduling application, will be more effective. In the study  presented three different distributions of the \jsp\ will be considered. The machine learning approach considered is based on preference learning, 
   which learns what post decision state is preferable to another. However, 
   alternative learning methods may be applied to the training data generated.
   
@@ -96,7 +88,7 @@ Fax: +354-525-4632\\
 \section{Introduction}\label{sec:introduction}
 
 Hand crafting heuristics for scheduling is an ad-hoc approach to finding 
-approximate solutions to the problems. The practice is time-consuming and its 
+approximate solutions to problems. The practice is time-consuming and its 
 performance can even vary dramatically between different problem instances. The 
 aim of this work is to increase our understanding of this process. In 
 particular the learning of new problem specific priority \dr s (DR) will be 
@@ -114,10 +106,10 @@ problem instances.
 Such an approach is taken in \cite{Siggi05} for single-machine where
 a decision tree is learned from the data to have similar logic to the guiding 
 \dr. 
-However, the learned method cannot outperform the original \dr\ for the data 
+However, the learned method cannot outperform the original \dr\ used for the data 
 generation. 
 This drawback is confronted in \cite{Malik08,Russell09,Siggi10} by using an 
-optimal scheduler or policy, computed off-line, for data generation. The 
+optimal scheduler or policy, computed off-line. The 
 resulting \dr s, as decision trees, gave significantly better schedules than 
 using popular heuristics in that field, and a lower worst-case factor from 
 optimality. 
@@ -172,7 +164,6 @@ using an evolutionary algorithm, such as genetic programming (GP).
 %correctify some possibly bad dispatch made previously (sort of reverse 
 %lookahead). Their method computationally inexpensive, although the authors do 
 %stress that there is still remains room for improvement.
-
 The most predominant approach in hyper-heuristics is a framework of creating 
 new heuristics from a set of predefined heuristics via genetic algorithm 
 optimisation \cite{Burke10}. 
@@ -223,27 +214,28 @@ The training data is necessarily also problem instance specific. %and must refle
 %related to the final benchmark instances for relevant results. 
 In addition to addressing these aspects, the paper will show that during 
 the scheduling process, it will vary when it is most critical to make 
-the `right' decision. Furthermore, depending on the distribution of problem 
-instances those pivotal moments can vary greatly. 
-Moreover, a supervised learning algorithm will optimize classification accuracy, while it is the actual end-performance of the heuristic rule learned that will determine the success of the learning method. 
+the `right' dispatch. Furthermore, depending on the distribution of problem 
+instances these critical moments can vary greatly. 
+Moreover, a supervised learning algorithm will optimize classification accuracy, while it is the actual end-performance of the dispatching rule learned that will determine the success of the learning method. 
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and 
 \cref{sec:DR} describes the main attributes for \jsp, 
-and goes into how to create schedules with \dr s. 
+and illustrates how schedules are created with \dr s. 
 \Cref{sec:learnOPT} sets up the framework for learning from optimal schedules. 
 In particular, the probability of choosing optimal decisions and the effects of 
 making a suboptimal decision. Furthermore, the optimality of common \sdr s is 
 investigated.
-With those guidelines, \cref{ch:expr:CDR} goes into detail how to create 
+With these guidelines, \cref{ch:expr:CDR} goes into detail on how to create 
 meaningful \cdr s using preference learning, focusing on how to 
-compare operations and collect training data with the importance of good state 
-sampling. 
+compare operations and collect training data with the importance of  the
+sampling strategy applied. 
 \Cref{sec:il:active,sec:il:passive} explain the trajectories for 
-sampling meaningful schedule state-spaces used in preference learning, either 
+sampling meaningful schedules used in preference learning, either 
 using passive or active imitation learning. 
 Experimental results are jointly presented in \cref{sec:il:expr} with 
-comparison for a single randomly generated problem space. Furthermore, some 
+comparison for a single randomly generated problem space. \todo{single randomly generated problem space?}
+Furthermore, some 
 general adjustments for performance boost is also considered.
 The paper finally concludes in \cref{sec:con} with discussion and conclusions.
 
@@ -758,7 +750,7 @@ that it's quite greedy and only takes into consideration jobs with shortest
 immediate processing times. Now, even though it is possible to find optimal 
 schedules from this scenario, as \cref{fig:opt:SDR:xistar} shows, the inherent 
 structure that's already taking place might make it hard to come across by 
-simple methods. Therefore it's by no means guaranteed that by simply swapping 
+simple methods. Therefore, it's by no means guaranteed that by simply swapping 
 over to MWR will handle that situation which applying SPT has already created. 
 \Cref{fig:boxplot:BDR} does however show, that by applying MWR instead of SPT 
 in the latter stages, does help the schedule to be more compact w.r.t. SPT. 
@@ -776,8 +768,8 @@ dispatches, followed by MWR}
 \input{tables/stats.BDR.10x10.tex}
 
 In \cref{fig:opt:SDR:xistar} we inspected the stepwise optimality, given that 
-we were on the optimal trajectory. Since we're bound to make mistakes at some 
-points, it's interesting to see how that stepwise optimality evolves for its 
+we were on the optimal trajectory. As mistakes are bound to made at some 
+points, it is interesting to see how the stepwise optimality evolves for its 
 intended trajectory, thereby updating \cref{eq:tracc:opt} to:
 \begin{equation}\quad \label{eq:tracc:track}
 \xi_{\pi} := \mathbb{E}_{\pi}\left\{\pi_{\star} = \pi \right\}
@@ -794,7 +786,7 @@ is at most -0.5\%).
 But as pointed out for \cref{fig:case}, it's not so fatal to 
 make bad moves in the very first dispatches for \jrnd{10}{10}, hence little 
 gain with improved classification accuracy in that region. 
-However, after $k>20$ then the BDR starts diverging from MWR. 
+However, after $k>20$ then the BDR performance starts diverging from that of MWR. 
 
 \begin{figure}[t]
 \centering
@@ -806,11 +798,8 @@ $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
 \end{figure}
 
 \section{Preference Learning}\label{ch:expr:CDR}
-\Cref{sec:opt:bdr} demonstrated there is definitely something to be gained by
-trying out different combinations of DRs, it's just non-trivial how to go about 
-it, and motivates how it's best to learn such interaction, which 
-will be addressed in this \lcnamecref{ch:expr:CDR}.
-
+\Cref{sec:opt:bdr} demonstrated there is something to be gained by
+trying out different combinations of DRs, however, it is non-trivial. In this section one approach to learning how such combinations is presented.
 Learning models considered in this study are based on ordinal regression in 
 which the learning task is formulated as learning preferences. In the case of 
 scheduling, learning which operations are preferred to others. Ordinal 
@@ -988,7 +977,7 @@ $k$-th job of the sequence is revealed, the predictor guesses its value
 $\chi_k$ on the basis of the previous $k-1$ observations. 
 
 \subsection{Prediction with Expert Advice}\label{sec:expertPolicy}
-Let's assume we know the expert policy $\pi^\star$, which we can query what 
+Let us assume one knows the expert policy $\pi^\star$, which we can query what 
 is the optimal choice of $\chi_k={j^*}$ at any given time step $k$. 
 Now we can use \cref{eq:jstar} to back-propagate the relationship between 
 post-decision states and $\hat{\pi}$ with preference learning via our collected 
