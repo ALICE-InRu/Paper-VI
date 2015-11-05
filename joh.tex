@@ -1297,8 +1297,8 @@ making the right decision on crucial time points in the scheduling process, as
 Moreover, before training the learned model, the preference set $\Psi$ 
 needs to be re-sampled to size $l_{\max}$. 
 As the effects of making suboptimal choices varies as a function of time, the 
-stepwise bias should rather be done proportional to the mean 
-cumulative loss to a particular time step. 
+stepwise bias should rather take into account the disproportional amount of 
+features during the dispatching process. 
 As the experimental studies in \cref{sec:pil:expr,sec:ail:expr,sec:il:expr} 
 showed, instead of equal probability (i.e. \ref{bias:equal}) it was much more 
 fruitful to adjust the set to its number of preference and doubling the 
@@ -1313,7 +1313,7 @@ looked at in a black and white fashion, such that the makespans need to be
 strictly greater to belong to a higher rank, then it can be argued that some 
 ranks should be grouped together if their makespans are sufficiently close. 
 This would simplify the training set, making it (presumably) have less 
-contradictions and more appropriate for linear learning. Or simply the 
+contradictions and be more appropriate for linear learning. Or simply the 
 validation accuracy could be weighted w.r.t. the difference in makespan.
 During the dispatching process, there are some significant time points which 
 need to be especially taken care off. 
@@ -1321,9 +1321,9 @@ need to be especially taken care off.
 during the later stages for job-shop, whereas for flow-shop the earlier stages 
 of dispatches are more critical. 
 
-Despite the abundance of information gathered by following an optimal 
-trajectory, the knowledge obtained is not enough by itself. Since the learning 
-model isn't perfect, it is bound to make a suboptimal dispatch eventually. 
+Despite the information gathered by following an optimal trajectory, the 
+knowledge obtained is not enough by itself. Since the learning model isn't 
+perfect, it is bound to make a suboptimal dispatch eventually. 
 When it does, the model is in uncharted territory as there is no certainty the 
 samples already collected are able to explain the current situation. 
 For this we propose investigating partial schedules from suboptimal 
