@@ -51,13 +51,18 @@ Fax: +354-525-4632\\
 \selectlanguage{english}
 
 \begin{abstract}
-  Recent efforts to creating \dr s have focused on direct search methods and learning from scheduling data.
-  This paper will examine the latter approach and present a     systematic approach for doing so effectively. 
-  The key to learning an effective dispatching rule is through the careful construction of the training data,  
+  Recent efforts to creating \dr s have focused on direct search methods and 
+  learning from scheduling data.
+  This paper will examine the latter approach and present a     systematic 
+  approach for doing so effectively. 
+  The key to learning an effective dispatching rule is through the careful 
+  construction of the training data,  
   $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$, where
   \begin{enumerate*}
-    \item features of partially constructed schedules $\vec{x}_i$ should necessarily reflect the induced 
-    data distribution $\mathcal{D}$ for when the rule is applied. This is achieved by updating the learned model in 
+    \item features of partially constructed schedules $\vec{x}_i$ should 
+    necessarily reflect the induced 
+    data distribution $\mathcal{D}$ for when the rule is applied. This is 
+    achieved by updating the learned model in 
     an active imitation learning fashion
     \item $y_i$ is labelled optimally using a MIP solver
     \item data needs to be balanced, as the set is unbalanced w.r.t. 
@@ -70,9 +75,14 @@ Fax: +354-525-4632\\
   susceptible to failure.
   Generally stepwise optimality (or training accuracy) 
   will imply good end performance, here minimising the makespan. 
-  However, as the impact of suboptimal moves is not fully understood, the labelling must be adjusted for its intended trajectory.
+  However, as the impact of suboptimal moves is not fully understood, the 
+  labelling must be adjusted for its intended trajectory.
  
-  Using the guidelines set by the framework the design of custom \dr s, for  one's particular scheduling application, will be more effective. In the study  presented three different distributions of the \jsp\ will be considered. The machine learning approach considered is based on preference learning, 
+  Using the guidelines set by the framework the design of custom \dr s, for  
+  one's particular scheduling application, will be more effective. In the 
+  study  presented three different distributions of the \jsp\ will be 
+  considered. The machine learning approach considered is based on preference 
+  learning, 
   which learns what post decision state is preferable to another. However, 
   alternative learning methods may be applied to the training data generated.
   
@@ -106,7 +116,8 @@ problem instances.
 Such an approach is taken in \cite{Siggi05} for single-machine where
 a decision tree is learned from the data to have similar logic to the guiding 
 \dr. 
-However, the learned method cannot outperform the original \dr\ used for the data 
+However, the learned method cannot outperform the original \dr\ used for the 
+data 
 generation. 
 This drawback is confronted in \cite{Malik08,Russell09,Siggi10} by using an 
 optimal scheduler or policy, computed off-line. The 
@@ -144,7 +155,7 @@ search the \dr\ space directly. The prevalent approach in this case would be
 using an evolutionary algorithm, such as genetic programming (GP). 
 %The main drawback is that the rules from a GP framework can be quite complex, 
 %and difficult to interpret.
-%For instance \cite{Tay08} applied GP on a terminal set of job-attributes for 
+%For instance \cite{Tay08} applied GP on a terminal set of job-features for 
 %flexible \jsp\ with promising results compared to the benchmarks DRs from the 
 %literature.
 %In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} 
@@ -165,12 +176,12 @@ using an evolutionary algorithm, such as genetic programming (GP).
 %correctify some possibly bad dispatch made previously (sort of reverse 
 %lookahead). Their method computationally inexpensive, although the authors do 
 %stress that there is still remains room for improvement.
-The most predominant approach in hyper-heuristics is a framework of creating 
+The predominant approach in hyper-heuristics is a framework of creating 
 new heuristics from a set of predefined heuristics via genetic algorithm 
 optimisation \cite{Burke10}. 
 Adopting a two-stage hyper-heuristic approach to generate a set of 
 machine-specific DRs for dynamic \jsp, \cite{Pickardt2013} used genetic 
-programming (GP) to evolve CDRs from basic attributes, along with evolutionary 
+programming (GP) to evolve CDRs from basic features, along with evolutionary 
 algorithm to assign a CDR to a specific machine. 
 The problem space consists of \jsp s in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped to similar work centres, 
@@ -191,8 +202,9 @@ measures considered. They showed that it was better to have a all the DRs to
 choose from rather than just a single DR at a time.
 %
 A simpler and more straightforward way to automate selection of \cdr s (CDR), 
-\cite{InRu14}, translated \dr s into measurable attributes (or features) and 
-optimise directly what their contribution should be via evolutionary search. 
+\cite{InRu14}, translated \dr s into measurable features which describe the 
+partial schedule and optimise directly what their contribution should be via 
+evolutionary search. 
 
 Using case based reasoning for timetable scheduling, training data in 
 \cite{Burke06} is guided by the two best heuristics in the literature.
@@ -206,22 +218,26 @@ range of new cases.
 %1.) Features matter       2.) Training data matters
 %3.) Problem specific      4.) Annað? Time depedendance
 When learning new \dr s there are several important 
-factors to consider. First and foremost the context in which the training data is constructed 
+factors to consider. First and foremost the context in which the training data 
+is constructed 
 will influence the quality of the learned \dr\ \cite{Burke06}. 
 Since the training data consists of collection of features, the quality of 
 training data is interchangeable to the predictability of features. 
 %Stressing the importance of consequential feature selection. 
-The training data is necessarily also problem instance specific. %and must reflect 
+The training data is necessarily also problem instance specific. %and must 
+%reflect 
 %related to the final benchmark instances for relevant results. 
 In addition to addressing these aspects, the paper will show that during 
 the scheduling process, it will vary when it is most critical to make 
 the `right' dispatch. Furthermore, depending on the distribution of problem 
 instances these critical moments can vary greatly. 
-Moreover, a supervised learning algorithm will optimize classification accuracy, while it is the actual end-performance of the dispatching rule learned that will determine the success of the learning method. 
+Moreover, a supervised learning algorithm will optimize classification 
+accuracy, while it is the actual end-performance of the dispatching rule 
+learned that will determine the success of the learning method. 
 
 The outline of the paper is the following, \cref{sec:problemdef} gives the 
 mathematical formalities of the scheduling problem, and 
-\cref{sec:DR} describes the main attributes for \jsp, 
+\cref{sec:DR} describes the main featues for \jsp, 
 and illustrates how schedules are created with \dr s. 
 \Cref{sec:learnOPT} sets up the framework for learning from optimal schedules. 
 In particular, the probability of choosing optimal decisions and the effects of 
@@ -385,7 +401,8 @@ $J_{j''}$ is $J_{j'}$ successor on $M_a$. Since preemption is not allowed, the
 only applicable slots are whose idle time can process the entire operation, 
 namely:
 \begin{equation}\quad
-\tilde{S}_{ja} := \left\{J_{j'}\in \mathcal{J}_a \;:\; \tilde{s}(a,j')\geq p_{ja} 
+\tilde{S}_{ja} := \left\{J_{j'}\in \mathcal{J}_a \;:\; \tilde{s}(a,j')\geq 
+p_{ja} 
 \right\}\label{eq:slots}.
 \end{equation} 
 The placement rule applied will decide where to place the job and is intrinsic 
@@ -414,49 +431,49 @@ $C_{\max}$ denoted as dotted line.}
 %Dispatching rules are of a construction heuristics, where one starts with an 
 %empty schedule and adds sequentially on %one operation (or tasks) at a time. 
 
-Priority \dr s will use attributes of operations, such as processing time, 
+Priority \dr s will use features of operations, such as processing time, 
 in order to determine the job with the highest priority. 
 Consider again \cref{fig:jssp:example}, if the job with the shortest processing 
 time (SPT) were to be scheduled next, then $J_2$ would be dispatched. 
 Similarly, for the longest processing time (LPT) heuristic, $J_5$ would have 
 the highest priority. 
-Dispatching can also be based on attributes related to the partial schedule. 
+Dispatching can also be based on features related to the partial schedule. 
 Examples of these are dispatching the job with the most work remaining (MWR) or 
 alternatively the least work remaining (LWR). A survey of more than $100$ of 
 such rules are presented in \cite{Panwalkar77}. 
 However, the reader is referred to an in-depth survey for simple or 
 \emph{\sdr} (SDR) by \cite{Haupt89}. 
 The SDRs assign an index to each job in the job-list and is generally only 
-based on a few attributes and simple mathematical operations.
+based on a few features and simple mathematical operations.
 
 \begin{table}[t!] \centering
-\caption[Attribute space $\mathcal{A}$ for \JSP]{Attribute space 
-$\mathcal{A}$ for \JSP\ where job $J_j$ on machine $M_a$ given the 
+\caption[Feature space $\mathcal{F}$ for \JSP]{Feature space 
+$\mathcal{F}$ for \JSP\ where job $J_j$ on machine $M_a$ given the 
 resulting temporal schedule after operation $(j,a)$.
 }
 \label{tbl:jssp:feat}
 {\setlength{\tabcolsep}{3pt} \input{tables/features-description}}
 \end{table}
 
-Designing priority \dr s requires recognising the important attributes of the 
+Designing priority \dr s requires recognising the important features of the 
 partial schedules needed to create a reasonable scheduling rule. 
-These attributes attempt to grasp key features of the schedule being 
-constructed. Which attributes are most important will necessarily depend on the
+These features attempt to grasp key attributes of the schedule being 
+constructed. Which features are most important will necessarily depend on the
 objectives of the scheduling problem. 
-Attributes used in this study applied for each possible operation encountered 
+Features used in this study applied for each possible operation encountered 
 are given in \cref{tbl:jssp:feat}, where the set of machines already dispatched 
 for $J_j$ is $\mathcal{M}_j\subset\mathcal{M}$, and similarly, $M_a$ has 
 already had the jobs $\mathcal{J}_a\subset\mathcal{J}$ previously dispatched.
-The attributes of particular interest were obtained by inspecting the 
-aforementioned SDRs. Attributes \phiJobRelated\ and \phiMacRelated\ are 
+The features of particular interest were obtained by inspecting the 
+aforementioned SDRs. Features \phiJobRelated\ and \phiMacRelated\ are 
 job-related and machine-related, respectively.
 In fact, \cite{Pickardt2013} note that in the current literature, there is a 
-lack of global perspective in the attribute space, as omitting them won't 
+lack of global perspective in the feature space, as omitting them won't 
 address the possible negative impact an operation $(j,a)$ might have on other 
-machines at a later time, it is for that reason attributes such as 
+machines at a later time, it is for that reason features such as 
 \phiSlackRelated\ are considered, since they are slack related and are a means 
 of indicating the current quality of the schedule.
-All of the attributes, $\vphi$, vary throughout the scheduling process, 
+All of the features, $\vphi$, vary throughout the scheduling process, 
 w.r.t. operation belonging to the same time step $k$, with the exception of 
 \phijobTotProcTime\ and \phimacTotProcTime\ which are static for a given 
 problem instance but varying for each $J_j$ and $M_a$, respectively. 
@@ -468,8 +485,8 @@ However, they can also fail unpredictably.
 A careful combination of \dr s has been shown to perform significantly better 
 \cite{Jayamohan04}. These are referred to as \emph{\cdr s} 
 (CDR), where the priority ranking is an expression of several \dr s. 
-CDRs deal with a greater number of more complicated functions (or features) and 
-are constructed from the schedules attributes. In short, a CDR is a combination 
+CDRs deal with a greater number of more complicated functions and are 
+constructed from the schedules features. In short, a CDR is a combination 
 of several DRs. 
 For instance let $\pi$ be a CDR comprised of $d$ DRs, then the index $I$ for 
 $J_j\in\mathcal{L}^{(k)}$ using $\pi$ is:
@@ -478,7 +495,7 @@ $J_j\in\mathcal{L}^{(k)}$ using $\pi$ is:
 \end{equation}
 where $w_i>0$ and $\sum_{i=0}^d w_i = 1$ with $w_i$ giving the weight of the 
 influence of $\pi_i$ (which could be a SDR or another CDR) to $\pi$. Note: 
-each $\pi_i$ is a function of $J_j$'s attributes from the current sequence 
+each $\pi_i$ is a function of $J_j$'s features from the current sequence 
 $\vchi$, where $\vchi^j$ implies that $J_j$ was the latest dispatch, i.e., the 
 partial schedule given $\chi_k=J_j$.
 
@@ -491,9 +508,9 @@ While investigating 11 SDRs for JSP, \cite{Lu13} a pool of 33 CDRs was created.
 This pool strongly outperformed the original CDRs by using multi-contextual 
 functions based on either job waiting time or machine idle time (similar 
 to \phiwait\ and \phimacSlack\ in \cref{tbl:jssp:feat}), i.e., the CDRs are a 
-combination of either one or both of these key attributes and then the SDRs.
+combination of either one or both of these key features and then the SDRs.
 However, there are no combinations of the basic SDRs explored, only those two 
-attributes. 
+features. 
 Similarly, using priority rules to combine 12 existing DRs from the literature, 
 \cite{Yu13} had 48 CDR combinations which yielded 48 different models 
 to implement and test. 
@@ -633,7 +650,7 @@ $N_{\text{train}}$ problem instances available, namely:
 \subset\mathcal{F}
 \end{equation}
 where the feature space $\mathcal{F}$ is described in \cref{tbl:jssp:feat}, and 
-are based on job- and machine-attributes which are widespread in practice.
+are based on job- and machine-features which are widespread in practice.
 
 \input{pseudocode/constructJSP}
 
@@ -770,8 +787,8 @@ dispatches, followed by MWR}
 
 In \cref{fig:opt:SDR:xistar} the stepwise optimality was inspected, given that 
 all committed dispatches were based on the optimal trajectory. 
-As mistakes are bound to made at some points, it is interesting to see how the 
-stepwise optimality evolves for its intended trajectory, thereby updating 
+As mistakes are bound to be made at some points, it is interesting to see how 
+the stepwise optimality evolves for its intended trajectory, thereby updating 
 \cref{eq:tracc:opt} to:
 \begin{equation}\quad \label{eq:tracc:track}
 \xi_{\pi} := \mathbb{E}_{\pi}\left\{\pi_{\star} = \pi \right\}
@@ -788,7 +805,8 @@ is at most -0.5\%).
 But as pointed out for \cref{fig:case}, it's not so fatal to 
 make bad moves in the very first dispatches for \jrnd{10}{10}, hence little 
 gain with improved classification accuracy in that region. 
-However, after $k>20$ then the BDR performance starts diverging from that of MWR. 
+However, after $k>20$ then the BDR performance starts diverging from that of 
+MWR. 
 
 \begin{figure}[t]
 \centering
@@ -801,7 +819,8 @@ $\log\left(\xi_{\langle\text{SDR}\rangle}\right)$}
 
 \section{Preference Learning}\label{ch:expr:CDR}
 \Cref{sec:opt:bdr} demonstrated there is something to be gained by
-trying out different combinations of DRs, however, it is non-trivial. In this section one approach to learning how such combinations is presented.
+trying out different combinations of DRs, however, it is non-trivial. In this 
+section one approach to learning how such combinations is presented.
 Learning models considered in this study are based on ordinal regression in 
 which the learning task is formulated as learning preferences. In the case of 
 scheduling, learning which operations are preferred to others. Ordinal 
@@ -910,7 +929,7 @@ randomly generated problem instances, i.e., traditional \emph{passive
 imitation learning} (PIL). 
 As \JSP\ is a sequential decision making process, errors are bound to emerge. 
 Due to compound effect of making suboptimal dispatches, the model leads the 
-schedule astray from learned state-spaces, resulting in the new input being 
+schedule astray from learned feature-space, resulting in the new input being 
 foreign to the learned model. 
 Alternatively, training data could be generated using suboptimal solution 
 trajectories as well, as was done in \cite{InRu15a}, where the training data 
@@ -924,7 +943,7 @@ well-known SDRs yielded better models with lower \namerho.
 
 Inspired by the work of \cite{RossB10,RossGB11}, the methodology of generating 
 training data will now be such that it will iteratively improve upon the model, 
-such that the state-spaces learned will be representative of the state-spaces 
+such that the feature-space learned will be representative of the feature-space 
 the eventual model would likely encounter, known as DAgger for \emph{active 
 imitation learning} (AIL).
 Thereby, eliminating the ad-hoc nature of choosing trajectories to learn, by 
@@ -1060,7 +1079,7 @@ virtually no chance for $\xi_\pi(k)$ of choosing a job resulting in optimal
 makespan after step $k=28$.
 Since \jsp\ is a sequential prediction problem, all future observations are 
 dependent on previous operations. 
-Therefore, learning sampled states that correspond only to optimal or 
+Therefore, learning sampled features that correspond only to optimal or 
 near-optimal schedules isn't of much use when the preference model has 
 diverged too far. \Cref{sec:opt:bdr} showed that good classification 
 accuracy based on $\xi^\star_\pi$ does not necessarily mean a low mean \namerho.
@@ -1076,9 +1095,9 @@ $\bigOh{\epsilon K}$, if it were i.i.d.
 \section{Active Imitation Learning}\label{sec:il:active}
 
 To amend performance from $\Phi^{\text{OPT}}$-based models, suboptimal 
-state-spaces were explored in \cite{InRu15a} by inspecting the features from 
-successful SDRs, $\Phi^{\langle\text{SDR}\rangle}$, by passively observing a 
-full execution of following the task chosen by the corresponding SDR. 
+partial schedules were explored in \cite{InRu15a} by inspecting the features 
+from successful SDRs, $\Phi^{\langle\text{SDR}\rangle}$, by passively observing 
+a full execution of following the task chosen by the corresponding SDR. 
 This required some trial-and-error as the experiments showed that features 
 obtained by SDR trajectories were not equally useful for learning.
 
@@ -1094,10 +1113,10 @@ In short, it entails the model $\pi_i$ that queries an expert policy (same as
 in \cref{sec:expertPolicy}), $\pi_\star$, it's trying to mimic, 
 but also ensuring the learned model updates itself in an iterative fashion, 
 until it converges. 
-The benefit of this approach is that the states that are likely to occur in 
-practice are also investigated and as such used to dissuade the model from 
-making poor choices. In fact, the method queries the expert about the desired 
-action at individual post-decision states which are both based on past 
+The benefit of this approach is that the feature-states that are likely to 
+occur in practice are also investigated and as such used to dissuade the model 
+from making poor choices. In fact, the method queries the expert about the 
+desired action at individual post-decision states which are both based on past 
 queries, and the learner's interaction with the current environment.
 
 DAgger has been proven successful on a variety of benchmarks 
@@ -1172,7 +1191,7 @@ not enough variance between $\Phi^{\text{IL}i}$ and $\Phi^{\text{IL}(i-1)}$,
 hence the aggregated feature set $\Phi^{\text{DA}i}$ is only slightly perturbed 
 with each iterations. Which from \cref{sec:pil:expr} showed it was not a 
 very successful modification for the expert policy. Although, it's noted that 
-by introducing suboptimal state spaces the preference model is not as 
+by introducing suboptimal feature-space the preference model is not as 
 drastically bad as the extended optimal policy, even though 
 $\abs{\Phi^{\text{DA}i}}\approx\abs{\Phi^{\text{OPT}}_{\text{EXT}}}$.
 However, when using new problem instances at each iterations, the feature set 
@@ -1232,12 +1251,13 @@ policy, as $\rho$ increased approximately 10\%. This could most likely be
 counter-acted by increasing $l_{\max}$ to reflect the 700 additional examples.
 What is interesting though, is that \ref{expr:boost:newdata} is well suited for 
 AIL, using the same $l_{\max}$ as before. 
-Note, the amount of problems used for $N^{\text{OPT}}_{\text{train, EXT}}$ is equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger.
+Note, the amount of problems used for $N^{\text{OPT}}_{\text{train, EXT}}$ is
+equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger.
 The new varied data gives the aggregated feature set more information 
-of what is important to learn in subsequent iterations, as those new states are 
-more likely to be encountered `in practice' rather than `in theory.' Not only 
-does the AIL converge faster, it also consistently 
-improves with each iterations.
+of what is important to learn in subsequent iterations, as those new 
+feature-states are more likely to be encountered `in practice.' 
+Not only does the AIL converge faster, it also consistently improves with each 
+iterations.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{figures/{j_rnd}/{boxplot_summary_10x10}.pdf}
@@ -1314,25 +1334,27 @@ work of \cite{RossB10,RossGB11}, such that the
 learned policy following an optimal trajectory is used to collect training 
 data, and the learned model is iteratively updated. 
 This can be done over several iterations, with the benefit being, that the 
-states that are likely to occur in practice are investigated, and as such used 
-to dissuade the model from making poor choices in the future.
+partial schedules that are likely to occur in practice are investigated, and as 
+such used to dissuade the model from making poor choices in the future.
 %Alas, this comes at great computational cost due to the substantial amounts of 
-%states that need to be optimised for their correct labelling. Making it only 
-%practical for \jsp\ of a considerably small size, or only few iterations.
+%feature-states that need to be optimised for their correct labelling. Making 
+%it only practical for \jsp\ of a considerably small size, or only few 
+%iterations.
 %To counteract this drawback, the Maximum Mean Discrepancy (MMD) imitation 
 %learning by \cite{Kim13} is an iterative algorithm similar to DAgger where the 
 %expert policy is only queried when needed in order to reduce computational
 %cost. 
-%This occurs when a metric of a new state is sufficiently large enough from a 
-%previously queried states (to ensure diversity of learned optimal states). 
+%This occurs when a metric of a newly encountered schedules are sufficiently 
+%large enough from previously queried schedules (to ensure diversity of 
+%learned optimal schedules). 
 %Moreover, in DAgger all data samples are equally important, irrespective of 
 %its iteration, which can require great number of iterations to learn how to 
 %recover from the mistakes of earlier policies. To address the naivety of the 
 %data aggregation, MMD suggests only aggregating a new data point if it is 
-%sufficiently different to previously gathered states, and if the current 
+%sufficiently different to previously gathered schedules, and if the current 
 %policy has made a mistake. 
 %Additionally, there are multiple policies, each specialising in a particular 
-%region of the state space where previous policies made mistakes.
+%region of the feature-space where previous policies made mistakes.
 %Although MMD has better empirical performance (based on robot applications), 
 %it requires defining metrics, which in the case of \jsp\ is non-trivial (cf. 
 %\cite{InRu12}), and fine-tuning thresholds etc., whereas DAgger can be 
@@ -1364,7 +1386,7 @@ policy instead (i.e. $\pi_\star$ in \cref{eq:il} is suboptimal)
 This study has been structured around the \jsp\ scheduling problem, however, 
 it can be easily extended to other types of deterministic optimisation problems 
 that involve sequential decision making. 
-The framework presented here collects snap-shots of the state space by 
+The framework presented here collects snap-shots of the partial schedules by 
 following an optimal trajectory, and verifying the resulting optimal solution 
 from each possible state. 
 From which the stepwise optimality of individual features can be inspected, 
