@@ -1269,22 +1269,18 @@ MWR shown for reference.}\label{fig:all:boxplot}
 \input{tables/stats.IL.10x10.tex}
 
 \section{Discussion and conclusions}\label{sec:con}
-Current literature still give discourse to \sdr s as they are simple to 
+
+The \sdr s remain a popular approach to scheduling, as they are simple to 
 implement and quite efficient. 
-However, they are generally taken for granted as there is clear lack of 
-investigation of how these \dr s actually work, and what 
-makes them so successful (or in some cases unsuccessful)? 
+Nevertheless, when they are successful and when they fail remains illusive. 
+%investigation of how these \dr s actually work, and what 
+%makes them so successful (or in some cases unsuccessful)? 
 %For instance, of the four SDRs this study focuses on, why does MWR outperform 
 %so significantly for \jsp\, yet completely fail for \fsp? 
 %MWR seems to be able to adapt to varying distributions of processing times, 
 %however, manipulating the machine ordering causes MWR to break down. 
-By inspecting optimal schedules, and researching what's going on, 
-every step of the way of the dispatching sequence, some light is shed where 
-these SDRs vary w.r.t. the problem instance space. 
-Once these simple rules are understood, then it's feasible to extrapolate the 
-knowledge gained and create new \cdr s that are likely to be successful. 
-However, for \jsp\ there is hidden interaction between processing times and 
-machine ordering that's hard to measure, therefore creating new \dr s is by no 
+By inspecting optimal schedules, and investigating the probability that an optimal dispatch could be chosen by chance, and by looking at the impact of choosing sub-optimal dispatches,  some light is shed on how SDRs vary in performance. Furthermore, the problem instance space was varied, giving an even better understanding of the behaviour of the SDRs.
+This analysis, however, also revealed that creating new \dr s from data is by no 
 means trivial. 
 
 Experiments in \cref{sec:pil:expr} show that following the optimal
