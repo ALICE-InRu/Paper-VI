@@ -854,14 +854,15 @@ Let's label features from \cref{eq:Phi} that were considered optimal,
 \mbox{$\vpsi^{o}=\vphi^{o}-\vphi^{s}$}, and suboptimal, 
 \mbox{$\vpsi^{s}=\vphi^{s}-\vphi^{o}$} by $y_o=+1$ and $y_s=-1$ respectively. 
 Then, the preference learning problem is specified by a set of preference pairs:
-\begin{eqnarray}
-\quad \Psi &=& 
-\left\{\left(\vpsi^o,+1\right),\left(\vpsi^s,-1\right)
-\;:\;
+\begin{equation}
+\begin{split}
+\quad \Psi & = \left\{\left(\vpsi^o,+1\right),\left(\vpsi^s,-1\right)
+\;:\; 
 \forall \left(J_o,J_s\right) \in \mathcal{O}^{(k)} \times 
-\mathcal{S}^{(k)}\right\}_{k=1}^{K} \nonumber
-\\ &\subset& \Phi\times Y \label{eq:prefset}
-\end{eqnarray}
+\mathcal{S}^{(k)}\right\}_{k=1}^{K} \\
+& \subset  \Phi\times Y
+\end{split} \label{eq:prefset}
+\end{equation}
 where $\Phi\subset \mathbb{R}^d$ is the training set of $d=\NrFeatLocal$ 
 features (cf. \cref{tbl:jssp:feat}), $Y=\{+1,-1\}$ is the outcome space from 
 job pairs $J_o\in\mathcal{O}^{(k)}$ and $J_s\in\mathcal{S}^{(k)}$, for all 
