@@ -5,10 +5,10 @@
 	$\vphi$ & Feature description & Mathematical formulation \\ 
 	%\hline \multicolumn{4}{c}{\textbf{Local features}} \\
 	\midrule
-	\multicolumn{3}{c}{\textbf{job related}}\\
+	\multicolumn{3}{c}{\textbf{job-related}}\\
 	\phiproc & job processing time & $p_{ja}$ \\
-	\phistartTime & job start-time & $x_s(j,a)$ \\
-	\phiendTime & job end-time & $x_e(j,a)$ \\
+	\phistartTime & job start time & $x_s(j,a)$ \\
+	\phiendTime & job end time & $x_e(j,a)$ \\
 	\phiarrivalTime & job arrival time & $x_e(j,a-1)$\\
 	\phiwait & time job had to wait & $x_s(j,a)-x_e(j,a-1)$ \\
 	\phijobTotProcTime & total processing time for job & 
@@ -18,7 +18,7 @@
 	\phijobOps & number of assigned operations for job & 
 	$|\mathcal{M}_j|$ \\
 	\midrule
-	\multicolumn{3}{c}{\textbf{machine related}}\\
+	\multicolumn{3}{c}{\textbf{machine-related}}\\
 	\phimacFree & when machine is next free & 
  $\max_{j'\in \mathcal{J}_a} \{x_e(j',a)\}$ \\
 	\phimacTotProcTime & total processing time for machine & 
