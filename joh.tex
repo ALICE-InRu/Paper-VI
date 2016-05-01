@@ -988,6 +988,11 @@ $\abs{\{\Psi(k)\}_{k=\frac{K}{2}}^{K-1}} \approx \frac{2}{3}l_{\max}$.
 repeated collection of training data and since labelling is a very 
 time intensive task, the remainder of the paper will solely focus 
 on \jrnd{10}{10}.
+The experiments in \cite{InRu15a} generally took several hours to collect for 
+$N_{\text{train}}^{6\times5}=500$. 
+Going to higher dimension and using $N_{\text{train}}^{10\times10}=300$ 
+computational intensity becomes an issue, as \jrnd{10}{10} needs a few days and 
+\jrndn{10}{10} or \frnd{10}{10} require several weeks using a personal computer.
 
 \section{Passive Imitation Learning}\label{sec:il:passive}
 Using the terms from game theory used in \cite{CesaBianchi06}, % chapter 2: 
@@ -1247,15 +1252,15 @@ unsuccessful, and the aggregated data set downgrades the performance of the
 previous iterations, making it best to learn solely on the initial expert 
 policy for that model configuration.
 
-Regarding \ref{expr:boost:newdata}, then it's not successful for the expert 
-policy, as $\rho$ increased approximately 10\%. This could most likely be 
-counter-acted by increasing $l_{\max}$ to reflect the 700 additional examples.
-What is interesting though, is that \ref{expr:boost:newdata} is well suited for 
-AIL, using the same $l_{\max}$ as before. 
-Note, the amount of problems used for $N^{\text{OPT}}_{\text{train, EXT}}$ is
-equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger.
-The new varied data gives the aggregated feature set more information 
-of what is important to learn in subsequent iterations, as those new 
+Regarding \ref{expr:boost:newdata}, it is not then successful for the expert 
+policy as $\rho$ increased approximately 10\%. This could most likely be 
+counteracted by increasing $l_{\max}$ to reflect the 700 additional examples. 
+What is interesting, though, is that \ref{expr:boost:newdata} is well suited 
+for AIL, using the same $l_{\max}$ as before. 
+Note, the number of problems used for $N^{\text{OPT}}_{\text{train,EXT}}$ is 
+equivalent to $T=2\tfrac{1}{3}$ iterations of extended DAgger. 
+The new varied data give the aggregated feature set more information 
+on what is important to learn in subsequent iterations, as those new 
 feature-states are more likely to be encountered `in practice.' 
 Not only does the AIL converge faster, it also consistently improves with each 
 iteration.
