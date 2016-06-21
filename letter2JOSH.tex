@@ -1,0 +1,81 @@
+\documentclass[]{letter}
+
+
+\begin{document}
+% If you want headings on subsequent pages,
+% remove the ``%'' on the next line:
+% \pagestyle{headings}
+
+\begin{letter}{The Editorial Office \\ Journal of Scheduling}
+\address{	
+    Helga Ingimundardottir\\
+    University of Iceland\\
+    Dunhaga 5, IS-107 Reykjavik, Iceland\\
+}
+
+\opening{Dear JOSH Editors,}
+
+We would like submit a revised version of our paper titled: ``Discovering 
+dispatching rules from data using imitation learning: Case study for the 
+job-shop problem'' -- manuscript \texttt{JOSH-D-15-00213}.
+
+The answers from the two anonymous reviewers and associate editor's note are as 
+follows:
+\begin{description}
+    \item[Reviewer 1] remarks: 
+    
+    \begin{itemize}
+    \item Finding or creating proper dispatching rules is the key to solve 
+    middle to large scale factory job scheduling problems.
+    \item The paper focuses on how to make decision based on the historic data 
+    and build several models with different optimal approaches and parameters. 
+    The simulation results indicates the models could give the reasonable 
+    solution in the particular circumstance. The impacts of the optimal 
+    approaches and parameters are also discussed.
+    \item The paper did not mention the performance of the algorithm, such as 
+    the calculation time, and the requirements of the computer. Normally such 
+    performance are valuable for estimating the algorithm in practice.
+    \item But anyway I suppose the paper is good for publishing.
+    \end{itemize}    
+    \item[Reviewer 2] remarks: 
+    \begin{enumerate}
+    \item There are many language and format errors in this paper, such as 
+    unnecessary comma or missing hyphen.    
+    \item Full of spell mistakes and grammatical errors. (in page 2, line 21, 
+    column 2 "featues (features)" or line 28 in same column "rules is(are)")    
+    \item Unreadable, This paper needs to be proofread thoroughly. (In page 2, 
+    first column sentence in line 45 and 46 is obscure)
+    \end{enumerate}
+
+    \item[Associate editor] The two reviewers have opposing views.
+    Reviewer 1 recommends accept, but is not without reservation.
+    Reviewer 2 finds the paper difficult to read.
+    Personally I find this paper technically interesting. I would like to see 
+    it published eventually, but writing must be significantly improved. Not 
+    only should English be improved. The authors should make the material 
+    easier to digest by the readers.   
+    
+\end{description}
+Based on the advice received from the editor our paper has been professionally 
+proofread. 
+Moreover, in order to make the material easier to digest for the reader, 
+we have made the paper more readable by reducing mathematical notation and 
+describing more thoroughly in the main text equations, symbols, and pseudocodes.
+
+Computational times have been addressed. These computational times are with 
+respect to training times, or the time needed to create the dispatching rules 
+which may take days. The dispatching rules themselves are as fast as any other 
+commonly implemented dispatching rule, such as MWR. In practice the 
+application of these rules is very fast and therefore of great practical 
+importance.
+
+
+\signature{Helga Ingimundardottir}
+
+\closing{Sincerely}
+
+%enclosure listing
+%\encl{Summary of changes with diffs from submitted to revised version.}
+
+\end{letter}
+\end{document}
