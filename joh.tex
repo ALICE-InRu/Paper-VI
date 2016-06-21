@@ -39,7 +39,7 @@ Tel.: +354-525-4733\\
 Fax: +354-525-4632\\
 \email{tpr@hi.is}\\
 }
-\date{Received: \today / Accepted: date}
+\date{Received: November 6, 2015 / Accepted: date}
 % The correct dates will be entered by the editor
 
 \input{shorthand} % put your own shorthand declarations in this document
@@ -624,8 +624,10 @@ scheduling policy (or heuristic). This process is given as a pseudo-code in
 After each dispatch\footnote{Dispatch and time step are used interchangeably.} 
 the schedule's current features are updated based on 
 the half-finished schedule, $\vchi$. 
-For each possible post-decision state the temporal features are collected (cf. 
-\cref{pseudo:constructJSP:phi}) forming the feature set, $\Phi$, based on all 
+For each possible post-decision state, $J_j\in\mathcal{L}^{(k)}$, the temporal 
+features, $\vphi_j$, are collected (cf. 
+\cref{pseudo:constructJSP:phi}) forming the feature set, $\Phi$, based on the 
+union of all 
 $N_{\text{train}}$ problem instances available, namely:
 \begin{equation}\quad \label{eq:Phi}
 \Phi := \bigcup_{\{\vec{x}_i\}_{i=1}^{N_{\text{train}}}} 
@@ -660,7 +662,8 @@ complete schedules yet can still achieve the same makespan.
 The redundancy in building optimal solutions using dispatching rules means that 
 many different dispatches may yield an optimal solution to the problem instance.
 Let's formalise the probability of optimality (or stepwise 
-classification accuracy) for a given policy $\pi$, as:
+classification accuracy) for a given policy $\pi$, yet following the expert 
+policy $\pi_\star$, as:
 \begin{equation}\quad \label{eq:tracc:opt}
 \xi^\star_{\pi} := \mathbb{E}_{\pi_\star}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
@@ -771,8 +774,8 @@ dispatches, followed by MWR}
 In \cref{fig:opt:SDR:xistar} the stepwise optimality was inspected, given that 
 all committed dispatches were based on the optimal trajectory. 
 As mistakes are bound to be made at some points, it is interesting to see how 
-the stepwise optimality evolves for its intended trajectory, thereby updating 
-\cref{eq:tracc:opt} to:
+the stepwise optimality evolves for its intended trajectory, $\pi$, thereby 
+updating \cref{eq:tracc:opt} to:
 \begin{equation}\quad \label{eq:tracc:track}
 \xi_{\pi} := \mathbb{E}_{\pi}\left\{\pi_{\star} = \pi \right\}
 \end{equation}
@@ -997,8 +1000,8 @@ optimal task is dispatched.
 
 By querying the expert policy, $\pi_\star$, the ranking of the job-list, 
 $\mathcal{L}$, satisfies \cref{eq:rankorder}. 
-In this study, then it's known that $r_1 \propto C_{\max}^{\pi_\star}$, hence 
-the optimal job-list is the following:
+In this study, then it's known that the best rank $r_1 \propto 
+C_{\max}^{\pi_\star}$, hence the optimal job-list is the following:
 \begin{equation}\quad
 \mathcal{O}=\left\{J_j \;:\; r_1 \propto \min_{J_j \in \mathcal{L}} 
 C_{\max}^{\pi_\star(\vchi^j)}\right\}
