@@ -17,7 +17,7 @@
         \Comment{visited states for $\pi_i$ and actions by $\pi_\star$}
         \State $\Phi^{\text{DA}i} \gets \Phi^{\text{DA}i-1} \cup 
         \Phi^{\text{IL}i}$ 
-        \Comment{aggregate datasets, cf. \cref{eq:DAgger}}
+        \Comment{aggregate datasets from \cref{eq:Phi}}
         \State $\hat{\pi}_{i+1} \gets$ \Call{Train}{$\Phi^{\text{DA}i}$}
         \Comment{preference model from \cref{eq:jssp:linweights}}
         \EndFor
