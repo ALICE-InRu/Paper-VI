@@ -199,7 +199,7 @@ Adopting a two-stage hyper-heuristic approach to generate a set of
 machine-specific DRs for dynamic job-shop, \cite{Pickardt2013} used genetic 
 programming (GP) to evolve CDRs from basic features, along with an evolutionary 
 algorithm to assign a CDR to a specific machine. 
-The problem space consists of job-shop s in semiconductor manufacturing, with 
+The problem space consists of job-shops in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped into similar work centres, 
 which can have different set-up times, workloads, etc. 
 In fact, the GP emphasised efficient dispatch at the work centres with 
@@ -968,12 +968,12 @@ $k$-th job of the sequence is revealed, the predictor guesses its value
 $\chi_k$ on the basis of the previous $k-1$ observations. 
 
 \subsection{Prediction with Expert Advice}\label{sec:expertPolicy}
-Let us assume the expert policy $\pi^\star$ is known, which can query what 
+Let us assume the expert policy $\pi_\star$ is known, which can query what 
 is the optimal choice of $\chi_k={j^*}$ at any given time step $k$. 
 Now let's use \cref{eq:jstar} to back-propagate the relationship between 
 post-decision states and $\hat{\pi}$ with preference learning via our collected 
 feature set, denoted $\Phi^\text{OPT}$, i.e., collecting the feature set 
-corresponding to the following optimal tasks $J_{j^*}$ from $\pi^\star$ in 
+corresponding to the following optimal tasks $J_{j^*}$ from $\pi_\star$ in 
 \cref{pseudo:constructJSP}.
 This baseline sampling trajectory originally introduced in \cite{InRu11a} for 
 adding features to the feature set is a pure strategy where at each dispatch an 
