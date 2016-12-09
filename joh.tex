@@ -75,11 +75,6 @@ Fax: +354-525-4632\\
    Imitation Learning \and DAgger \and Preference Learning}
 \end{abstract}
 
-%\todo{story line:
-%from heuristic design to supervised learning to data creating (data 
-%distributed as it is used). Understanding the critical points in the 
-%construction of solution ...}
-
 \section{Introduction}\label{sec:introduction}
 
 Hand crafting heuristics for scheduling is an ad hoc approach to finding 
@@ -119,47 +114,9 @@ For this purpose, \JSP\ is used as a case study to illustrate a methodology for
 generating meaningful training data, which can be successfully 
 learned using preference-based imitation learning (IL).
 
-%Another learning approach is reinforcement learning (RL). In a similar field 
-%of study, \cite{Zhang95} studied space shuttle payload processing by using 
-%temporal difference learning. Using improvement heuristics they started with a 
-%relaxed problem, such that each job was scheduled as early as its temporal 
-%partial order would permit. There by initially ignoring any resource 
-%constraints on the machines, yielding the schedule's critical path. Then the 
-%schedule would be repaired so the resource constraints were satisfied in the 
-%minimum amount of iterations.
-%To excel the performance of RL, incorporating meta learning can be very 
-%fruitful, as experiments from \cite{Kalyanakrishnan11} discovered some key 
-%discriminants between competing algorithms for their particular problem 
-%instances, which provided them with a hybrid algorithm which combines the 
-%strengths of their algorithms.
-
-% automation for selecting DRs #4 - GA
 The competing alternative to learning dispatching rules from data would be to 
 search the \dr\ space directly. The prevalent approach in this case would be 
 using an evolutionary algorithm, such as genetic programming (GP). 
-%The main drawback is that the rules from a GP framework can be quite complex, 
-%and difficult to interpret.
-%For instance \cite{Tay08} applied GP on a terminal set of job-features for 
-%flexible \jsp\ with promising results compared to the benchmarks DRs from the 
-%literature.
-%In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} 
-%that were reported to be successful for dynamic \jsp\ and tested it against 
-%some \sdr s and found out it only slightly outperformed one rule, and was beat 
-%by another. 
-%The reason behind this staggering change in performance, may be due to the 
-%choice of objective function or the underlying problem spaces that were used 
-%in training.
-%It's argued that randomly generated problem instances aren't a proper 
-%representative for real-world long-term \jsp\ applications, e.g., by the 
-%narrow choice of release times, yielding schedules that are overloading in the 
-%beginning phases.
-%
-%A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
-%learned from completed schedules in order to iteratively improve new ones. 
-%At each dispatching step, the method can utilise the current feature space to 
-%correctify some possibly bad dispatch made previously (sort of reverse 
-%lookahead). Their method computationally inexpensive, although the authors do 
-%stress that there is still remains room for improvement.
 The predominant approach in hyper-heuristics is a framework for creating 
 new heuristics from a set of predefined heuristics via genetic algorithm 
 optimisation \cite{Burke10}. 
@@ -174,17 +131,14 @@ In fact, the GP emphasised efficient dispatch at the work centres with
 set-up requirements and batching capabilities, which are rules that are 
 non-trivial to determine manually.
 
-% automation for selecting DRs #1 - Portfolio
 With meta-heuristics existing DRs can be used, and for example 
 portfolio-based algorithm selection \cite{Rice76,Gomes01,Xu07}, either based on 
 a single instance or class of instances, to determine which DR to choose from. 
-% automation for selecting DRs #2 - ACO
 Implementing ant colony optimisation to select the best DR 
 from a selection of nine DRs for \JSP, experiments from \cite{Korytkowski13} 
 showed that the choice of DR does affect the results and for all performance 
 measures considered. They showed that it was better to have all the DRs to 
 choose from rather than just a single DR at a time.
-%
 A simpler and more straightforward way to automate selection of \cdr s (CDR), 
 \cite{InRu14}, translated \dr s into measurable features which describe the 
 partial schedule and optimise directly what their contribution should be via 
@@ -196,21 +150,13 @@ They point out that in order for their framework to be successful, problem
 features need to be sufficiently explanatory and training data needs to be 
 selected carefully so they can suggest the appropriate solution for a specific 
 range of new cases. 
-%
-%Svo mætti koma ein málsgrein sem er samantekt á því sem aðrir hafa lært af 
-%þessu öllu:
-%1.) Features matter       2.) Training data matters
-%3.) Problem specific      4.) Annað? Time depedendance
 When learning new \dr s there are several important 
 factors to consider. First and foremost the context in which the training data 
 is constructed 
 will influence the quality of the learned \dr\ \cite{Burke06}. 
 Since the training data consists of a collection of features, the quality of 
 training data is interchangeable with the predictability of features. 
-%Stressing the importance of consequential feature selection. 
-The training data is necessarily also problem instance specific. %and must 
-%reflect 
-%related to the final benchmark instances for relevant results. 
+The training data is necessarily also problem instance specific. 
 In addition to addressing these aspects, the paper will show that during 
 the scheduling process, the most critical moment to make the `right' dispatch 
 will vary. Furthermore, depending on the distribution of problem 
@@ -245,8 +191,6 @@ Following a discussion in \cref{sec:dis} the main conclusion and future work are
 machines. Each job consists of a number of operations which are then processed 
 on the machines in a predetermined order. An optimal solution to the problem 
 will depend on the specific objective. 
-% For example, the optimal schedule may be the time needed to complete
-% all jobs, i.e., the minimum makespan.
 
 This study will consider the $n\times m$ \JSP, where $n$ jobs, 
 $\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set, 
@@ -260,8 +204,7 @@ machine $M_a$.
 Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
 $p_{ja}$, which is assumed to be integral and finite. 
 Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
-end time is denoted $x_e(j,a)$. % where:
-%\begin{equation}\quad x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
+end time is denoted $x_e(j,a)$. 
 Each job $J_j$ has a specified processing order through the machines. It is a 
 permutation vector, $\vsigma_j$, of $\{1,\ldots,m\}$, representing a job $J_j$ 
 which can be processed on $M_{\vsigma_j(a)}$ only after it has been completely 
@@ -276,12 +219,7 @@ However, in the case that all jobs share the same fixed permutation
 route, it is referred to as \fsp~(\FSP). 
 
 The objective function is to minimise the schedule's maximum completion times 
-for all tasks, commonly referred to as the makespan, $C_{\max}$. %, which is 
-%defined as follows:
-%\begin{equation}\quad
-%C_{\max} := 
-%\max\left\{x_e(j,\vsigma_j(m))\;:\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
-%\end{equation} 
+for all tasks, commonly referred to as the makespan, $C_{\max}$. 
 This family of scheduling problems is denoted by $J||C_{\max}$ 
 \cite{Pinedo08}.
 Additional constraints commonly considered are job release-dates and due-dates 
@@ -294,8 +232,7 @@ guarantee an optimal solution. However, \jsp\ scheduling is strongly NP-hard
 dimensionality, which impedes the application in finding the global optimum in 
 a reasonable amount of time. 
 Using state-of-the-art software for solving scheduling problems, such as 
-LiSA %\footnote{LiSA is distributed under the GNU General Public License, and 
-%is available at \url{http://www.math.ovgu.de/Lisa.html}.} 
+LiSA 
 (A Library of Scheduling Algorithms) \cite{LiSA}, which includes a specialised 
 version of branch and bound that manages to find optimums for \jsp\ problems of 
 up to $14\times14$ \cite{Ru12}. However, problems that are of greater size 
@@ -399,9 +336,6 @@ represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
 $C_{\max}$ denoted as dotted line.}
 \label{fig:jssp:example}
 \end{figure}
-
-%Dispatching rules are of a construction heuristics, where one starts with an 
-%empty schedule and adds sequentially on %one operation (or tasks) at a time. 
 
 Priority \dr s will use features of operations, such as processing time, 
 in order to determine the job with the highest priority. 
@@ -523,13 +457,6 @@ understood.
 In this \lcnamecref{sec:learnOPT} the concerns of learning new priority \dr s 
 will be addressed. At the same the time experimental set-up used in the study 
 is described. 
-%The matters that must be addressed are as follows
-%\begin{enumerate*}[itemjoin*={{, and finally }}]
-%\item the problem instances used for learning and their optimal solutions
-%\item the reconstruction of the optimal solution using a \dr
-%\item the construction of the training set used for learning
-%\item the machine learning algorithm applied
-%\end{enumerate*}
 
 \subsection{Problem Instances}\label{sec:data:sim}
 
@@ -625,7 +552,6 @@ are based on job and machine features which are widespread in practice.
 
 \input{pseudocode/constructJSP}
 
-%\subsection{Labelling schedules w.r.t. optimal decisions}
 It is easy to see that the sequence of task assignments is by no means unique. 
 Inspecting a partial schedule further along in the dispatching process such as 
 in \cref{fig:jssp:example}, then let's say $J_1$ would be dispatched next, and 
@@ -641,9 +567,6 @@ sense that slight permutations on the sequence are in fact equivalent in terms
 of the end-result, but very varying permutations on the dispatching sequence 
 (although given the same partial initial sequence) can result in very different 
 complete schedules yet can still achieve the same makespan. 
-%Care must be taken in this case that neither resulting features are labelled 
-%as undesirable. Only the resulting features from a dispatch resulting in a 
-%suboptimal solution should be labelled undesirable.
 
 The redundancy in building optimal solutions using dispatching rules means that 
 many different dispatches may yield an optimal solution to the problem instance.
@@ -868,8 +791,6 @@ Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$.
 For this study, L2-regularised logistic regression from the \textsc{liblinear} 
 package \cite{liblinear} without bias is used to learn the preference set 
 $\Psi$, defined by \cref{eq:prefset}.
-%For each job on the job-list, $J_j\in\mathcal{L}$, the post-decision state is 
-%$\vphi^j:=\vphi(\vchi^j)$. 
 Hence the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to 
 the highest preference estimate, i.e., \cref{eq:jstar} where $\pi$ is 
 the classification model obtained by the preference set.
@@ -897,7 +818,6 @@ Defining the size of the preference set as $l=\abs{\Psi}$, then if $l$ is too
 large, re-sampling to size $l_{\max}$ may be needed in order for the 
 ordinal regression to be computationally feasible. 
 
-%\subsection{Collecting training data}
 The training data from \cite{InRu11a} was created from optimal solutions of 
 randomly generated problem instances, i.e., traditional \emph{passive
 imitation learning} (PIL). 
@@ -965,7 +885,7 @@ computational intensity becomes an issue, as \jrnd{10}{10} needs a few days and
 \jrndn{10}{10} or \frnd{10}{10} require several weeks using a personal computer.
 
 \section{Passive Imitation Learning}\label{sec:il:passive}
-Using the terms from game theory used in \cite{CesaBianchi06}, % chapter 2: 
+Using the terms from game theory used in \cite{CesaBianchi06}, 
 then our problem is a basic version of the sequential prediction problem where 
 the predictor (or forecaster), $\pi$, observes each element of a sequence 
 $\vchi$ of jobs, where at each time step $k \in \{1,...,K\}$, before the 
@@ -1101,9 +1021,6 @@ supervised IL approaches.
 The policy of AIL at iteration $i>0$ is a mixed strategy given as follows:
 \begin{equation}\quad\label{eq:il}
 \pi_i = \beta_i\pi_\star + (1-\beta_i)\hat{\pi}_{i-1}
-% i: ith iteration of imitation learning
-% pi_star is expert policy (i.e. optimal)
-% pi_i^hat: is pref model from prev. iteration
 \end{equation}
 where $\pi_\star$ is the expert policy and $\hat{\pi}_{i-1}$ is the learned 
 model from the previous iteration. 
@@ -1285,44 +1202,6 @@ data, and the learned model is iteratively updated.
 This can be done over several iterations, with the benefit being that the 
 scheduling features that are likely to occur in practice are investigated and 
 as such used to dissuade the model from making poor choices in the future.
-%Alas, this comes at great computational cost due to the substantial amounts of 
-%feature-states that need to be optimised for their correct labelling. Making 
-%it only practical for \jsp\ of a considerably small size, or only few 
-%iterations.
-%To counteract this drawback, the Maximum Mean Discrepancy (MMD) imitation 
-%learning by \cite{Kim13} is an iterative algorithm similar to DAgger where the 
-%expert policy is only queried when needed in order to reduce computational
-%cost. 
-%This occurs when a metric of a newly encountered schedules are sufficiently 
-%large enough from previously queried schedules (to ensure diversity of 
-%learned optimal schedules). 
-%Moreover, in DAgger all data samples are equally important, irrespective of 
-%its iteration, which can require great number of iterations to learn how to 
-%recover from the mistakes of earlier policies. To address the naivety of the 
-%data aggregation, MMD suggests only aggregating a new data point if it is 
-%sufficiently different to previously gathered schedules, and if the current 
-%policy has made a mistake. 
-%Additionally, there are multiple policies, each specialising in a particular 
-%region of the feature-space where previous policies made mistakes.
-%Although MMD has better empirical performance (based on robot applications), 
-%it requires defining metrics, which in the case of \jsp\ is non-trivial (cf. 
-%\cite{InRu12}), and fine-tuning thresholds etc., whereas DAgger can be 
-%straightforwardly implemented, parameter-free and obtains competitive results, 
-%although with some computational overhead due to excess expert queries.
- 
-%As previously mentioned, the main drawback of DAgger is that it quite 
-%aggressively queries the expert, making it impractical for some problems, 
-%especially if it involves human experts. 
-%Another way to confront that, \cite{Judah12} introduce Reduction-based Active 
-%Imitation Learning (RAIL), which involves a dynamic approach similar to 
-%DAgger, but more emphasis is used to minimise the expert's labelling effort. 
-%In fact, it's possible to circumvent querying the expert altogether and still 
-%have reasonable performance. For instance applying Locally Optimal Learning to 
-%Search (LOLS) \cite{ChangKADL15} it is possible to use imitation learning 
-%(similar to DAgger framework) when the reference policy is poor (i.e. 
-%$\pi_\star$ in \cref{eq:il} is suboptimal). 
-%Although it's noted that the quality (w.r.t near-optimality) of reference 
-%policy is in accordance to its performance, as is to be expected. 
 
 The main drawback of DAgger is that it quite aggressively queries the expert, 
 making it impractical for some problems, especially if it involves human 
