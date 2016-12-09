@@ -51,12 +51,9 @@ Fax: +354-525-4632\\
 \selectlanguage{english}
 
 \begin{abstract}
-  Recent efforts to create \dr s have focused on direct search methods and 
-  learning from scheduling data.
-  This paper will examine the latter approach and present a systematic 
-  approach for doing so effectively. 
-  The key to learning an effective dispatching rule is through the careful 
-  construction of the training data,  
+    Dispatching rules can be automatically generated from scheduling data.
+  This paper will demonstrate that the key to learning an effective
+  dispatching rule is through the careful construction of the training data,  
   $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$, where
   \begin{enumerate*}
     \item features of partially constructed schedules $\vec{x}_i$ should 
@@ -68,23 +65,12 @@ Fax: +354-525-4632\\
     \item data needs to be balanced, as the set is unbalanced with respect to 
     the dispatching step $k$
   \end{enumerate*}
-  
-  When querying an optimal policy, there is an abundance of valuable 
-  information that can be utilised for learning new dispatching rules.
-  For instance, it's possible to seek out when the scheduling process is most 
-  susceptible to failure.
-  Generally stepwise optimality (or training accuracy) 
-  will imply good end performance, here minimising the makespan. 
-  However, as the impact of suboptimal moves is not fully understood, the 
-  labelling must be adjusted for its intended trajectory.
- 
-  Using the guidelines set by the framework, the design of custom \dr s, for  
-  the particular scheduling application, will be more effective. In the 
-  study  presented three different distributions of the \jsp\ will be 
+  Using the guidelines set by our framework the design of custom \dr s, for  
+  a particular scheduling application, will become more effective. In the 
+  study presented three different distributions of the \jsp\ will be 
   considered. The machine learning approach considered is based on preference 
-  learning, i.e., which post-decision state is preferable to another. However, 
-  alternative learning methods may be applied to the training data generated.
-  
+  learning, i.e., which dispatch (post-decision state) is preferable to another.
+ 
   \keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
    Imitation Learning \and DAgger \and Preference Learning}
 \end{abstract}
@@ -252,7 +238,7 @@ using passive or active imitation learning.
 Experimental results are jointly presented in \cref{sec:il:expr} with 
 comparison for a randomly generated problem space. 
 Furthermore, some general adjustments for performance boost are also considered.
-The paper finally concludes in \cref{sec:con} with discussion and conclusions.
+Following a discussion in \cref{sec:dis} the main conclusion and future work are presented in \cref{sec:con}.
 
 \section{\Jsp~Scheduling}\label{sec:problemdef}
 \JSP\ involves the scheduling of jobs for a set of 
@@ -1246,20 +1232,7 @@ MWR shown for reference.}\label{fig:all:boxplot}
 
 \input{tables/stats.IL.10x10.tex}
 
-\section{Discussion and conclusions}\label{sec:con}
-
-The \sdr s remain a popular approach to scheduling, as they are simple to 
-implement and quite efficient. 
-Nevertheless, when they are successful and when they fail remains elusive. 
-%investigation of how these \dr s actually work, and what 
-%makes them so successful (or in some cases unsuccessful)? 
-%For instance, of the four SDRs this study focuses on, why does MWR outperform 
-%so significantly for \jsp\, yet completely fail for \fsp? 
-%MWR seems to be able to adapt to varying distributions of processing times, 
-%however, manipulating the machine ordering causes MWR to break down. 
-By inspecting optimal schedules, and investigating the probability that an optimal dispatch could be chosen by chance, and by looking at the impact of choosing sub-optimal dispatches,  some light is shed on how SDRs vary in performance. Furthermore, the problem instance space was varied, giving an even better understanding of the behaviour of the SDRs.
-This analysis, however, also revealed that creating new \dr s from data is by no 
-means trivial. 
+\section{Discussion}\label{sec:dis}
 
 Experiments in \cref{sec:pil:expr} show that following the optimal
 policy is not without its faults. There are many obstacles to consider in order 
@@ -1359,17 +1332,14 @@ Or even circumvent the expert policy altogether by using a `poorer' reference
 policy instead (i.e. $\pi_\star$ in \cref{eq:il} is suboptimal) 
 \cite{ChangKADL15}.
 
-This study has been structured around the \jsp\ scheduling problem. However, 
-it can be easily extended to other types of deterministic optimisation problems 
-that involve sequential decision making. 
-The framework presented here collects snapshots of the partial schedules by 
-following an optimal trajectory, and verifying the resulting optimal solution 
-from each possible state. 
-From which the stepwise optimality of individual features can be inspected 
-and its inference could for instance justify omission in feature selection. 
-Moreover, by looking at the best and worst case scenarios of suboptimal 
-dispatches, it is possible to pinpoint vulnerable times in the scheduling 
-process. 
+
+\section{Conclusion}\label{sec:con}
+
+The \sdr s remain a popular approach to scheduling, as they are simple to implement and quite efficient. By inspecting optimal schedules, and investigating the probability that an optimal dispatch could be chosen by chance, and by looking at the impact of choosing sub-optimal dispatches,  some light is shed on how SDRs vary in performance. Furthermore, the problem instance space was varied, giving an even better understanding of the behaviour of the SDRs. This analysis, however, also revealed that creating effective \dr s from data is by no means trivial. 
+
+Our analysis has shown that training data must be generated not only from optimal trajectories but also from the actual dispatching rule undergoing the training. The learning of effective dispatching rules is an iterative process with many calls to the expert (MIP solver). Techniques for reducing computationally expensive calls to the expert need to be addressed in the future. This study has been structured around the \jsp\ scheduling problem. However, it can easily be extended to other types of deterministic optimisation problems that involve sequential decision making. Applying the technique to other types of
+scheduling problems is of interest as future work.
+
 
 \bibliographystyle{spmpsci} 
 \bibliography{references} 
