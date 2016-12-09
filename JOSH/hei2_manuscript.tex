@@ -35,10 +35,9 @@ Tel.: +354-525-4733\\
 Fax: +354-525-4632\\
 \email{tpr@hi.is}\\
 }
-\date{Received: \today / Accepted: date}
+\date{Received: November 6, 2015 / Accepted: date}
 % The correct dates will be entered by the editor
 
-% shorthand declarations in this document
 \usepackage[english]{babel} 
 
 \usepackage{url}
@@ -90,15 +89,18 @@ Fax: +354-525-4632\\
 \newcommand{\phiMacRelated}{\phimacFree\!-\phimakespan}
 \newcommand{\NrFeatLocal}{16}
 
+\usepackage{multirow}
+\usepackage{rotating}
+\newcommand{\rot}[1]{\begin{sideways}#1\end{sideways}}
+
 \usepackage[inline]{enumitem}
 \setlist[enumerate,1]{
-    label=\textit{\roman*)},
-    before=\unskip{: }, 
-    itemjoin={{; }}, itemjoin*={{, and }},
-    after={{. }}
+	label=\textit{\roman*)},
+	before=\unskip{: }, 
+	itemjoin={{; }}, itemjoin*={{, and }},
+	after={{. }}
 }
 \usepackage{booktabs} % \toprule \midrule \bottomrule
-\usepackage{graphicx}
 
 \usepackage{subfig}
 \usepackage{algorithm}
@@ -117,7 +119,6 @@ Fax: +354-525-4632\\
 \hyphenation{algo-rithm}
 \hyphenation{DAgger}
 
-
 \begin{document}
 \sloppy % fixes many bad boxes
 \maketitle
@@ -125,12 +126,9 @@ Fax: +354-525-4632\\
 \selectlanguage{english}
 
 \begin{abstract}
-  Recent efforts to create \dr s have focused on direct search methods and 
-  learning from scheduling data.
-  This paper will examine the latter approach and present a systematic 
-  approach for doing so effectively. 
-  The key to learning an effective dispatching rule is through the careful 
-  construction of the training data,  
+    Dispatching rules can be automatically generated from scheduling data.
+  This paper will demonstrate that the key to learning an effective
+  dispatching rule is through the careful construction of the training data,  
   $\{\vec{x}_i(k),y_i(k)\}_{k=1}^K\in\mathcal{D}$, where
   \begin{enumerate*}
     \item features of partially constructed schedules $\vec{x}_i$ should 
@@ -142,31 +140,15 @@ Fax: +354-525-4632\\
     \item data needs to be balanced, as the set is unbalanced with respect to 
     the dispatching step $k$
   \end{enumerate*}
-  
-  When querying an optimal policy, there is an abundance of valuable 
-  information that can be utilised for learning new dispatching rules.
-  For instance, it's possible to seek out when the scheduling process is most 
-  susceptible to failure.
-  Generally stepwise optimality (or training accuracy) 
-  will imply good end performance, here minimising the makespan. 
-  However, as the impact of suboptimal moves is not fully understood, the 
-  labelling must be adjusted for its intended trajectory.
- 
-  Using the guidelines set by the framework, the design of custom \dr s, for  
-  the particular scheduling application, will be more effective. In the 
-  study  presented three different distributions of the job-shop will be 
+  Using the guidelines set by our framework the design of custom \dr s, for  
+  a particular scheduling application, will become more effective. In the 
+  study presented three different distributions of the job-shop will be 
   considered. The machine learning approach considered is based on preference 
-  learning, i.e., which post-decision state is preferable to another. However, 
-  alternative learning methods may be applied to the training data generated.
-  
+  learning, i.e., which dispatch (post-decision state) is preferable to another.
+ 
   \keywords{Scheduling \and Composite \dr s \and Performance Analysis \and 
    Imitation Learning \and DAgger \and Preference Learning}
 \end{abstract}
-
-%\todo{story line:
-%from heuristic design to supervised learning to data creating (data 
-%distributed as it is used). Understanding the critical points in the 
-%construction of solution ...}
 
 \section{Introduction}\label{sec:introduction}
 
@@ -175,8 +157,7 @@ approximate solutions to problems. The practice is time-consuming and its
 performance can even vary dramatically between different problem instances. The 
 aim of this work is to increase our understanding of this process. In 
 particular, the learning of new problem specific priority \dr s (DR) will be 
-addressed for a subclass of scheduling problems known as the job-shop 
-scheduling 
+addressed for a subclass of scheduling problems known as the job-shop scheduling 
 problem (JSP). 
 
 A recent editorial the state-of-the-art approaches \cite{Chen13} in advanced 
@@ -208,48 +189,9 @@ For this purpose, JSP is used as a case study to illustrate a methodology for
 generating meaningful training data, which can be successfully 
 learned using preference-based imitation learning (IL).
 
-%Another learning approach is reinforcement learning (RL). In a similar field 
-%of study, \cite{Zhang95} studied space shuttle payload processing by using 
-%temporal difference learning. Using improvement heuristics they started with a 
-%relaxed problem, such that each job was scheduled as early as its temporal 
-%partial order would permit. There by initially ignoring any resource 
-%constraints on the machines, yielding the schedule's critical path. Then the 
-%schedule would be repaired so the resource constraints were satisfied in the 
-%minimum amount of iterations.
-%To excel the performance of RL, incorporating meta learning can be very 
-%fruitful, as experiments from \cite{Kalyanakrishnan11} discovered some key 
-%discriminants between competing algorithms for their particular problem 
-%instances, which provided them with a hybrid algorithm which combines the 
-%strengths of their algorithms.
-
-% automation for selecting DRs #4 - GA
 The competing alternative to learning dispatching rules from data would be to 
 search the \dr\ space directly. The prevalent approach in this case would be 
 using an evolutionary algorithm, such as genetic programming (GP). 
-%The main drawback is that the rules from a GP framework can be quite complex, 
-%and difficult to interpret.
-%For instance \cite{Tay08} applied GP on a terminal set of job-features for 
-%flexible job-shop with promising results compared to the benchmarks DRs from 
-%the 
-%literature.
-%In fact, \cite{Hildebrandt2010} revisited the experiments from \cite{Tay08} 
-%that were reported to be successful for dynamic job-shop and tested it against 
-%some \sdr s and found out it only slightly outperformed one rule, and was beat 
-%by another. 
-%The reason behind this staggering change in performance, may be due to the 
-%choice of objective function or the underlying problem spaces that were used 
-%in training.
-%It's argued that randomly generated problem instances aren't a proper 
-%representative for real-world long-term job-shop applications, e.g., by the 
-%narrow choice of release times, yielding schedules that are overloading in the 
-%beginning phases.
-%
-%A novel iterative \dr s that were evolved with GP for \JSP, \cite{Nguyen13} 
-%learned from completed schedules in order to iteratively improve new ones. 
-%At each dispatching step, the method can utilise the current feature space to 
-%correctify some possibly bad dispatch made previously (sort of reverse 
-%lookahead). Their method computationally inexpensive, although the authors do 
-%stress that there is still remains room for improvement.
 The predominant approach in hyper-heuristics is a framework for creating 
 new heuristics from a set of predefined heuristics via genetic algorithm 
 optimisation \cite{Burke10}. 
@@ -257,24 +199,21 @@ Adopting a two-stage hyper-heuristic approach to generate a set of
 machine-specific DRs for dynamic job-shop, \cite{Pickardt2013} used genetic 
 programming (GP) to evolve CDRs from basic features, along with an evolutionary 
 algorithm to assign a CDR to a specific machine. 
-The problem space consists of job-shops in semiconductor manufacturing, with 
+The problem space consists of job-shop s in semiconductor manufacturing, with 
 additional shop constraints, as machines are grouped into similar work centres, 
 which can have different set-up times, workloads, etc. 
 In fact, the GP emphasised efficient dispatch at the work centres with 
 set-up requirements and batching capabilities, which are rules that are 
 non-trivial to determine manually.
 
-% automation for selecting DRs #1 - Portfolio
 With meta-heuristics existing DRs can be used, and for example 
 portfolio-based algorithm selection \cite{Rice76,Gomes01,Xu07}, either based on 
 a single instance or class of instances, to determine which DR to choose from. 
-% automation for selecting DRs #2 - ACO
 Implementing ant colony optimisation to select the best DR 
 from a selection of nine DRs for JSP, experiments from \cite{Korytkowski13} 
 showed that the choice of DR does affect the results and for all performance 
 measures considered. They showed that it was better to have all the DRs to 
 choose from rather than just a single DR at a time.
-%
 A simpler and more straightforward way to automate selection of \cdr s (CDR), 
 \cite{InRu14}, translated \dr s into measurable features which describe the 
 partial schedule and optimise directly what their contribution should be via 
@@ -286,21 +225,13 @@ They point out that in order for their framework to be successful, problem
 features need to be sufficiently explanatory and training data needs to be 
 selected carefully so they can suggest the appropriate solution for a specific 
 range of new cases. 
-%
-%Svo mætti koma ein málsgrein sem er samantekt á því sem aðrir hafa lært af 
-%þessu öllu:
-%1.) Features matter       2.) Training data matters
-%3.) Problem specific      4.) Annað? Time depedendance
 When learning new \dr s there are several important 
 factors to consider. First and foremost the context in which the training data 
 is constructed 
 will influence the quality of the learned \dr\ \cite{Burke06}. 
 Since the training data consists of a collection of features, the quality of 
 training data is interchangeable with the predictability of features. 
-%Stressing the importance of consequential feature selection. 
-The training data is necessarily also problem instance specific. %and must 
-%reflect 
-%related to the final benchmark instances for relevant results. 
+The training data is necessarily also problem instance specific. 
 In addition to addressing these aspects, the paper will show that during 
 the scheduling process, the most critical moment to make the `right' dispatch 
 will vary. Furthermore, depending on the distribution of problem 
@@ -328,15 +259,13 @@ using passive or active imitation learning.
 Experimental results are jointly presented in \cref{sec:il:expr} with 
 comparison for a randomly generated problem space. 
 Furthermore, some general adjustments for performance boost are also considered.
-The paper finally concludes in \cref{sec:con} with discussion and conclusions.
+Following a discussion in \cref{sec:dis} the main conclusion and future work are presented in \cref{sec:con}.
 
-\section{Job-shop Scheduling}\label{sec:problemdef}
+\section{Job-shop~Scheduling}\label{sec:problemdef}
 JSP involves the scheduling of jobs for a set of 
 machines. Each job consists of a number of operations which are then processed 
 on the machines in a predetermined order. An optimal solution to the problem 
 will depend on the specific objective. 
-% For example, the optimal schedule may be the time needed to complete
-% all jobs, i.e., the minimum makespan.
 
 This study will consider the $n\times m$ JSP, where $n$ jobs, 
 $\mathcal{J}=\{J_j\}_{j=1}^n$, are scheduled on a finite set, 
@@ -350,8 +279,7 @@ machine $M_a$.
 Each job $J_j$ has an indivisible operation time (or cost) on machine $M_a$, 
 $p_{ja}$, which is assumed to be integral and finite. 
 Starting time of job $J_j$ on machine $M_a$ is denoted $x_s(j,a)$ and its 
-end time is denoted $x_e(j,a)$. % where:
-%\begin{equation}\quad x_e(j,a):=x_s(j,a)+p_{ja} \end{equation} 
+end time is denoted $x_e(j,a)$. 
 Each job $J_j$ has a specified processing order through the machines. It is a 
 permutation vector, $\vsigma_j$, of $\{1,\ldots,m\}$, representing a job $J_j$ 
 which can be processed on $M_{\vsigma_j(a)}$ only after it has been completely 
@@ -363,15 +291,10 @@ for all $J_j\in\mathcal{J}$ and $a\in\{2,..,m\}$.
 Note, that each job can have its own distinctive flow pattern through the 
 machines which is independent of the other jobs. 
 However, in the case that all jobs share the same fixed permutation 
-route, it is referred to as flow-shop (FSP). 
+route, it is referred to as flow-shop~(FSP). 
 
 The objective function is to minimise the schedule's maximum completion times 
-for all tasks, commonly referred to as the makespan, $C_{\max}$. %, which is 
-%defined as follows:
-%\begin{equation}\quad
-%C_{\max} := 
-%\max\left\{x_e(j,\vsigma_j(m))\;:\;J_j\in\mathcal{J}\right\}.\label{eq:makespan}
-%\end{equation} 
+for all tasks, commonly referred to as the makespan, $C_{\max}$. 
 This family of scheduling problems is denoted by $J||C_{\max}$ 
 \cite{Pinedo08}.
 Additional constraints commonly considered are job release-dates and due-dates 
@@ -384,11 +307,9 @@ guarantee an optimal solution. However, job-shop scheduling is strongly NP-hard
 dimensionality, which impedes the application in finding the global optimum in 
 a reasonable amount of time. 
 Using state-of-the-art software for solving scheduling problems, such as 
-LiSA %\footnote{LiSA is distributed under the GNU General Public License, and 
-%is available at \url{http://www.math.ovgu.de/Lisa.html}.} 
+LiSA 
 (A Library of Scheduling Algorithms) \cite{LiSA}, which includes a specialised 
-version of branch and bound that manages to find optimums for job-shop problems 
-of 
+version of branch and bound that manages to find optimums for job-shop problems of 
 up to $14\times14$ \cite{Ru12}. However, problems that are of greater size 
 become intractable. 
 Heuristics are generally more time efficient but 
@@ -490,9 +411,6 @@ represent $\vchi$ and $\mathcal{L}^{(16)}$, respectively. Current
 $C_{\max}$ denoted as dotted line.}
 \label{fig:jssp:example}
 \end{figure}
-
-%Dispatching rules are of a construction heuristics, where one starts with an 
-%empty schedule and adds sequentially on %one operation (or tasks) at a time. 
 
 Priority \dr s will use features of operations, such as processing time, 
 in order to determine the job with the highest priority. 
@@ -614,13 +532,6 @@ understood.
 In this \lcnamecref{sec:learnOPT} the concerns of learning new priority \dr s 
 will be addressed. At the same the time experimental set-up used in the study 
 is described. 
-%The matters that must be addressed are as follows
-%\begin{enumerate*}[itemjoin*={{, and finally }}]
-%\item the problem instances used for learning and their optimal solutions
-%\item the reconstruction of the optimal solution using a \dr
-%\item the construction of the training set used for learning
-%\item the machine learning algorithm applied
-%\end{enumerate*}
 
 \subsection{Problem Instances}\label{sec:data:sim}
 
@@ -716,7 +627,6 @@ are based on job and machine features which are widespread in practice.
 
 \input{constructJSP}
 
-%\subsection{Labelling schedules w.r.t. optimal decisions}
 It is easy to see that the sequence of task assignments is by no means unique. 
 Inspecting a partial schedule further along in the dispatching process such as 
 in \cref{fig:jssp:example}, then let's say $J_1$ would be dispatched next, and 
@@ -732,9 +642,6 @@ sense that slight permutations on the sequence are in fact equivalent in terms
 of the end-result, but very varying permutations on the dispatching sequence 
 (although given the same partial initial sequence) can result in very different 
 complete schedules yet can still achieve the same makespan. 
-%Care must be taken in this case that neither resulting features are labelled 
-%as undesirable. Only the resulting features from a dispatch resulting in a 
-%suboptimal solution should be labelled undesirable.
 
 The redundancy in building optimal solutions using dispatching rules means that 
 many different dispatches may yield an optimal solution to the problem instance.
@@ -959,8 +866,6 @@ Logistic regression learns the optimal parameters $\vec{w}^*\in\mathbb{R}^d$.
 For this study, L2-regularised logistic regression from the \textsc{liblinear} 
 package \cite{liblinear} without bias is used to learn the preference set 
 $\Psi$, defined by \cref{eq:prefset}.
-%For each job on the job-list, $J_j\in\mathcal{L}$, the post-decision state is 
-%$\vphi^j:=\vphi(\vchi^j)$. 
 Hence the job chosen to be dispatched, $J_{j^*}$, is the one corresponding to 
 the highest preference estimate, i.e., \cref{eq:jstar} where $\pi$ is 
 the classification model obtained by the preference set.
@@ -988,7 +893,6 @@ Defining the size of the preference set as $l=\abs{\Psi}$, then if $l$ is too
 large, re-sampling to size $l_{\max}$ may be needed in order for the 
 ordinal regression to be computationally feasible. 
 
-%\subsection{Collecting training data}
 The training data from \cite{InRu11a} was created from optimal solutions of 
 randomly generated problem instances, i.e., traditional \emph{passive
 imitation learning} (PIL). 
@@ -1056,7 +960,7 @@ computational intensity becomes an issue, as \jrnd{10}{10} needs a few days and
 \jrndn{10}{10} or \frnd{10}{10} require several weeks using a personal computer.
 
 \section{Passive Imitation Learning}\label{sec:il:passive}
-Using the terms from game theory used in \cite{CesaBianchi06}, % chapter 2: 
+Using the terms from game theory used in \cite{CesaBianchi06}, 
 then our problem is a basic version of the sequential prediction problem where 
 the predictor (or forecaster), $\pi$, observes each element of a sequence 
 $\vchi$ of jobs, where at each time step $k \in \{1,...,K\}$, before the 
@@ -1192,9 +1096,6 @@ supervised IL approaches.
 The policy of AIL at iteration $i>0$ is a mixed strategy given as follows:
 \begin{equation}\quad\label{eq:il}
 \pi_i = \beta_i\pi_\star + (1-\beta_i)\hat{\pi}_{i-1}
-% i: ith iteration of imitation learning
-% pi_star is expert policy (i.e. optimal)
-% pi_i^hat: is pref model from prev. iteration
 \end{equation}
 where $\pi_\star$ is the expert policy and $\hat{\pi}_{i-1}$ is the learned 
 model from the previous iteration. 
@@ -1323,20 +1224,7 @@ MWR shown for reference.}\label{fig:all:boxplot}
 
 \input{stats.IL.10x10.tex}
 
-\section{Discussion and conclusions}\label{sec:con}
-
-The \sdr s remain a popular approach to scheduling, as they are simple to 
-implement and quite efficient. 
-Nevertheless, when they are successful and when they fail remains elusive. 
-%investigation of how these \dr s actually work, and what 
-%makes them so successful (or in some cases unsuccessful)? 
-%For instance, of the four SDRs this study focuses on, why does MWR outperform 
-%so significantly for job-shop, yet completely fail for \fsp? 
-%MWR seems to be able to adapt to varying distributions of processing times, 
-%however, manipulating the machine ordering causes MWR to break down. 
-By inspecting optimal schedules, and investigating the probability that an optimal dispatch could be chosen by chance, and by looking at the impact of choosing sub-optimal dispatches,  some light is shed on how SDRs vary in performance. Furthermore, the problem instance space was varied, giving an even better understanding of the behaviour of the SDRs.
-This analysis, however, also revealed that creating new \dr s from data is by no 
-means trivial. 
+\section{Discussion}\label{sec:dis}
 
 Experiments in \cref{sec:pil:expr} show that following the optimal
 policy is not without its faults. There are many obstacles to consider in order 
@@ -1389,45 +1277,6 @@ data, and the learned model is iteratively updated.
 This can be done over several iterations, with the benefit being that the 
 scheduling features that are likely to occur in practice are investigated and 
 as such used to dissuade the model from making poor choices in the future.
-%Alas, this comes at great computational cost due to the substantial amounts of 
-%feature-states that need to be optimised for their correct labelling. Making 
-%it only practical for job-shop of a considerably small size, or only few 
-%iterations.
-%To counteract this drawback, the Maximum Mean Discrepancy (MMD) imitation 
-%learning by \cite{Kim13} is an iterative algorithm similar to DAgger where the 
-%expert policy is only queried when needed in order to reduce computational
-%cost. 
-%This occurs when a metric of a newly encountered schedules are sufficiently 
-%large enough from previously queried schedules (to ensure diversity of 
-%learned optimal schedules). 
-%Moreover, in DAgger all data samples are equally important, irrespective of 
-%its iteration, which can require great number of iterations to learn how to 
-%recover from the mistakes of earlier policies. To address the naivety of the 
-%data aggregation, MMD suggests only aggregating a new data point if it is 
-%sufficiently different to previously gathered schedules, and if the current 
-%policy has made a mistake. 
-%Additionally, there are multiple policies, each specialising in a particular 
-%region of the feature-space where previous policies made mistakes.
-%Although MMD has better empirical performance (based on robot applications), 
-%it requires defining metrics, which in the case of job-shop is non-trivial 
-%(cf. 
-%\cite{InRu12}), and fine-tuning thresholds etc., whereas DAgger can be 
-%straightforwardly implemented, parameter-free and obtains competitive results, 
-%although with some computational overhead due to excess expert queries.
- 
-%As previously mentioned, the main drawback of DAgger is that it quite 
-%aggressively queries the expert, making it impractical for some problems, 
-%especially if it involves human experts. 
-%Another way to confront that, \cite{Judah12} introduce Reduction-based Active 
-%Imitation Learning (RAIL), which involves a dynamic approach similar to 
-%DAgger, but more emphasis is used to minimise the expert's labelling effort. 
-%In fact, it's possible to circumvent querying the expert altogether and still 
-%have reasonable performance. For instance applying Locally Optimal Learning to 
-%Search (LOLS) \cite{ChangKADL15} it is possible to use imitation learning 
-%(similar to DAgger framework) when the reference policy is poor (i.e. 
-%$\pi_\star$ in \cref{eq:il} is suboptimal). 
-%Although it's noted that the quality (w.r.t near-optimality) of reference 
-%policy is in accordance to its performance, as is to be expected. 
 
 The main drawback of DAgger is that it quite aggressively queries the expert, 
 making it impractical for some problems, especially if it involves human 
@@ -1437,250 +1286,222 @@ Or even circumvent the expert policy altogether by using a `poorer' reference
 policy instead (i.e. $\pi_\star$ in \cref{eq:il} is suboptimal) 
 \cite{ChangKADL15}.
 
-This study has been structured around the job-shop scheduling problem. However, 
-it can be easily extended to other types of deterministic optimisation problems 
-that involve sequential decision making. 
-The framework presented here collects snapshots of the partial schedules by 
-following an optimal trajectory, and verifying the resulting optimal solution 
-from each possible state. 
-From which the stepwise optimality of individual features can be inspected 
-and its inference could for instance justify omission in feature selection. 
-Moreover, by looking at the best and worst case scenarios of suboptimal 
-dispatches, it is possible to pinpoint vulnerable times in the scheduling 
-process. 
+
+\section{Conclusion}\label{sec:con}
+
+The \sdr s remain a popular approach to scheduling, as they are simple to implement and quite efficient. By inspecting optimal schedules, and investigating the probability that an optimal dispatch could be chosen by chance, and by looking at the impact of choosing sub-optimal dispatches,  some light is shed on how SDRs vary in performance. Furthermore, the problem instance space was varied, giving an even better understanding of the behaviour of the SDRs. This analysis, however, also revealed that creating effective \dr s from data is by no means trivial. 
+
+Our analysis has shown that training data must be generated not only from optimal trajectories but also from the actual dispatching rule undergoing the training. The learning of effective dispatching rules is an iterative process with many calls to the expert (MIP solver). Techniques for reducing computationally expensive calls to the expert need to be addressed in the future. This study has been structured around the job-shop scheduling problem. However, it can easily be extended to other types of deterministic optimisation problems that involve sequential decision making. Applying the technique to other types of
+scheduling problems is of interest as future work.
+
 
 \begin{thebibliography}{10}
-    \providecommand{\url}[1]{{#1}}
-    \providecommand{\urlprefix}{URL }
-    \expandafter\ifx\csname urlstyle\endcsname\relax
-    \providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
-    \providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
-        \urlstyle{rm}\Url}\fi
-    
-    \bibitem{LiSA}
-    Andresen, M., Engelhardt, F., Werner, F.: {LiSA - A Library of Scheduling
-        Algorithms} (version 3.0) [software] (2010).
-    \newblock \urlprefix\url{http://www.math.ovgu.de/Lisa.html}
-    
-    \bibitem{Burke06}
-    Burke, E., Petrovic, S., Qu, R.: Case-based heuristic selection for 
-    timetabling
-    problems.
-    \newblock Journal of Scheduling \textbf{9}, 115--132 (2006)
-    
-    \bibitem{Burke10}
-    Burke, E.K., Gendreau, M., Hyde, M., Kendall, G., Ochoa, G., Ozcan, E., Qu, 
-    R.:
-    Hyper-heuristics: a survey of the state of the art.
-    \newblock Journal of the Operational Research Society \textbf{64}(12),
-    1695--1724 (2013)
-    
-    \bibitem{CesaBianchi06}
-    Cesa-Bianchi, N., Lugosi, G.: Prediction, Learning, and Games, chap.~4.
-    \newblock Cambridge University Press (2006)
-    
-    \bibitem{ChangKADL15}
-    Chang, K., Krishnamurthy, A., Agarwal, A., III, H.D., Langford, J.: 
-    Learning to
-    search better than your teacher.
-    \newblock In: Proceedings of The 32nd International Conference on Machine
-    Learning, pp. 2058--2066 (2015)
-    
-    \bibitem{Chen13}
-    Chen, T., Rajendran, C., Wu, C.W.: {Advanced dispatching rules for 
-    large-scale
-        manufacturing systems}.
-    \newblock The International Journal of Advanced Manufacturing Technology
-    (2013)
-    
-    \bibitem{liblinear}
-    Fan, R.E., Chang, K.W., Hsieh, C.J., Wang, X.R., Lin, C.J.: {LIBLINEAR}: A
-    library for large linear classification.
-    \newblock Journal of Machine Learning Research \textbf{9}, 1871--1874 (2008)
-    
-    \bibitem{Garey76:NPhard}
-    Garey, M.R., Johnson, D.S., Sethi, R.: The complexity of flowshop and 
-    jobshop
-    scheduling.
-    \newblock Mathematics of Operations Research \textbf{1}(2), 117--129 (1976)
-    
-    \bibitem{Gomes01}
-    Gomes, C.P., Selman, B.: {Algorithm portfolios}.
-    \newblock Artificial Intelligence \textbf{126}(1-2), 43--62 (2001)
-    
-    \bibitem{gurobi}
-    {Gurobi Optimization, Inc.}: Gurobi optimization (version 6.0.0) [software]
-    (2014).
-    \newblock \urlprefix\url{http://www.gurobi.com/}
-    
-    \bibitem{Hannan57}
-    Hannan, J.: Approximation to bayes risk in repeated play.
-    \newblock Contributions to the Theory of Games \textbf{3}, 97--139 (1957)
-    
-    \bibitem{Haupt89}
-    Haupt, R.: A survey of priority rule-based scheduling.
-    \newblock OR Spectrum \textbf{11}, 3--16 (1989)
-    
-    \bibitem{InRu14}
-    Ingimundardottir, H., Runarsson, T.: Evolutionary learning of weighted 
-    linear
-    composite dispatching rules for scheduling.
-    \newblock In: International Conference on Evolutionary Computation Theory 
-    and
-    Applications. SCITEPRESS (2014)
-    
-    \bibitem{InRu11a}
-    Ingimundardottir, H., Runarsson, T.P.: Supervised learning linear priority
-    dispatch rules for job-shop scheduling.
-    \newblock In: Learning and Intelligent Optimization, \emph{Lecture Notes in
-        Computer Science}, vol. 6683, pp. 263--277. Springer (2011)
-    
-    \bibitem{InRu15a}
-    Ingimundardottir, H., Runarsson, T.P.: Generating training data for learning
-    linear composite dispatching rules for scheduling.
-    \newblock In: Learning and Intelligent Optimization, \emph{Lecture Notes in
-        Computer Science}, vol. 8994, pp. 236--248. Springer (2015)
-    
-    \bibitem{Jayamohan04}
-    Jayamohan, M., Rajendran, C.: Development and analysis of cost-based
-    dispatching rules for job shop scheduling.
-    \newblock European Journal of Operational Research \textbf{157}(2), 307--321
-    (2004)
-    
-    \bibitem{Judah12}
-    Judah, K., Fern, A., Dietterich, T.G.: Active imitation learning via 
-    reduction
-    to {I.I.D.} active learning.
-    \newblock CoRR \textbf{abs/1210.4876} (2012)
-    
-    \bibitem{Kim13}
-    Kim, B., Pineau, J.: Maximum mean discrepancy imitation learning.
-    \newblock In: Robotics: Science and Systems (2013)
-    
-    \bibitem{Korytkowski13}
-    Korytkowski, P., Rymaszewski, S., Wi\'{s}niewski, T.: {Ant colony 
-    optimization
-        for job shop scheduling using multi-attribute dispatching rules}.
-    \newblock The International Journal of Advanced Manufacturing Technology
-    (2013)
-    
-    \bibitem{Siggi05}
-    Li, X., Olafsson, S.: Discovering dispatching rules using data mining.
-    \newblock Journal of Scheduling \textbf{8}, 515--527 (2005)
-    
-    \bibitem{Lu13}
-    Lu, M.S., Romanowski, R.: {Multicontextual dispatching rules for job shops 
-    with
-        dynamic job arrival}.
-    \newblock The International Journal of Advanced Manufacturing Technology
-    (2013)
-    
-    \bibitem{Malik08}
-    Malik, A.M., Russell, T., Chase, M., Beek, P.: Learning heuristics for basic
-    block instruction scheduling.
-    \newblock Journal of Heuristics \textbf{14}(6), 549--569 (2008)
-    
-    \bibitem{Meeran12}
-    Meeran, S., Morshed, M.: A hybrid genetic tabu search algorithm for solving 
-    job
-    shop scheduling problems: a case study.
-    \newblock Journal of intelligent manufacturing \textbf{23}(4), 1063--1078
-    (2012)
-    
-    \bibitem{Monch13}
-    M\"{o}nch, L., Fowler, J.W., Mason, S.J.: {Production Planning and Control 
-    for
-        Semiconductor Wafer Fabrication Facilities}, \emph{Operations
-        Research/Computer Science Interfaces Series}, vol.~52, chap.~4.
-    \newblock Springer (2013)
-    
-    \bibitem{Siggi10}
-    Olafsson, S., Li, X.: Learning effective new single machine dispatching 
-    rules
-    from optimal scheduling data.
-    \newblock International Journal of Production Economics \textbf{128}(1),
-    118--126 (2010)
-    
-    \bibitem{Panwalkar77}
-    Panwalkar, S.S., Iskander, W.: A survey of scheduling rules.
-    \newblock Operations Research \textbf{25}(1), 45--61 (1977)
-    
-    \bibitem{Pickardt2013}
-    Pickardt, C.W., Hildebrandt, T., Branke, J., Heger, J., Scholz-Reiter, B.:
-    {Evolutionary generation of dispatching rule sets for complex dynamic
-        scheduling problems}.
-    \newblock International Journal of Production Economics \textbf{145}(1), 
-    67--77
-    (2013)
-    
-    \bibitem{Pinedo08}
-    Pinedo, M.L.: Scheduling: Theory, Algorithms, and Systems, 3 edn.
-    \newblock Springer (2008)
-    
-    \bibitem{Rice76}
-    Rice, J.R.: The algorithm selection problem.
-    \newblock Advances in Computers \textbf{15}, 65--118 (1976)
-    
-    \bibitem{RossB10}
-    Ross, S., Bagnell, D.: Efficient reductions for imitation learning.
-    \newblock In: Proceedings of the Thirteenth International Conference on
-    Artificial Intelligence and Statistics, vol.~9, pp. 661--668 (2010)
-    
-    \bibitem{RossGB11}
-    Ross, S., Gordon, G.J., Bagnell, D.: A reduction of imitation learning and
-    structured prediction to no-regret online learning.
-    \newblock In: Proceedings of the Fourteenth International Conference on
-    Artificial Intelligence and Statistics, vol.~15, pp. 627--635. Journal of
-    Machine Learning Research - Workshop and Conference Proceedings (2011)
-    
-    \bibitem{Ross13}
-    Ross, S., Melik-Barkhudarov, N., Shankar, K., Wendel, A., Dey, D., Bagnell, 
-    J.,
-    Hebert, M.: Learning monocular reactive uav control in cluttered natural
-    environments.
-    \newblock In: Robotics and Automation, 2013 IEEE Intl. Conference on, pp.
-    1765--1772 (2013)
-    
-    \bibitem{Ru06:PPSN}
-    Runarsson, T.: Ordinal regression in evolutionary computation.
-    \newblock In: Parallel Problem Solving from Nature - PPSN IX, \emph{Lecture
-        Notes in Computer Science}, vol. 4193, pp. 1048--1057. Springer (2006)
-    
-    \bibitem{Ru12}
-    Runarsson, T.P., Schoenauer, M., Sebag, M.: Pilot, rollout and monte carlo 
-    tree
-    search methods for job shop scheduling.
-    \newblock In: Learning and Intelligent Optimization, Lecture Notes in 
-    Computer
-    Science, pp. 160--174. Springer (2012)
-    
-    \bibitem{Russell09}
-    Russell, T., Malik, A.M., Chase, M., van Beek, P.: Learning heuristics for 
-    the
-    superblock instruction scheduling problem.
-    \newblock IEEE Trans. on Knowl. and Data Eng. \textbf{21}(10), 1489--1502
-    (2009)
-    
-    \bibitem{Stafford88}
-    Stafford, E.F.: {On the Development of a Mixed-Integer Linear Programming 
-    Model
-        for the Flowshop Sequencing Problem}.
-    \newblock Journal of the Operational Research Society \textbf{39}(12),
-    1163--1174 (1988)
-    
-    \bibitem{Xu07}
-    Xu, L., Hutter, F., Hoos, H., Leyton-Brown, K.: {SATzilla-07: The design and
-        analysis of an algorithm portfolio for SAT}.
-    \newblock Principles and Practice of Constraint Programming  (2007)
-    
-    \bibitem{Yu13}
-    Yu, J.M., Doh, H.H., Kim, J.S., Kwon, Y.J., Lee, D.H., Nam, S.H.: {Input
-        sequencing and scheduling for a reconfigurable manufacturing system 
-        with a
-        limited number of fixtures}.
-    \newblock The International Journal of Advanced Manufacturing Technology
-    (2013)
-    
+	\providecommand{\url}[1]{{#1}}
+	\providecommand{\urlprefix}{URL }
+	\expandafter\ifx\csname urlstyle\endcsname\relax
+	\providecommand{\doi}[1]{DOI~\discretionary{}{}{}#1}\else
+	\providecommand{\doi}{DOI~\discretionary{}{}{}\begingroup
+		\urlstyle{rm}\Url}\fi
+	
+	\bibitem{LiSA}
+	Andresen, M., Engelhardt, F., Werner, F.: {LiSA - A Library of Scheduling
+		Algorithms} (version 3.0) [software] (2010).
+	\newblock \urlprefix\url{http://www.math.ovgu.de/Lisa.html}
+	
+	\bibitem{Burke06}
+	Burke, E., Petrovic, S., Qu, R.: Case-based heuristic selection for timetabling
+	problems.
+	\newblock Journal of Scheduling \textbf{9}, 115--132 (2006)
+	
+	\bibitem{Burke10}
+	Burke, E.K., Gendreau, M., Hyde, M., Kendall, G., Ochoa, G., Ozcan, E., Qu, R.:
+	Hyper-heuristics: a survey of the state of the art.
+	\newblock Journal of the Operational Research Society \textbf{64}(12),
+	1695--1724 (2013)
+	
+	\bibitem{CesaBianchi06}
+	Cesa-Bianchi, N., Lugosi, G.: Prediction, Learning, and Games, chap.~4.
+	\newblock Cambridge University Press (2006)
+	
+	\bibitem{ChangKADL15}
+	Chang, K., Krishnamurthy, A., Agarwal, A., III, H.D., Langford, J.: Learning to
+	search better than your teacher.
+	\newblock In: Proceedings of The 32nd International Conference on Machine
+	Learning, pp. 2058--2066 (2015)
+	
+	\bibitem{Chen13}
+	Chen, T., Rajendran, C., Wu, C.W.: {Advanced dispatching rules for large-scale
+		manufacturing systems}.
+	\newblock The International Journal of Advanced Manufacturing Technology
+	(2013)
+	
+	\bibitem{liblinear}
+	Fan, R.E., Chang, K.W., Hsieh, C.J., Wang, X.R., Lin, C.J.: {LIBLINEAR}: A
+	library for large linear classification.
+	\newblock Journal of Machine Learning Research \textbf{9}, 1871--1874 (2008)
+	
+	\bibitem{Garey76:NPhard}
+	Garey, M.R., Johnson, D.S., Sethi, R.: The complexity of flowshop and jobshop
+	scheduling.
+	\newblock Mathematics of Operations Research \textbf{1}(2), 117--129 (1976)
+	
+	\bibitem{Gomes01}
+	Gomes, C.P., Selman, B.: {Algorithm portfolios}.
+	\newblock Artificial Intelligence \textbf{126}(1-2), 43--62 (2001)
+	
+	\bibitem{gurobi}
+	{Gurobi Optimization, Inc.}: Gurobi optimization (version 6.0.0) [software]
+	(2014).
+	\newblock \urlprefix\url{http://www.gurobi.com/}
+	
+	\bibitem{Hannan57}
+	Hannan, J.: Approximation to bayes risk in repeated play.
+	\newblock Contributions to the Theory of Games \textbf{3}, 97--139 (1957)
+	
+	\bibitem{Haupt89}
+	Haupt, R.: A survey of priority rule-based scheduling.
+	\newblock OR Spectrum \textbf{11}, 3--16 (1989)
+	
+	\bibitem{InRu14}
+	Ingimundardottir, H., Runarsson, T.: Evolutionary learning of weighted linear
+	composite dispatching rules for scheduling.
+	\newblock In: International Conference on Evolutionary Computation Theory and
+	Applications. SCITEPRESS (2014)
+	
+	\bibitem{InRu11a}
+	Ingimundardottir, H., Runarsson, T.P.: Supervised learning linear priority
+	dispatch rules for job-shop scheduling.
+	\newblock In: Learning and Intelligent Optimization, \emph{Lecture Notes in
+		Computer Science}, vol. 6683, pp. 263--277. Springer (2011)
+	
+	\bibitem{InRu15a}
+	Ingimundardottir, H., Runarsson, T.P.: Generating training data for learning
+	linear composite dispatching rules for scheduling.
+	\newblock In: Learning and Intelligent Optimization, \emph{Lecture Notes in
+		Computer Science}, vol. 8994, pp. 236--248. Springer (2015)
+	
+	\bibitem{Jayamohan04}
+	Jayamohan, M., Rajendran, C.: Development and analysis of cost-based
+	dispatching rules for job shop scheduling.
+	\newblock European Journal of Operational Research \textbf{157}(2), 307--321
+	(2004)
+	
+	\bibitem{Judah12}
+	Judah, K., Fern, A., Dietterich, T.G.: Active imitation learning via reduction
+	to {I.I.D.} active learning.
+	\newblock CoRR \textbf{abs/1210.4876} (2012)
+	
+	\bibitem{Kim13}
+	Kim, B., Pineau, J.: Maximum mean discrepancy imitation learning.
+	\newblock In: Robotics: Science and Systems (2013)
+	
+	\bibitem{Korytkowski13}
+	Korytkowski, P., Rymaszewski, S., Wi\'{s}niewski, T.: {Ant colony optimization
+		for job shop scheduling using multi-attribute dispatching rules}.
+	\newblock The International Journal of Advanced Manufacturing Technology
+	(2013)
+	
+	\bibitem{Siggi05}
+	Li, X., Olafsson, S.: Discovering dispatching rules using data mining.
+	\newblock Journal of Scheduling \textbf{8}, 515--527 (2005)
+	
+	\bibitem{Lu13}
+	Lu, M.S., Romanowski, R.: {Multicontextual dispatching rules for job shops with
+		dynamic job arrival}.
+	\newblock The International Journal of Advanced Manufacturing Technology
+	(2013)
+	
+	\bibitem{Malik08}
+	Malik, A.M., Russell, T., Chase, M., Beek, P.: Learning heuristics for basic
+	block instruction scheduling.
+	\newblock Journal of Heuristics \textbf{14}(6), 549--569 (2008)
+	
+	\bibitem{Meeran12}
+	Meeran, S., Morshed, M.: A hybrid genetic tabu search algorithm for solving job
+	shop scheduling problems: a case study.
+	\newblock Journal of intelligent manufacturing \textbf{23}(4), 1063--1078
+	(2012)
+	
+	\bibitem{Monch13}
+	M\"{o}nch, L., Fowler, J.W., Mason, S.J.: {Production Planning and Control for
+		Semiconductor Wafer Fabrication Facilities}, \emph{Operations
+		Research/Computer Science Interfaces Series}, vol.~52, chap.~4.
+	\newblock Springer (2013)
+	
+	\bibitem{Siggi10}
+	Olafsson, S., Li, X.: Learning effective new single machine dispatching rules
+	from optimal scheduling data.
+	\newblock International Journal of Production Economics \textbf{128}(1),
+	118--126 (2010)
+	
+	\bibitem{Panwalkar77}
+	Panwalkar, S.S., Iskander, W.: A survey of scheduling rules.
+	\newblock Operations Research \textbf{25}(1), 45--61 (1977)
+	
+	\bibitem{Pickardt2013}
+	Pickardt, C.W., Hildebrandt, T., Branke, J., Heger, J., Scholz-Reiter, B.:
+	{Evolutionary generation of dispatching rule sets for complex dynamic
+		scheduling problems}.
+	\newblock International Journal of Production Economics \textbf{145}(1), 67--77
+	(2013)
+	
+	\bibitem{Pinedo08}
+	Pinedo, M.L.: Scheduling: Theory, Algorithms, and Systems, 3 edn.
+	\newblock Springer (2008)
+	
+	\bibitem{Rice76}
+	Rice, J.R.: The algorithm selection problem.
+	\newblock Advances in Computers \textbf{15}, 65--118 (1976)
+	
+	\bibitem{RossB10}
+	Ross, S., Bagnell, D.: Efficient reductions for imitation learning.
+	\newblock In: Proceedings of the Thirteenth International Conference on
+	Artificial Intelligence and Statistics, vol.~9, pp. 661--668 (2010)
+	
+	\bibitem{RossGB11}
+	Ross, S., Gordon, G.J., Bagnell, D.: A reduction of imitation learning and
+	structured prediction to no-regret online learning.
+	\newblock In: Proceedings of the Fourteenth International Conference on
+	Artificial Intelligence and Statistics, vol.~15, pp. 627--635. Journal of
+	Machine Learning Research - Workshop and Conference Proceedings (2011)
+	
+	\bibitem{Ross13}
+	Ross, S., Melik-Barkhudarov, N., Shankar, K., Wendel, A., Dey, D., Bagnell, J.,
+	Hebert, M.: Learning monocular reactive uav control in cluttered natural
+	environments.
+	\newblock In: Robotics and Automation, 2013 IEEE Intl. Conference on, pp.
+	1765--1772 (2013)
+	
+	\bibitem{Ru06:PPSN}
+	Runarsson, T.: Ordinal regression in evolutionary computation.
+	\newblock In: Parallel Problem Solving from Nature - PPSN IX, \emph{Lecture
+		Notes in Computer Science}, vol. 4193, pp. 1048--1057. Springer (2006)
+	
+	\bibitem{Ru12}
+	Runarsson, T.P., Schoenauer, M., Sebag, M.: Pilot, rollout and monte carlo tree
+	search methods for job shop scheduling.
+	\newblock In: Learning and Intelligent Optimization, Lecture Notes in Computer
+	Science, pp. 160--174. Springer (2012)
+	
+	\bibitem{Russell09}
+	Russell, T., Malik, A.M., Chase, M., van Beek, P.: Learning heuristics for the
+	superblock instruction scheduling problem.
+	\newblock IEEE Trans. on Knowl. and Data Eng. \textbf{21}(10), 1489--1502
+	(2009)
+	
+	\bibitem{Xu07}
+	Xu, L., Hutter, F., Hoos, H., Leyton-Brown, K.: {SATzilla-07: The design and
+		analysis of an algorithm portfolio for SAT}.
+	\newblock Principles and Practice of Constraint Programming  (2007)
+	
+	\bibitem{Yu13}
+	Yu, J.M., Doh, H.H., Kim, J.S., Kwon, Y.J., Lee, D.H., Nam, S.H.: {Input
+		sequencing and scheduling for a reconfigurable manufacturing system with a
+		limited number of fixtures}.
+	\newblock The International Journal of Advanced Manufacturing Technology
+	(2013)
+	
 \end{thebibliography}
+
 
 \end{document}
